@@ -1,0 +1,70 @@
+{
+  "info": {
+    "_postman_id": "d4edde4a-937e-4815-b1ba-8a8d752bf5ba",
+    "name": "Software Architect",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b9c1d8c1-9a04-4e28-9328-bd6e8c86e814",
+            "exec": [
+              "pm.test(\"Address is available\", () => {\r",
+              "    pm.response.to.have.status(200)\r",
+              "})"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://arch.homework/otusapp/vaagn",
+          "protocol": "http",
+          "host": ["arch", "homework"],
+          "path": ["otusapp", "vaagn"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /health",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "2b28c846-d918-42f9-bfa7-b70a9dddd111",
+            "exec": [
+              "pm.test(\"Address is available\", () => {\r",
+              "    pm.response.to.have.status(200)\r",
+              "})\r",
+              "pm.test(\"Status is ok\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql('ok');\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://arch.homework/otusapp/vaagn/health",
+          "protocol": "http",
+          "host": ["arch", "homework"],
+          "path": ["otusapp", "vaagn", "health"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
