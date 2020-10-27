@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-deployment
+  name: user-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: hello-app
+      app: user-api
   template:
     metadata:
       labels:
-        app: hello-app
+        app: user-api
     spec:
       containers:
-        - name: hello-app
+        - name: user-api
           image: vaagn/user-api:1.0.0
           ports:
             - containerPort: 3000
@@ -27,11 +27,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-service
+  name: user-service
 spec:
   type: NodePort
   selector:
-    app: hello-app
+    app: user-api
   ports:
     - protocol: TCP
       port: 8000
@@ -41,7 +41,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-ingress
+  name: user-ingress
   annotations:
     kubernetes.io/ingress.class: 'nginx'
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -54,6 +54,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hello-service
+                name: user-service
                 port:
                   number: 8000
