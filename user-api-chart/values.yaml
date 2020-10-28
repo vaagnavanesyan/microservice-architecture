@@ -7,7 +7,7 @@ image:
   repository: vaagn/user-api
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: '1.0.0'
+  tag: '1.0.1'
 
 imagePullSecrets: []
 nameOverride: ''
@@ -24,14 +24,14 @@ securityContext: {}
 
 deployment:
   livenessProbePath: /health
-  livenessProbePort: 3000
+  livenessProbePort: 80
 
 service:
   type: NodePort
   selector:
     app: user-api
   port: 8000
-  targetPort: 3000
+  targetPort: 80
 
 ingress:
   enabled: true
