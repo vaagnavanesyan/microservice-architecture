@@ -1,0 +1,1 @@
+helm install user-api .\user-api-chart
