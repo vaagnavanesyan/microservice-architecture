@@ -5,9 +5,7 @@ metadata:
   labels:
     {{- include "user-api-chart.labels" . | nindent 4 }}
 spec:
-{{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
-{{- end }}
   selector:
     matchLabels:
       {{- include "user-api-chart.selectorLabels" . | nindent 6 }}
@@ -20,27 +18,19 @@ spec:
       labels:
         {{- include "user-api-chart.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "user-api-chart.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
           ports:
             - name: http
-              containerPort: {{.Values.service.targetPort}}
+              containerPort: {{.Values.targetPort}}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: {{.Values.deployment.livenessProbePath}}
-              port: {{.Values.deployment.livenessProbePort}}
+              path: {{.Values.livenessProbe}}
+              port: {{.Values.targetPort}}
           readinessProbe:
             httpGet:
               path: /
