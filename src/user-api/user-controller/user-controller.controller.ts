@@ -1,9 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
-@Controller('users')
+@Controller('user')
 export class UserControllerController {
-  @Get()
-  getUsers(): string {
-    return 'This action returns all cats';
+  @Get(':id')
+  getUser(@Param() { id }): any {
+    return {
+      id,
+      name: 'test',
+    };
   }
 }
