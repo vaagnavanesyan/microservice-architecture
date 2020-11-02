@@ -1,4 +1,6 @@
 replicaCount: 5
+
+configName: user-api-config
 image: vaagn/user-api
 livenessProbe: /health
 

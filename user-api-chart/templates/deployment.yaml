@@ -23,6 +23,11 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: GREETING
           ports:
             - name: http
               containerPort: {{.Values.targetPort}}
