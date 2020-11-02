@@ -1,6 +1,7 @@
 replicaCount: 5
 
 configName: user-api-config
+secretName: user-api-secret
 image: vaagn/user-api
 livenessProbe: /health
 
@@ -15,3 +16,13 @@ ingress:
     - host: arch.homework
       paths:
         - path: /otusapp/vaagn($|/)(.*)
+
+postgresql:
+  postgresqlUsername: nestjs
+  postgresqlPassword: dev-password
+  postgresqlDatabase: user-api
+  postgresqlHost: 'postgres'
+  postgresqlPort: '5432'
+  service:
+    type: NodePort
+    nodePort: '32345'

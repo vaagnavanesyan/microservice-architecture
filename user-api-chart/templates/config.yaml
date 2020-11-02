@@ -4,3 +4,11 @@ metadata:
   name: {{ .Values.configName }}
 data:
   GREETING: Hello from ConfigMap!
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.secretName }}
+type: Opaque
+data:
+  DATABASE_URI: {{ printf "postgresql+psycopg2://%s:%s@%s:%s/%s" .Values.postgresql.postgresqlUsername .Values.postgresql.postgresqlPassword .Values.postgresql.postgresqlHost .Values.postgresql.postgresqlPort .Values.postgresql.postgresqlDatabase  | b64enc | quote }}
