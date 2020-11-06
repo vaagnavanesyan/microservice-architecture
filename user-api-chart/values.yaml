@@ -1,4 +1,4 @@
-replicaCount: 5
+replicaCount: 3
 
 configName: user-api-config
 secretName: user-api-secret
@@ -18,11 +18,9 @@ ingress:
         - path: /otusapp/vaagn($|/)(.*)
 
 postgresql:
-  postgresqlUsername: nestjs
+  enabled: true
+  postgresqlUsername: nestjs-user
+  postgresqlDatabase: user-api-db
   postgresqlPassword: dev-password
-  postgresqlDatabase: user-api
-  postgresqlHost: 'postgres'
-  postgresqlPort: '5432'
   service:
-    type: NodePort
-    nodePort: '32345'
+    port: '5432'
