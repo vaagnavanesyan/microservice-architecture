@@ -1,70 +1,299 @@
 {
-  "info": {
-    "_postman_id": "d4edde4a-937e-4815-b1ba-8a8d752bf5ba",
-    "name": "Software Architect",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "GET /",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "b9c1d8c1-9a04-4e28-9328-bd6e8c86e814",
-            "exec": [
-              "pm.test(\"Address is available\", () => {\r",
-              "    pm.response.to.have.status(200)\r",
-              "})"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://arch.homework/otusapp/vaagn",
-          "protocol": "http",
-          "host": ["arch", "homework"],
-          "path": ["otusapp", "vaagn"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "GET /health",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "id": "2b28c846-d918-42f9-bfa7-b70a9dddd111",
-            "exec": [
-              "pm.test(\"Address is available\", () => {\r",
-              "    pm.response.to.have.status(200)\r",
-              "})\r",
-              "pm.test(\"Status is ok\", function () {\r",
-              "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.status).to.eql('ok');\r",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://arch.homework/otusapp/vaagn/health",
-          "protocol": "http",
-          "host": ["arch", "homework"],
-          "path": ["otusapp", "vaagn", "health"]
-        }
-      },
-      "response": []
-    }
-  ],
-  "protocolProfileBehavior": {}
+	"info": {
+		"_postman_id": "c55f0238-c309-476f-8e92-10fc1a971e60",
+		"name": "Software Architect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7bf411e3-ee58-42f4-8926-b40e5474ed43",
+						"exec": [
+							"pm.test(\"Address is available\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"GREETING is set\", function () {\r",
+							"    let text = pm.response.text();\r",
+							"    pm.expect(text).to.eql('Hello from ConfigMap!');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c71c5eed-dfd4-4e20-8d6e-ebf99c509e18",
+						"exec": [
+							"pm.test(\"Address is available\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"Status is ok\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.status).to.eql('ok');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/health",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "796b1fe1-9947-4da7-880b-4791372bb638",
+						"exec": [
+							"pm.test(\"Status is correct\", () => {\r",
+							"    pm.response.to.have.status(201)\r",
+							"})\r",
+							"pm.test(\"User is created\", function () {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.isActive).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/user",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "81f60448-d71c-47da-ae4c-9f67419b039b",
+						"exec": [
+							"pm.test(\"Status is correct\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"User is created\", function () {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.isActive).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/user/1",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /user/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "430e2a13-1030-499b-91bb-1486bc6bf3ea",
+						"exec": [
+							"pm.test(\"Status is correct\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"User is created\", function () {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.isActive).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"User\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/user/1",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/user/:id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7508a625-d01f-4339-b7d8-267276c708c1",
+						"exec": [
+							"pm.test(\"Status is correct\", () => {\r",
+							"    pm.response.to.have.status(200)\r",
+							"})\r",
+							"pm.test(\"User is created\", function () {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.isActive).to.eql(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/user/1",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d4dd9c50-55f1-4bac-b90a-344e5aea5b5e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "a9532bd9-91db-46c2-a2fd-46fbd5223bd8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
 }
