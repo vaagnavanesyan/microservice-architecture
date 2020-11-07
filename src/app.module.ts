@@ -10,7 +10,14 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
-    PrometheusModule.register(),
+    PrometheusModule.register({
+      defaultMetrics: {
+        enabled: true,
+        config: {
+          prefix: 'user_api_requests_',
+        },
+      },
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URI,
