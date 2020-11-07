@@ -8,8 +8,8 @@ spec:
   type: NodePort
   ports:
     - port: {{ .Values.servicePort }}
-      targetPort: {{ .Values.targetPort }}
+      targetPort: http
       protocol: TCP
-      name: http
+      name: web
   selector:
     {{- include "user-api-chart.selectorLabels" . | nindent 4 }}
