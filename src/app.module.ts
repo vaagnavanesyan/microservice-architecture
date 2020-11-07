@@ -6,9 +6,11 @@ import { HealthModule } from './health/health.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user-api/entities/user.entity';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URI,
