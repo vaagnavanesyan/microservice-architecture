@@ -1,0 +1,17 @@
+apiVersion: skaffold/v2beta9
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+    - image: vaagn/user-api
+deploy:
+  helm:
+    releases:
+      - name: user-api
+        chartPath: user-api-chart
+        namespace: otus
+        skipBuildDependencies: true
+        createNamespace: true
+        artifactOverrides:
+          image: vaagn/user-api

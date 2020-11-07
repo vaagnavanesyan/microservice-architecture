@@ -22,7 +22,8 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image }}"
+          imagePullPolicy: IfNotPresent
           env:
             - name: DATABASE_URI
               valueFrom:
