@@ -6,14 +6,16 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { User } from '../entities';
+import { MetricsInterceptor } from '../interceptors';
 import { UserModel } from '../models';
 
 @Controller('user')
+@UseInterceptors(MetricsInterceptor)
 export class UserController {
   constructor(
     @InjectRepository(User)
