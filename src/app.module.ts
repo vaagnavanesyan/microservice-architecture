@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserApiModule } from './user-api/user-api.module';
-import { HealthModule } from './health/health.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user-api/entities/user.entity';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { HealthModule } from './health/health.module';
+import { User, UserApiModule } from './user-api';
 
 @Module({
   imports: [
