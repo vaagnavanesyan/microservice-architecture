@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7bf411e3-ee58-42f4-8926-b40e5474ed43",
 						"exec": [
 							"pm.test(\"Address is available\", () => {\r",
 							"    pm.response.to.have.status(200)\r",
@@ -50,7 +49,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c71c5eed-dfd4-4e20-8d6e-ebf99c509e18",
 						"exec": [
 							"pm.test(\"Address is available\", () => {\r",
 							"    pm.response.to.have.status(200)\r",
@@ -89,7 +87,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "796b1fe1-9947-4da7-880b-4791372bb638",
 						"exec": [
 							"pm.test(\"Status is correct\", () => {\r",
 							"    pm.response.to.have.status(201)\r",
@@ -137,14 +134,9 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "81f60448-d71c-47da-ae4c-9f67419b039b",
 						"exec": [
 							"pm.test(\"Status is correct\", () => {\r",
 							"    pm.response.to.have.status(200)\r",
-							"})\r",
-							"pm.test(\"User is created\", function () {\r",
-							"    let json = pm.response.json();\r",
-							"    pm.expect(json.isActive).to.eql(true);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -189,15 +181,8 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "430e2a13-1030-499b-91bb-1486bc6bf3ea",
 						"exec": [
-							"pm.test(\"Status is correct\", () => {\r",
-							"    pm.response.to.have.status(200)\r",
-							"})\r",
-							"pm.test(\"User is created\", function () {\r",
-							"    let json = pm.response.json();\r",
-							"    pm.expect(json.isActive).to.eql(true);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -238,15 +223,8 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7508a625-d01f-4339-b7d8-267276c708c1",
 						"exec": [
-							"pm.test(\"Status is correct\", () => {\r",
-							"    pm.response.to.have.status(200)\r",
-							"})\r",
-							"pm.test(\"User is created\", function () {\r",
-							"    let json = pm.response.json();\r",
-							"    pm.expect(json.isActive).to.eql(true);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -271,13 +249,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/health/makeError",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/otusapp/vaagn/health/setCode/500",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"otusapp",
+						"vaagn",
+						"health",
+						"setCode",
+						"500"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "d4dd9c50-55f1-4bac-b90a-344e5aea5b5e",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -287,13 +287,11 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "a9532bd9-91db-46c2-a2fd-46fbd5223bd8",
 				"type": "text/javascript",
 				"exec": [
 					""
 				]
 			}
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
