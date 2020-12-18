@@ -16,9 +16,9 @@ export class MetricsInterceptor implements NestInterceptor {
     @InjectMetric('user_api_latency') public latency: Histogram<string>,
   ) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const [req, ,] = context.getArgs();
-    const end = this.latency.labels(req.method).startTimer();
-    this.requests.labels(req.method).inc();
+    const [req, res] = context.getArgs();
+    const end = this.latency.labels(req.method, res.statusCode).startTimer();
+    this.requests.labels(req.method, res.statusCode).inc();
     return next.handle().pipe(tap(() => end()));
   }
 }
