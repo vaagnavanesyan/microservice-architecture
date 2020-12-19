@@ -17,6 +17,10 @@ postgresql:
   postgresqlUsername: nestjs-user
   postgresqlDatabase: user-api-db
   postgresqlPassword: dev-password
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
   service:
     port: '5432'
 
