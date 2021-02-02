@@ -5,6 +5,8 @@ secretName: user-api-secret
 image: vaagn/user-api
 livenessProbe: /health
 
+greeting: Hello from ConfigMap!
+
 servicePort: 8000
 ingress:
   enabled: true

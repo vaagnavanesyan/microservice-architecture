@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configName }}
 data:
-  GREETING: Hello from ConfigMap!
+  GREETING: {{ .Values.greeting }}
 ---
 apiVersion: v1
 kind: Secret
