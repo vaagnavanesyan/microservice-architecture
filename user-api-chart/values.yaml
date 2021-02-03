@@ -3,7 +3,7 @@ replicaCount: 3
 configName: user-api-config
 secretName: user-api-secret
 image: vaagn/user-api
-livenessProbe: /health
+livenessProbe: /api/health
 
 greeting: Hello from ConfigMap!
 
