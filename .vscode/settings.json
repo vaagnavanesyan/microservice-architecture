@@ -2,6 +2,7 @@
   "files.exclude": {
     "**/node_modules/": true,
     "**/dist/": true,
+    "**/client/": true,
     "**/coverage/": true,
     "**/yarn-error.log": true
   }

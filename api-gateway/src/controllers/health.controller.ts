@@ -2,7 +2,7 @@ import { Controller, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller('health')
-export class HealthControllerController {
+export class HealthController {
   @Get()
   health() {
     return { status: 'ok' };

@@ -4,11 +4,13 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { join } from 'path';
-import { User, UserApiModule } from './api-gateway';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { HealthModule } from './health/health.module';
+import {
+  AuthController,
+  HealthController,
+  UserController,
+} from './controllers';
+import { UserRepository } from './repositories';
+import { AuthService, metrics } from './services';
 
 @Module({
   imports: [
@@ -27,17 +29,14 @@ import { HealthModule } from './health/health.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URI,
-      entities: [User],
+      entities: [UserRepository],
       synchronize: true,
     }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    UserApiModule,
-    HealthModule,
-    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [HealthController, UserController, AuthController],
+  providers: [...metrics, AuthService, UserRepository],
 })
 export class AppModule {}
