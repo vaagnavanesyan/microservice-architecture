@@ -5,10 +5,10 @@ import {
   makeHistogramProvider,
 } from '@willsoto/nestjs-prometheus';
 import { UserController } from './controllers';
-import { User } from './entities';
+import { UserRepository } from './user.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([UserRepository])],
   providers: [
     makeCounterProvider({
       name: 'user_api_requests',
