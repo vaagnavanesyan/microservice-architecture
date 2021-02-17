@@ -12,8 +12,8 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class MetricsInterceptor implements NestInterceptor {
   constructor(
-    @InjectMetric('user_api_requests') public requests: Counter<string>,
-    @InjectMetric('user_api_latency') public latency: Histogram<string>,
+    @InjectMetric('api_gateway_requests') public requests: Counter<string>,
+    @InjectMetric('api_gateway_latency') public latency: Histogram<string>,
   ) {}
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const [req, res] = context.getArgs();

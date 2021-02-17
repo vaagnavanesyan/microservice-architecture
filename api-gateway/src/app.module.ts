@@ -4,11 +4,11 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { join } from 'path';
+import { User, UserApiModule } from './api-gateway';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { HealthModule } from './health/health.module';
-import { User, UserApiModule } from './user-api';
 import { AuthModule } from './auth/auth.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { AuthModule } from './auth/auth.module';
       defaultMetrics: {
         enabled: true,
         config: {
-          prefix: 'user_api_requests_',
+          prefix: 'api_gateway_requests_',
         },
       },
     }),

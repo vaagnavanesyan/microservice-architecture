@@ -11,13 +11,13 @@ import { UserRepository } from './user.repository';
   imports: [TypeOrmModule.forFeature([UserRepository])],
   providers: [
     makeCounterProvider({
-      name: 'user_api_requests',
-      help: 'user_api_requests_help',
+      name: 'api_gateway_requests',
+      help: 'api_gateway_requests_help',
       labelNames: ['method', 'status_code'],
     }),
     makeHistogramProvider({
-      name: 'user_api_latency',
-      help: 'user_api_latency_help',
+      name: 'api_gateway_latency',
+      help: 'api_gateway_latency_help',
       labelNames: ['method', 'status_code'],
     }),
   ],

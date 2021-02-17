@@ -17,5 +17,5 @@ COPY --from=builder ./app/yarn.lock .
 
 RUN yarn install --production && yarn cache clean
 COPY --from=builder ./app/dist ./dist
-COPY  ./client ./client
+# COPY  ./client ./client
 ENTRYPOINT [ "yarn", "start:prod" ]

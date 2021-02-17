@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "user-api-chart.fullname" . }}
+  name: {{ include "api-gateway-chart.fullname" . }}
   labels:
-    {{- include "user-api-chart.labels" . | nindent 4 }}
+    {{- include "api-gateway-chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "user-api-chart.selectorLabels" . | nindent 6 }}
+      {{- include "api-gateway-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "user-api-chart.selectorLabels" . | nindent 8 }}
+        {{- include "api-gateway-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
