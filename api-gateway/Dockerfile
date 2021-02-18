@@ -9,7 +9,7 @@ COPY . .
 RUN yarn build
 
 
-FROM node:12.19.0-alpine3.10
+FROM node:14.15.5-alpine3.10
 EXPOSE 8000
 WORKDIR /app
 
