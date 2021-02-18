@@ -6,6 +6,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build-image": "docker build -t vaagn/face-systems-portal .",
+    "push-image": "docker push vaagn/face-systems-portal",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -28,7 +30,7 @@
     ]
   },
   "resolutions": {
-    "immer":"8.0.1"
+    "immer": "8.0.1"
   },
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",

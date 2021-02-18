@@ -1,4 +1,5 @@
-FROM node:14.15.0-alpine3.10 as builder
+FROM vaagn/face-systems-portal:latest as portal
+FROM node:14.15.5-alpine3.10 as builder
 WORKDIR /app
 
 COPY ./package.json .
@@ -17,5 +18,6 @@ COPY --from=builder ./app/yarn.lock .
 
 RUN yarn install --production && yarn cache clean
 COPY --from=builder ./app/dist ./dist
-COPY ./client ./client
+# COPY ./client ./client
+COPY --from=portal ./app/build ./client
 ENTRYPOINT [ "yarn", "start:prod" ]
