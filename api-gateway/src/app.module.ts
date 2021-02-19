@@ -9,6 +9,7 @@ import {
   HealthController,
   UserController,
 } from './controllers';
+import { User } from './entities';
 import { UserRepository } from './repositories';
 import { AuthService, metrics } from './services';
 
@@ -29,7 +30,7 @@ import { AuthService, metrics } from './services';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URI,
-      entities: [UserRepository],
+      entities: [User],
       synchronize: true,
     }),
     ConfigModule.forRoot({
