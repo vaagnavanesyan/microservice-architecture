@@ -24,6 +24,8 @@ postgresql:
     serviceMonitor:
       enabled: true
   service:
+    type: NodePort
+    nodePort: 32534
     port: '5432'
 
 metrics:
