@@ -1,3 +1,8 @@
+import { PG_UNIQUE_VIOLATION } from '@drdgvhbh/postgres-error-codes';
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredentialsDto } from '../dto';
 import { User } from '../entities';
@@ -11,6 +16,14 @@ export class UserRepository extends Repository<User> {
     user.password = password;
     user.firstName = 'adsds';
     user.lastName = 'asdasdss';
-    await user.save();
+    try {
+      await user.save();
+    } catch (error) {
+      if (error.code === PG_UNIQUE_VIOLATION) {
+        throw new ConflictException('Login is already taken');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
