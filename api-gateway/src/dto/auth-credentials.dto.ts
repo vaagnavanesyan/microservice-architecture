@@ -1,5 +1,12 @@
 // import { Field, InputType } from '@nestjs/graphql';
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsAlpha,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
+
 // @InputType()
 export class AuthCredentialsDto {
   // @Field({ description: 'User login' })
@@ -16,4 +23,7 @@ export class AuthCredentialsDto {
     message: 'Password is too weak',
   })
   password: string;
+
+  @IsAlpha() firstName: string;
+  @IsAlpha() lastName: string;
 }

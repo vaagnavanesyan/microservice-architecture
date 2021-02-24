@@ -10,12 +10,12 @@ import { User } from '../entities';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   public async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
-    const { login, password } = authCredentialsDto;
+    const { login, password, firstName, lastName } = authCredentialsDto;
     const user = new User();
     user.login = login;
     user.password = password;
-    user.firstName = 'adsds';
-    user.lastName = 'asdasdss';
+    user.firstName = firstName;
+    user.lastName = lastName;
     try {
       await user.save();
     } catch (error) {
