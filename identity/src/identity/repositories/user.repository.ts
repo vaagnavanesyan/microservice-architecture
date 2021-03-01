@@ -29,10 +29,15 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async isPasswordValid({ login, password }: SignInDto): Promise<boolean> {
+  async signIn({ login, password }: SignInDto): Promise<User> {
     const user = await this.findOne({ login });
-    if (!user) return false;
-    return user?.password === (await this.hashPassword(password, user.salt));
+    if (
+      user &&
+      user.password === (await this.hashPassword(password, user.salt))
+    ) {
+      return user;
+    }
+    return null;
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
