@@ -1,2 +1,2 @@
-helm uninstall api-gateway
-kubectl delete -n otus persistentvolumeclaim data-api-gateway-postgresql-0
+helm uninstall identity
+kubectl delete -n otus persistentvolumeclaim data-identity-postgresql-0

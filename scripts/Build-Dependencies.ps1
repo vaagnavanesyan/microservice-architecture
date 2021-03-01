@@ -1,2 +1,2 @@
-helm dependency update .\api-gateway-chart\
-helm dependency build .\api-gateway-chart\
+helm dependency update .\identity\helm-chart
+helm dependency build .\identity\helm-chart

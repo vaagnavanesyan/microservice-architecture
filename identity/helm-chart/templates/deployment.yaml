@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "api-gateway-chart.fullname" . }}
+  name: {{ include "identity-chart.fullname" . }}
   labels:
-    {{- include "api-gateway-chart.labels" . | nindent 4 }}
+    {{- include "identity-chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "api-gateway-chart.selectorLabels" . | nindent 6 }}
+      {{- include "identity-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "api-gateway-chart.selectorLabels" . | nindent 8 }}
+        {{- include "identity-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

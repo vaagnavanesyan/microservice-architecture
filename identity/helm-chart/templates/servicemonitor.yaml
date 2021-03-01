@@ -2,17 +2,17 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ include "api-gateway-chart.fullname" . }}
+  name: {{ include "identity-chart.fullname" . }}
   labels:
-    {{- include "api-gateway-chart.labels" . | nindent 4 }}
+    {{- include "identity-chart.labels" . | nindent 4 }}
 spec:
-  jobLabel: {{ include "api-gateway-chart.fullname" . }}
+  jobLabel: {{ include "identity-chart.fullname" . }}
   namespaceSelector:
     matchNames:
     - "{{ $.Release.Namespace }}"
   selector:
     matchLabels:
-      {{- include "api-gateway-chart.selectorLabels" . | nindent 6 }}
+      {{- include "identity-chart.selectorLabels" . | nindent 6 }}
   endpoints:
   - interval: 15s
     port: web

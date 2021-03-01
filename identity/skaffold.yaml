@@ -4,14 +4,14 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-    - image: vaagn/api-gateway
+    - image: vaagn/face-systems-identity
 deploy:
   helm:
     releases:
-      - name: api-gateway
+      - name: identity
         chartPath: helm-chart
         namespace: otus
         skipBuildDependencies: true
         createNamespace: true
         artifactOverrides:
-          image: vaagn/api-gateway
+          image: vaagn/face-systems-identity

@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "api-gateway-chart.fullname" . -}}
+{{- $fullName := include "identity-chart.fullname" . -}}
 {{- $svcPort := .Values.servicePort -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "api-gateway-chart.labels" . | nindent 4 }}
+    {{- include "identity-chart.labels" . | nindent 4 }}
   annotations:
     nginx.ingress.kubernetes.io/app-root: /otusapp/vaagn
 spec:
