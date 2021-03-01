@@ -15,6 +15,7 @@ import { AuthService, metrics } from './services';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
       exclude: ['/api*'],
       rootPath: join(__dirname, '..', 'client'),
