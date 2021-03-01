@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configName }}
 data:
-  GREETING: {{ .Values.greeting }}
+  JWT_SECRET: {{ .Values.jwt_secret }}
 ---
 apiVersion: v1
 kind: Secret

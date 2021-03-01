@@ -1,11 +1,11 @@
 replicaCount: 1
 
-configName: user-api-config
-secretName: user-api-secret
-image: vaagn/user-api
+configName: identity-config
+secretName: identity-secret
+image: vaagn/face-systems-identity
 livenessProbe: /api/health
 
-greeting: Hello from ConfigMap!
+jwt_secret: topsecret51
 
 servicePort: 8000
 ingress:
