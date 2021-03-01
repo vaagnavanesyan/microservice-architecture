@@ -1,5 +1,5 @@
 import { IsAlpha } from 'class-validator';
-import { SignInDto } from './auth-credentials.dto';
+import { SignInDto } from './signin.dto';
 
 export class SignUpDto extends SignInDto {
   @IsAlpha() firstName: string;

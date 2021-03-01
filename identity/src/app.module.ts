@@ -4,14 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { join } from 'path';
-import {
-  AuthController,
-  HealthController,
-  UserController,
-} from './controllers';
-import { User } from './entities';
-import { UserRepository } from './repositories';
-import { AuthService, metrics } from './services';
+import { IdentityModule } from './identity/identity.module';
 
 @Module({
   imports: [
@@ -31,14 +24,13 @@ import { AuthService, metrics } from './services';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URI,
-      entities: [User],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    IdentityModule,
   ],
-  controllers: [HealthController, UserController, AuthController],
-  providers: [...metrics, AuthService, UserRepository],
 })
 export class AppModule {}

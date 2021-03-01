@@ -4,9 +4,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { SignUpDto } from 'src/dto/signup.dto';
 import { EntityRepository, Repository } from 'typeorm';
-import { SignInDto } from '../dto';
+import { SignInDto, SignUpDto } from '../dto';
 import { User } from '../entities';
 
 @EntityRepository(User)
@@ -32,6 +31,7 @@ export class UserRepository extends Repository<User> {
 
   async isPasswordValid({ login, password }: SignInDto): Promise<boolean> {
     const user = await this.findOne({ login });
+    if (!user) return false;
     return user?.password === (await this.hashPassword(password, user.salt));
   }
 
