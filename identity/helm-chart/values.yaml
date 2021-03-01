@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 
 configName: user-api-config
 secretName: user-api-secret

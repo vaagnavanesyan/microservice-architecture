@@ -1,8 +1,5 @@
 import { PG_UNIQUE_VIOLATION } from '@drdgvhbh/postgres-error-codes';
-import {
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { EntityRepository, Repository } from 'typeorm';
 import { SignInDto, SignUpDto } from '../dto';
@@ -31,10 +28,7 @@ export class UserRepository extends Repository<User> {
 
   async signIn({ login, password }: SignInDto): Promise<User> {
     const user = await this.findOne({ login });
-    if (
-      user &&
-      user.password === (await this.hashPassword(password, user.salt))
-    ) {
+    if (user && user.password === (await this.hashPassword(password, user.salt))) {
       return user;
     }
     return null;
