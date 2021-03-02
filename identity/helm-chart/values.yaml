@@ -5,7 +5,44 @@ secretName: identity-secret
 image: vaagn/face-systems-identity
 livenessProbe: /api/health
 
-jwt_secret: topsecret51
+privateKey: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIEogIBAAKCAQEAwVmHQPUL9z0B5H5EY7Ps/nDs4Hhrj0p1iu9jR0s0NxskckeG
+  Apw+RmLK8J+dFQPi0GqyNsx2g4MleiTby8KkSf/I+iSgaS2uIvPGPFVgGQ35dWgd
+  r2jYuKOe7saVL8SBZe0D1JP8ZB++r94RTHKlyhlDu1Z0iZOn4Cq51lS9rD6X8ApU
+  EdLtsTTpklm6ajjSLvoFNP+fgq0QZ26bOIEoNz5DaCqVcxxdB5vGi8vFJvhsfyor
+  q6+KJL+KzPYlbJapAfOK1IWSuNWdGl6HS0cqbfGnCS4WArZfa46GKT8ko9jW/0yj
+  +3iNn5cns0hnYD+KtUjgpCLJfdwmDZkg5rA+lwIDAQABAoIBAC2qrqZp+kyH7UWB
+  iTefTI+ALoKKDqWGaaLKDcHOAmQtlfsj54QAUTkgplwU5u4Kv+yH9tW4jxlaxWRH
+  Bl7m9xS/REHImtacwm9g8mZXp93jDhNr5u8CLYXWp3gwERZ6LDHdvDTeSxN+5/Pz
+  2FQdFAla1EOQFPBVnqX0kXYNB8uBh9/BkGKZZ7B+/uhS444KSa9WIyM3ePf4TCR8
+  XBeJoN4dY5VVOoiQO43ybOvo8D5ysIwolpbVw3anVND9xPp3lytI0gQ3Hl7zC7dY
+  YusmrLbiA5A9mSweqSFRm4/JfdE7rgbdZBmIjoQpO5Xug+dCzYlrVWnC4aKRx6EZ
+  Y7qW09ECgYEA7bnC8aDd6k9qoouiTAVAJL1czOuunV6011bZMhlN7v+jOAlJcFOZ
+  I08MXOCUR6eLrS/ikesOh26Gs3+v/ng47hOUMjfxVOiy/dYPT8wVF01uq8z2d9Zj
+  gpeCuoKdOk97bIltLVFrML+WZHLW//vykLCdIIo9Prw/VuDE3ZQB2j8CgYEA0DZ8
+  kfQpJ4lwL3QbE/JDQRsnU0m4RZxEO27xuByTORbSb90FoZh2eOlmGge8U0B/K9rH
+  rd9zcSY1NhhsePLeRhJo+65W1zkuXrocmsCURCePwh+aWJmlazm2eaV1Ff7vZbA2
+  xWOSFW7ma8bVXZJVETwTv1r4jgYCUcxov7FwFakCgYEA2c7PbC+l456r5w3kv543
+  7PGK6z4tGIbDTmGGUr6Yhxe15gusO7x8nLs6aoZhlV1PPniXMHabMz7zL9cX2yEv
+  mAJcT76t4Mvr42KTWNt1n4oUklgSoi3NssM6xcQSZnCYdxNa8qCcg2emVZZaouOm
+  lSccb8n431f++IysExAeumUCgYEApnkaClxMV1c1AkvzpnQJv9FlFNuZYNa7W0Wu
+  MEVwlLGhmVz/Np+/AZejUeajdXDY/QhUpLlHBM3Gt7S5bc7JVv87Pxe6SSRn5ccq
+  PbUCFqgG8e/wqSxXrS6crhBTWD3XzNciQ5oD3+0mgD+esszgBQKiy1mB55P4YMxt
+  Z+8HrdkCfwi+B1z+Y6/2vHFygrR5mMJFfIwjLIVzHVhtieQc5N7hG6hIdd6IHH8f
+  69svgzTM4WrvsyhWQylpnggas07BZm0n0H15G9gDvlbVm0nEkoAcl3m+wmVJdBuO
+  kTs6oZBBAovaSp7QK8+0djjE/HC66aasRELb7mXV4GMDmCmq9w0=
+  -----END RSA PRIVATE KEY-----
+
+publicKey: |
+  -----BEGIN RSA PUBLIC KEY-----
+  MIIBCgKCAQEAwVmHQPUL9z0B5H5EY7Ps/nDs4Hhrj0p1iu9jR0s0NxskckeGApw+
+  RmLK8J+dFQPi0GqyNsx2g4MleiTby8KkSf/I+iSgaS2uIvPGPFVgGQ35dWgdr2jY
+  uKOe7saVL8SBZe0D1JP8ZB++r94RTHKlyhlDu1Z0iZOn4Cq51lS9rD6X8ApUEdLt
+  sTTpklm6ajjSLvoFNP+fgq0QZ26bOIEoNz5DaCqVcxxdB5vGi8vFJvhsfyorq6+K
+  JL+KzPYlbJapAfOK1IWSuNWdGl6HS0cqbfGnCS4WArZfa46GKT8ko9jW/0yj+3iN
+  n5cns0hnYD+KtUjgpCLJfdwmDZkg5rA+lwIDAQAB
+  -----END RSA PUBLIC KEY-----
 
 servicePort: 8000
 ingress:

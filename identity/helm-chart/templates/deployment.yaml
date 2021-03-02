@@ -30,11 +30,16 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
                   key: DATABASE_URI
-            - name: JWT_SECRET
+            - name: PRIVATE_KEY
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Values.configName }}
-                  key: JWT_SECRET
+                  key: PRIVATE_KEY
+            - name: PUBLIC_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: PUBLIC_KEY
           ports:
             - name: http
               containerPort: 80

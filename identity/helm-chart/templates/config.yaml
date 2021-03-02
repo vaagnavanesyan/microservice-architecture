@@ -3,7 +3,8 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configName }}
 data:
-  JWT_SECRET: {{ .Values.jwt_secret }}
+  PRIVATE_KEY: {{ .Values.privateKey | b64enc | quote }}
+  PUBLIC_KEY: {{ .Values.publicKey | b64enc | quote }}
 ---
 apiVersion: v1
 kind: Secret

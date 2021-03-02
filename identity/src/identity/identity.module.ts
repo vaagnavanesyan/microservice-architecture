@@ -11,7 +11,7 @@ import { metrics } from './services/metrics.provider';
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      secret: process.env.PRIVATE_KEY,
       signOptions: {
         expiresIn: 3600,
       },
