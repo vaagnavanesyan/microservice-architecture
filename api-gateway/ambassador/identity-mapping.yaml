@@ -1,0 +1,8 @@
+apiVersion: getambassador.io/v2
+kind:  Mapping
+metadata:
+  name:  identity-mapping
+spec:
+  prefix: /api/auth
+  service: identity:8000
+  rewrite: ""

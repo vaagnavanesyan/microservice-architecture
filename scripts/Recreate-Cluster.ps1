@@ -12,7 +12,12 @@ helm install prom prometheus-community/kube-prometheus-stack  --atomic -f $(Join
 Write-Host 🆖 Installing Nginx
 helm install nginx ingress-nginx/ingress-nginx --atomic -f $(Join-Path -Path $PSScriptRoot -ChildPath "./configs/nginx-ingress.yaml")
 
-Write-Host 🦉 Setting default namespace to "otus" and enable istio injection
+Write-Host 🦉 Setting default namespace to "otus"
 kubectl apply -f $(Join-Path -Path $PSScriptRoot -ChildPath "./configs/create-otus-ns.yaml")
 kubectl config set-context --current --namespace=otus
+
+Write-Host 🐧 Installing Ambassador...
+helm install aes datawire/ambassador -f $(Join-Path -Path $PSScriptRoot -ChildPath "./api-gateway/values.yaml") -n otus
+
+Write-Host Adding minikube ip to local hosts...
 Invoke-Expression $(Join-Path -Path $PSScriptRoot -ChildPath "Update-Hosts.ps1")
