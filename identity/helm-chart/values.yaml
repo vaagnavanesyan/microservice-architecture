@@ -46,7 +46,7 @@ publicKey: |
 
 servicePort: 8000
 ingress:
-  enabled: true
+  enabled: false
   hosts:
     - host: arch.homework
       paths: ['/']

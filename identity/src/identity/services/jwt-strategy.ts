@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as jose from 'node-jose';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from '../entities';
 import { UserRepository } from '../repositories';
@@ -14,7 +15,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.PRIVATE_KEY,
+      secretOrKey: jose.util.base64url.decode(process.env.PRIVATE_KEY).toString('utf-8'),
+      ignoreExpiration: false,
+      algorithms: ['RS256'],
     });
   }
 

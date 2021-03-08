@@ -20,6 +20,6 @@ export class AuthController {
   async jwks() {
     const pem = jose.util.base64url.decode(process.env.PUBLIC_KEY).toString('utf-8');
     const jwk = pem2jwk(pem);
-    return jwk;
+    return { keys: [{ ...jwk, kid: '1' }] };
   }
 }

@@ -10,8 +10,7 @@ app = Flask(__name__)
 @app.route('/users/me')
 def me():
     user = {}
-    user['id'] = request.headers['X-User-Id']
-    user['email'] = request.headers['X-Email']
+    user['login'] = request.headers['X-Login']
     user['first_name'] = request.headers['X-First-Name']
     user['last_name'] = request.headers['X-Last-Name']
     return user
