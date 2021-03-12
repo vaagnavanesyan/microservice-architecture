@@ -1,9 +1,0 @@
-apiVersion: getambassador.io/v2
-kind:  Mapping
-metadata:
-  name:  simple-app-mapping
-spec:
-  prefix: /users/me
-  host: arch.homework
-  service: simple-app:9000
-  rewrite: ""

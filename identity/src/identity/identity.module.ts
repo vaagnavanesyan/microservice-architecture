@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as jose from 'node-jose';
-import { AuthController, HealthController, UserController } from './controllers';
+import { AuthController, HealthController, UsersController } from './controllers';
 import { UserRepository } from './repositories';
 import { AuthService, JwtStrategy } from './services';
 import { metrics } from './services/metrics.provider';
@@ -22,7 +22,7 @@ import { metrics } from './services/metrics.provider';
     TypeOrmModule.forFeature([UserRepository]),
   ],
   providers: [...metrics, AuthService, JwtStrategy],
-  controllers: [HealthController, UserController, AuthController],
+  controllers: [HealthController, UsersController, AuthController],
   exports: [JwtStrategy, PassportModule],
 })
 export class IdentityModule {}

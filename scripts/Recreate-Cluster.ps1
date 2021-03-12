@@ -18,6 +18,5 @@ kubectl config set-context --current --namespace=otus
 
 Write-Host 🐧 Installing Ambassador...
 helm install aes datawire/ambassador -f $(Join-Path -Path $PSScriptRoot -ChildPath "../api-gateway/values.yaml") -n otus
-kubectl apply -f $(Join-Path -Path $PSScriptRoot -ChildPath "../api-gateway/ambassador") -n otus
 Write-Host Adding minikube ip to local hosts...
 Invoke-Expression $(Join-Path -Path $PSScriptRoot -ChildPath "Update-Hosts.ps1")

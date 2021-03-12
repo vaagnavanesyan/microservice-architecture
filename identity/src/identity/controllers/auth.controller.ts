@@ -13,6 +13,7 @@ export class AuthController {
 
   @Post('/signin')
   async signIn(@Body(ValidationPipe) dto: SignInDto): Promise<{ accessToken: string }> {
+    console.log(123);
     return this.authService.signIn(dto);
   }
 
