@@ -5,6 +5,6 @@ metadata:
 spec:
   rules:
   - host: "*"
-    path: "/api/users/*"
+    path: "/otusapp/vaagn/api/users/*"
     filters:
     - name: "facesystems-jwt-filter"
