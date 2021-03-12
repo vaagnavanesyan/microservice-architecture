@@ -4,5 +4,6 @@ metadata:
   name:  identity-mapping
 spec:
   prefix: /api/auth
+  host: arch.homework
   service: identity:8000
   rewrite: ""

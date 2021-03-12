@@ -4,5 +4,6 @@ metadata:
   name:  simple-app-mapping
 spec:
   prefix: /users/me
+  host: arch.homework
   service: simple-app:9000
   rewrite: ""

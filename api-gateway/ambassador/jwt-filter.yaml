@@ -1,7 +1,7 @@
 apiVersion: getambassador.io/v2
 kind: Filter
 metadata:
-  name: "myapp-jwt-filter"
+  name: "facesystems-jwt-filter"
 spec:
   JWT:
     jwksURI: "http://identity:8000/api/auth/.well-known/jwks.json"

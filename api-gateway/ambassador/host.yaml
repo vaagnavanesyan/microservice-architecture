@@ -1,9 +1,9 @@
 apiVersion: getambassador.io/v2
 kind: Host
 metadata:
-  name: hello-world
+  name: arch-homework
 spec:
-  hostname: hello.world
+  hostname: arch.homework
   acmeProvider:
     authority: none
   requestPolicy:
