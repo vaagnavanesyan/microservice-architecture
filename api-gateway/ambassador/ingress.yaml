@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: face-systems-ingress
   annotations:
-    nginx.ingress.kubernetes.io/app-root: /otusapp/vaagn
+    nginx.ingress.kubernetes.io/app-root: /
 spec:
   rules:
     - host: arch.homework

@@ -3,7 +3,7 @@ kind:  Mapping
 metadata:
   name:  identity-mapping
 spec:
-  prefix: /otusapp/vaagn/api
+  prefix: /api
   host: arch.homework
   service: identity:8000
-  rewrite: "/api"
+  rewrite: ""
