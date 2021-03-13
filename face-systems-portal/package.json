@@ -29,9 +29,6 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
-    "immer": "8.0.1"
-  },
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",
     "@testing-library/react": "11.2.5",
