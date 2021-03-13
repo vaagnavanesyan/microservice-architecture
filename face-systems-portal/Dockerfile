@@ -8,7 +8,7 @@ COPY . .
 RUN yarn build
 
 
-FROM alpine
-WORKDIR /app
-
-COPY --from=builder ./app/build ./build
+FROM steebchen/nginx-spa:stable
+COPY --from=builder ./app/build /app
+EXPOSE 80
+CMD ["nginx"]
