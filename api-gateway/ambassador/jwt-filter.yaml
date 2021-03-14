@@ -4,7 +4,7 @@ metadata:
   name: "facesystems-jwt-filter"
 spec:
   JWT:
-    jwksURI: "http://identity:8000/api/auth/.well-known/jwks.json"
+    jwksURI: "http://identity:8000/auth/.well-known/jwks.json"
     insecureTLS: true
     renegotiateTLS: freelyAsClient
     validAlgorithms:

@@ -3,7 +3,7 @@ kind:  Mapping
 metadata:
   name:  identity-mapping
 spec:
-  prefix: /api
+  prefix: /
   host: arch.homework
   service: identity:8000
   rewrite: ""

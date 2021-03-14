@@ -8,7 +8,9 @@ COPY . .
 RUN yarn build
 
 
-FROM steebchen/nginx-spa:stable
-COPY --from=builder ./app/build /app
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder ./app/build /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]
