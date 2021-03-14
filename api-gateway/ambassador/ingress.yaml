@@ -9,10 +9,18 @@ spec:
     - host: arch.homework
       http:
         paths:
-          - path: /
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: aes-ambassador
                 port:
                   number: 80
+          - path: /portal
+            pathType: Prefix
+            backend:
+              service:
+                name: portal
+                port:
+                  number: 80
+
