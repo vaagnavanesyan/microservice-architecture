@@ -13,6 +13,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GlobalStyle } from '../styles/global-styles';
 import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
+import { SignIn } from './pages/SignIn/Loadable';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -28,6 +29,7 @@ export function App() {
 
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path="/signin" component={SignIn}></Route>
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

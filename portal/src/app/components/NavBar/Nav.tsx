@@ -5,11 +5,11 @@ import styled from 'styled-components/macro';
 export function Nav() {
   return (
     <Wrapper>
-      <Item href="/signin" title="Sign In">
+      <Item href={process.env.PUBLIC_URL + '/signin'} title="Sign In">
         <BsFillPersonFill className="icon" />
         Sign In
       </Item>
-      <Item href="/signup" title="Sign Up">
+      <Item href={process.env.PUBLIC_URL + '/signup'} title="Sign Up">
         <BsFillPersonPlusFill className="icon" />
         Sign Up
       </Item>
