@@ -4,7 +4,10 @@ import styled from 'styled-components/macro';
 export function Masthead() {
   return (
     <Wrapper>
-      <Image src={process.env.PUBLIC_URL + '/facialrecognition.png'} alt="" />
+      <Image
+        src={process.env.PUBLIC_URL + '/facialrecognition.jpg'}
+        alt="Logo"
+      />
     </Wrapper>
   );
 }
