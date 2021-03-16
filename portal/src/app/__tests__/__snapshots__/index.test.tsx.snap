@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<App /> should render and match the snapshot 1`] = `
-<BrowserRouter>
+<BrowserRouter
+  basename=""
+>
   <Helmet
-    defaultTitle="React Boilerplate"
+    defaultTitle="Face Systems"
     defer={true}
     encodeSpecialCharacters={true}
     htmlAttributes={
@@ -11,10 +13,10 @@ exports[`<App /> should render and match the snapshot 1`] = `
         "lang": "en-US",
       }
     }
-    titleTemplate="%s - React Boilerplate"
+    titleTemplate="%s - Face Systems"
   >
     <meta
-      content="A React Boilerplate application"
+      content="Face Systems Portal"
       name="description"
     />
   </Helmet>
@@ -23,6 +25,10 @@ exports[`<App /> should render and match the snapshot 1`] = `
       component={[Function]}
       exact={true}
       path="/"
+    />
+    <Route
+      component={[Function]}
+      path="/signin"
     />
     <Route
       component={[Function]}
