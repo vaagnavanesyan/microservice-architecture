@@ -1,4 +1,11 @@
 {
+  "files.exclude": {
+    "**/node_modules/": true,
+    "**/dist/": true,
+    "**/client/": true,
+    "**/coverage/": true,
+    "**/yarn-error.log": true
+  },
   "typescript.tsdk": "node_modules/typescript/lib",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
