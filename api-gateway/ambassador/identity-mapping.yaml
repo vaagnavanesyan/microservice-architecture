@@ -1,9 +1,8 @@
 apiVersion: getambassador.io/v2
-kind:  Mapping
+kind: Mapping
 metadata:
-  name:  identity-mapping
+  name: identity-mapping
 spec:
-  prefix: /
+  prefix: /api/
   host: arch.homework
   service: identity:8000
-  rewrite: ""

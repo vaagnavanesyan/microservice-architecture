@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://arch.homework",
-  "homepage": "http://arch.homework/portal",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

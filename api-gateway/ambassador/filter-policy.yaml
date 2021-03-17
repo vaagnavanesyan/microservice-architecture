@@ -4,7 +4,7 @@ metadata:
   name: "facesystems-filter-policy"
 spec:
   rules:
-  - host: "*"
-    path: "/users/*"
-    filters:
-    - name: "facesystems-jwt-filter"
+    - host: "*"
+      path: "/api/users/*"
+      filters:
+        - name: "facesystems-jwt-filter"
