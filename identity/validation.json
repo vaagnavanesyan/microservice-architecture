@@ -1,236 +1,338 @@
 {
-	"info": {
-	  "_postman_id": "c55f0238-c309-476f-8e92-10fc1a971e60",
-	  "name": "Software Architect",
-	  "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-	  {
-		"name": "GET /",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [
-				"pm.test(\"Address is available\", () => {\r",
-				"    pm.response.to.have.status(200)\r",
-				"})\r",
-				"\r",
-				"pm.test(\"GREETING is set\", function () {\r",
-				"    let text = pm.response.text();\r",
-				"    pm.expect(text).to.eql('Hello from ConfigMap!');\r",
-				"});"
-			  ],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"request": {
-		  "method": "GET",
-		  "header": [],
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "GET /api/health",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [
-				"pm.test(\"Address is available\", () => {\r",
-				"    pm.response.to.have.status(200)\r",
-				"})\r",
-				"pm.test(\"Status is ok\", function () {\r",
-				"    let jsonData = pm.response.json();\r",
-				"    pm.expect(jsonData.status).to.eql('ok');\r",
-				"});"
-			  ],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"request": {
-		  "method": "GET",
-		  "header": [],
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/api/health",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "health"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "POST /user",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [
-				"pm.test(\"Status is correct\", () => {\r",
-				"    pm.response.to.have.status(201)\r",
-				"})\r",
-				"pm.test(\"User is created\", function () {\r",
-				"    let json = pm.response.json();\r",
-				"    pm.expect(json.isActive).to.eql(true);\r",
-				"});"
-			  ],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"request": {
-		  "method": "POST",
-		  "header": [],
-		  "body": {
-			"mode": "raw",
-			"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\"\r\n}",
-			"options": {
-			  "raw": {
-				"language": "json"
-			  }
-			}
-		  },
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/user",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "user"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "GET /user",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [
-				"pm.test(\"Status is correct\", () => {\r",
-				"    pm.response.to.have.status(200)\r",
-				"});"
-			  ],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"protocolProfileBehavior": {
-		  "disableBodyPruning": true
-		},
-		"request": {
-		  "method": "GET",
-		  "header": [],
-		  "body": {
-			"mode": "raw",
-			"raw": "",
-			"options": {
-			  "raw": {
-				"language": "json"
-			  }
-			}
-		  },
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/user/1",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "user", "1"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "PUT /user/:id",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [""],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"request": {
-		  "method": "PUT",
-		  "header": [],
-		  "body": {
-			"mode": "raw",
-			"raw": "{\r\n    \"firstName\": \"Test\",\r\n    \"lastName\": \"User\"\r\n}",
-			"options": {
-			  "raw": {
-				"language": "json"
-			  }
-			}
-		  },
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/user/1",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "user", "1"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "DELETE/user/:id",
-		"event": [
-		  {
-			"listen": "test",
-			"script": {
-			  "exec": [""],
-			  "type": "text/javascript"
-			}
-		  }
-		],
-		"request": {
-		  "method": "DELETE",
-		  "header": [],
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/user/1",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "user", "1"]
-		  }
-		},
-		"response": []
-	  },
-	  {
-		"name": "/api/health/makeError",
-		"request": {
-		  "method": "GET",
-		  "header": [],
-		  "url": {
-			"raw": "http://arch.homework/otusapp/vaagn/api/health/setCode/500",
-			"protocol": "http",
-			"host": ["arch", "homework"],
-			"path": ["otusapp", "vaagn", "health", "setCode", "500"]
-		  }
-		},
-		"response": []
-	  }
-	],
-	"event": [
-	  {
-		"listen": "prerequest",
-		"script": {
-		  "type": "text/javascript",
-		  "exec": [""]
-		}
-	  },
-	  {
-		"listen": "test",
-		"script": {
-		  "type": "text/javascript",
-		  "exec": [""]
-		}
-	  }
-	]
-  }
+  "info": {
+    "_postman_id": "c55f0238-c309-476f-8e92-10fc1a971e60",
+    "name": "Microservice Architecture",
+    "description": "Коллекция запросов по курсу Otus Microservice Architecture",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "00 Наличие JWKS",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Key with id 1 is present\", function () {\r",
+              "    const jsonData = pm.response.json();\r",
+              "    const keyIsPresent = jsonData.keys.some(e => e.kid === \"1\");\r",
+              "    pm.expect(keyIsPresent).to.eql(true);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://arch.homework/api/auth/.well-known/jwks.json",
+          "protocol": "http",
+          "host": ["arch", "homework"],
+          "path": ["api", "auth", ".well-known", "jwks.json"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "01 Регистрация",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'));\r",
+              "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));\r",
+              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["pm.test(\"Status code is 201\", function () {\r", "    pm.response.to.have.status(201);\r", "});"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"login\": \"{{login}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signup",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02 Вход",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["var responseJSON = JSON.parse(responseBody)\r", "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"login\": \"{{login}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "03 Просмотр данных о текущем пользователе",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"))\r",
+              "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
+              "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 Просмотр данных анонимно",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 401\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response.message is 'no Bearer token'\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.message).to.eql(\"no Bearer token\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "04 Изменение данных текущего пользователя",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["var responseJSON = JSON.parse(responseBody)\r", "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "05 Просмотр обновленных данных",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"))\r",
+              "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
+              "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{accessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/users/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", "me"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "login",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    }
+  ]
+}

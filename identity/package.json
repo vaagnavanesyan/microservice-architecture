@@ -21,7 +21,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "test-rest": "newman run validation.json"
+    "test-rest": "newman run --env-var \"baseUrl=http://arch.homework/api\" validation.json"
   },
   "dependencies": {
     "@drdgvhbh/postgres-error-codes": "^0.0.6",
