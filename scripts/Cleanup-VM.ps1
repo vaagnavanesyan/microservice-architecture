@@ -1,0 +1,1 @@
+minikube ssh -- docker container prune --force && docker image prune --force
