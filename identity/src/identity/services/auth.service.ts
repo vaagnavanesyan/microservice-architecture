@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { classToPlain, plainToClass } from 'class-transformer';
 import { SignInDto, SignUpDto } from '../dto';
 import { UserRepository } from '../repositories';
 import { JwtPayload } from '../types';
@@ -23,7 +24,7 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const payload: JwtPayload = { firstName: user.firstName, lastName: user.lastName, login: user.login };
+    const payload = classToPlain(plainToClass(JwtPayload, user, { excludeExtraneousValues: true }));
     const accessToken = this.jwtService.sign(payload, { keyid: '1' });
     return { accessToken };
   }

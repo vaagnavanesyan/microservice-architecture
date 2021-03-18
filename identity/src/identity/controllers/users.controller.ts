@@ -2,6 +2,7 @@ import { Body, Controller, Get, Put, UseGuards, UseInterceptors } from '@nestjs/
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
+import { classToPlain, plainToClass } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { User } from '../entities';
 import { MetricsInterceptor } from '../interceptors';
@@ -21,15 +22,15 @@ export class UsersController {
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   getMe(@GetUser() user: User) {
-    const { login, firstName, lastName } = user;
-    return { login, firstName, lastName };
+    return plainToClass(JwtPayload, user, { excludeExtraneousValues: true });
   }
 
   @Put('me')
   @UseGuards(AuthGuard('jwt'))
   async update(@GetUser() user: User, @Body() fields: UserModel): Promise<{ accessToken: string }> {
     await this.usersRepository.update(user.id, fields);
-    const payload: JwtPayload = { firstName: user.firstName, lastName: user.lastName, login: user.login };
+    const payload = classToPlain(plainToClass(JwtPayload, user, { excludeExtraneousValues: true }));
+
     const accessToken = this.jwtService.sign(payload, { keyid: '1' });
     return { accessToken };
   }
