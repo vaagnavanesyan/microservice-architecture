@@ -1,11 +1,12 @@
-import { Body, Controller, Get, Put, Req, UnauthorizedException, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards, UseInterceptors } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 import { Repository } from 'typeorm';
 import { User } from '../entities';
 import { MetricsInterceptor } from '../interceptors';
 import { UserModel } from '../models';
+import { GetUser } from '../services/user-decorator';
 import { JwtPayload } from '../types';
 
 @Controller('users')
@@ -18,23 +19,16 @@ export class UsersController {
   ) {}
 
   @Get('me')
-  getMe(@Req() request: Request) {
-    return {
-      login: request.header('X-Login'),
-      firstName: request.header('X-First-Name'),
-      lastName: request.header('X-Last-Name'),
-    };
+  @UseGuards(AuthGuard('jwt'))
+  getMe(@GetUser() user: User) {
+    const { login, firstName, lastName } = user;
+    return { login, firstName, lastName };
   }
 
   @Put('me')
-  async update(@Req() request, @Body() fields: UserModel): Promise<{ accessToken: string }> {
-    const login = request.header('X-Login');
-    let user = await this.usersRepository.findOne({ where: { login } });
-    if (!user) {
-      throw new UnauthorizedException();
-    }
+  @UseGuards(AuthGuard('jwt'))
+  async update(@GetUser() user: User, @Body() fields: UserModel): Promise<{ accessToken: string }> {
     await this.usersRepository.update(user.id, fields);
-    user = await this.usersRepository.findOne(user.id);
     const payload: JwtPayload = { firstName: user.firstName, lastName: user.lastName, login: user.login };
     const accessToken = this.jwtService.sign(payload, { keyid: '1' });
     return { accessToken };

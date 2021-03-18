@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
-
+    // Can be retrieved via AuthGuard
     return user;
   }
 }
