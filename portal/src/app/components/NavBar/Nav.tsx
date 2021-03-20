@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { BsFillPersonFill, BsFillPersonPlusFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 export function Nav() {
   return (
     <Wrapper>
-      <Item href={process.env.PUBLIC_URL + '/signin'} title="Sign In">
+      <Item to={process.env.PUBLIC_URL + '/signin'}>
         <BsFillPersonFill className="icon" />
         Sign In
       </Item>
-      <Item href={process.env.PUBLIC_URL + '/signup'} title="Sign Up">
+      <Item to={process.env.PUBLIC_URL + '/signin'}>
         <BsFillPersonPlusFill className="icon" />
         Sign Up
       </Item>
@@ -22,7 +23,7 @@ const Wrapper = styled.nav`
   margin-right: -1rem;
 `;
 
-const Item = styled.a`
+const Item = styled(Link)`
   color: ${p => p.theme.primary};
   cursor: pointer;
   text-decoration: none;

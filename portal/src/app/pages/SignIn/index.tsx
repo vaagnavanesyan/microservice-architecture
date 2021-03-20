@@ -1,5 +1,4 @@
 import { FormLabel } from 'app/components/FormLabel';
-import { NavBar } from 'app/components/NavBar';
 import { PageWrapper } from 'app/components/PageWrapper';
 import React, { SyntheticEvent, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -26,7 +25,6 @@ export function SignIn() {
         <title>Sign in</title>
         <meta name="description" content="FaceSystems Portal Sign In Page" />
       </Helmet>
-      <NavBar />
       <PageWrapper>
         <form onSubmit={handleSubmit}>
           <FormLabel htmlFor="login">Login: </FormLabel>

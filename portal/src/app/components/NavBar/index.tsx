@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { Logo } from './Logo';
 import { StyleConstants } from 'styles/StyleConstants';
-import { Nav } from './Nav';
 import { PageWrapper } from '../PageWrapper';
+import { Logo } from './Logo';
+import { Nav } from './Nav';
 
 export function NavBar() {
   return (

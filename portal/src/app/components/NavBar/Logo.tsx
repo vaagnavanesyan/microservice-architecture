@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 export function Logo() {
   return (
     <Wrapper>
-      <Item href={process.env.PUBLIC_URL} title="Home">
+      <Item to={process.env.PUBLIC_URL} title="Home">
         <Title>FaceSystems</Title>
       </Item>
       <Description>Face recognition solution</Description>
@@ -12,7 +13,7 @@ export function Logo() {
   );
 }
 
-const Item = styled.a`
+const Item = styled(Link)`
   color: ${p => p.theme.primary};
   cursor: pointer;
   text-decoration: none;

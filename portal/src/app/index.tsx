@@ -11,6 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GlobalStyle } from '../styles/global-styles';
+import { NavBar } from './components/NavBar';
 import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './pages/NotFoundPage/Loadable';
 import { SignIn } from './pages/SignIn/Loadable';
@@ -26,7 +27,7 @@ export function App() {
       >
         <meta name="description" content="Face Systems Portal" />
       </Helmet>
-
+        <NavBar />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/signin" component={SignIn}></Route>
