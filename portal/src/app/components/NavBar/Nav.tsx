@@ -1,19 +1,34 @@
 import * as React from 'react';
-import { BsFillPersonFill, BsFillPersonPlusFill } from 'react-icons/bs';
+import {
+  BsBriefcase,
+  BsFillPersonFill,
+  BsFillPersonPlusFill,
+} from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { isAuthorized } from 'utils/api-request';
 
 export function Nav() {
+  const isSignedIn = isAuthorized();
   return (
     <Wrapper>
-      <Item to={process.env.PUBLIC_URL + '/signin'}>
-        <BsFillPersonFill className="icon" />
-        Sign In
-      </Item>
-      <Item to={process.env.PUBLIC_URL + '/signin'}>
-        <BsFillPersonPlusFill className="icon" />
-        Sign Up
-      </Item>
+      {isSignedIn ? (
+        <Item to={process.env.PUBLIC_URL + '/profile'}>
+          <BsBriefcase className="icon" />
+          Profile
+        </Item>
+      ) : (
+        <>
+          <Item to={process.env.PUBLIC_URL + '/signin'}>
+            <BsFillPersonFill className="icon" />
+            Sign In
+          </Item>
+          <Item to={process.env.PUBLIC_URL + '/signin'}>
+            <BsFillPersonPlusFill className="icon" />
+            Sign Up
+          </Item>
+        </>
+      )}
     </Wrapper>
   );
 }
