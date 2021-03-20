@@ -2,21 +2,19 @@ import { FormLabel } from 'app/components/FormLabel';
 import { PageWrapper } from 'app/components/PageWrapper';
 import React, { SyntheticEvent, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useHistory } from 'react-router-dom';
+import { signIn } from 'utils/api-request';
 export function SignIn() {
+  const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    console.log(login, password);
-    fetch('/api/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ login, password }),
-    })
-      .then(r => r.json())
-      .then(console.log);
+    signIn(login, password).then(accessToken => {
+      if (accessToken) {
+        history.push('/profile');
+      }
+    });
   };
 
   return (
@@ -51,5 +49,3 @@ export function SignIn() {
     </>
   );
 }
-
-// const Form = styled.form``
