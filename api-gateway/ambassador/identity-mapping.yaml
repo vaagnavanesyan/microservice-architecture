@@ -3,6 +3,10 @@ kind: Mapping
 metadata:
   name: identity-mapping
 spec:
-  prefix: /api/
+  prefix: "/api/(health|metrics|auth|users).*"
+  prefix_regex: true
   host: arch.homework
   service: identity:8000
+  regex_rewrite:
+    pattern: "/api/(health|metrics|auth|users)"
+    substitution: '/\1'
