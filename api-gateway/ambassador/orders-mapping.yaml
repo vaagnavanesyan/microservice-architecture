@@ -1,0 +1,8 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: orders-mapping
+spec:
+  prefix: "/api/orders/"
+  host: arch.homework
+  service: orders:8000

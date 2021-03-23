@@ -1,0 +1,26 @@
+replicaCount: 1
+
+secretName: orders-secret
+image: vaagn/face-systems-orders
+livenessProbe: /api/health
+
+servicePort: 8000
+
+postgresql:
+  enabled: true
+  postgresqlUsername: nestjs-user
+  postgresqlDatabase: orders-db
+  postgresqlPassword: dev-password
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  service:
+    type: NodePort
+    nodePort: 30001
+    port: "5432"
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
