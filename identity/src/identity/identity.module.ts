@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as jose from 'node-jose';
@@ -10,15 +11,24 @@ import { metrics } from './services/metrics.provider';
 
 @Module({
   imports: [
+    ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      privateKey: jose.util.base64url.decode(process.env.PRIVATE_KEY).toString('utf-8'),
-      publicKey: jose.util.base64url.decode(process.env.PUBLIC_KEY).toString('utf-8'),
-      signOptions: {
-        expiresIn: 3600,
-        algorithm: 'RS256',
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        const options: JwtModuleOptions = {
+          privateKey: jose.util.base64url.decode(configService.get('PRIVATE_KEY')).toString('utf-8'),
+          publicKey: jose.util.base64url.decode(configService.get('PUBLIC_KEY')).toString('utf-8'),
+          signOptions: {
+            expiresIn: 3600,
+            algorithm: 'RS256',
+          },
+        };
+        return options;
       },
+      inject: [ConfigService],
     }),
+
     TypeOrmModule.forFeature([UserRepository]),
   ],
   providers: [...metrics, AuthService, JwtStrategy],
