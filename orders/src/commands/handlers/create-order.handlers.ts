@@ -1,23 +1,25 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { UserRepository } from '../../repositories/user.repository';
+import { getRepository } from 'typeorm';
+import { User } from '../../entities/user.entity';
+import { OrderModel } from '../../models/order.model';
+import { OrderRepository } from '../../repositories/order.repository';
 import { CreateOrderCommand } from '../impl/create-order.command';
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   constructor(
-    private readonly repository: UserRepository,
+    private readonly orderRepository: OrderRepository,
     private readonly publisher: EventPublisher,
   ) {}
 
-  async execute(command: CreateOrderCommand) {
-    console.log('CreateOrderCommand...');
-    console.log(command);
-
-    const { userId, orderId, orderDate } = command;
-    const user = this.publisher.mergeObjectContext(
-      await this.repository.findOneById(+userId),
+  async execute({ ownerId }: CreateOrderCommand) {
+    const user = await getRepository(User).findOne(ownerId);
+    const order = await this.orderRepository.createOrder(user);
+    const orderModel = this.publisher.mergeObjectContext(
+      new OrderModel(order.id),
     );
-    user.createOrder(orderId, orderDate);
-    user.commit();
+
+    orderModel.createOrder(order.owner.id, order.createdAt);
+    orderModel.commit();
   }
 }

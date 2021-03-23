@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { CommandHandlers } from './commands/handlers';
 import { EventHandlers } from './events/handlers';
-import { UserRepository } from './repositories/user.repository';
+import { OrderRepository } from './repositories/order.repository';
 
 @Module({
   imports: [
@@ -14,8 +14,8 @@ import { UserRepository } from './repositories/user.repository';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'sqlite',
-        database: configService.get('DATABASE_URI'),
+        type: 'postgres',
+        url: configService.get('DATABASE_URI'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
@@ -23,6 +23,6 @@ import { UserRepository } from './repositories/user.repository';
     }),
   ],
   controllers: [AppController],
-  providers: [UserRepository, ...CommandHandlers, ...EventHandlers],
+  providers: [OrderRepository, ...CommandHandlers, ...EventHandlers],
 })
 export class AppModule {}
