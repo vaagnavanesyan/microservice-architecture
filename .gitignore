@@ -1,1 +1,3 @@
 ﻿**/*/helm-chart/charts
+**/*/.env
+**/*/*.db
