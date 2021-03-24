@@ -12,8 +12,8 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
     private readonly publisher: EventPublisher,
   ) {}
 
-  async execute({ ownerId }: CreateOrderCommand) {
-    const user = await getRepository(User).findOne(ownerId);
+  async execute({ payload }: CreateOrderCommand) {
+    const user = await getRepository(User).findOne(payload.ownerId);
     const order = await this.orderRepository.createOrder(user);
     const orderModel = this.publisher.mergeObjectContext(
       new OrderModel(order.id),

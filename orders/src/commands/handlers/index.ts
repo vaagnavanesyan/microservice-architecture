@@ -1,3 +1,3 @@
-import { CreateOrderHandler } from './create-order.handlers';
+import { CreateOrderHandler } from './create-order.handler';
 
 export const CommandHandlers = [CreateOrderHandler];

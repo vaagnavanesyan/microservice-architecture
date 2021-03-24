@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateOrderCommand } from './commands/impl/create-order.command';
-import { CreateOrderDto } from './interfaces/create-order-dto';
+import { CreateOrderPayload } from './interfaces/create-order-payload';
 
 @Controller()
 export class AppController {
@@ -11,7 +11,7 @@ export class AppController {
   ) {}
 
   @Post('create')
-  async createOrder(@Body() { ownerId }: CreateOrderDto) {
-    return this.commandBus.execute(new CreateOrderCommand(ownerId));
+  async createOrder(@Body() dto: CreateOrderPayload) {
+    return this.commandBus.execute(new CreateOrderCommand(dto));
   }
 }
