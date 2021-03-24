@@ -8,12 +8,12 @@ import { OrderCreatedEvent } from '../impl/order-created.event';
 @EventsHandler(OrderCreatedEvent)
 export class OrderCreatedEventHandler
   implements IEventHandler<OrderCreatedEvent> {
-  async handle(event: OrderCreatedEvent) {
+  async handle({ payload }: OrderCreatedEvent) {
     console.log('OrderCreatedEvent...');
     const repo = getRepository(Event);
     const record = repo.create({
       eventType: nameof(OrderCreatedEvent),
-      Json: JSON.stringify(event),
+      Json: JSON.stringify(payload),
     });
     await record.save();
   }

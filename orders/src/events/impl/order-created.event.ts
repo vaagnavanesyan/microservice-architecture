@@ -1,7 +1,5 @@
+import { OrderCreatedPayload } from 'src/interfaces/order-created-payload';
+
 export class OrderCreatedEvent {
-  constructor(
-    public readonly orderId: number,
-    public readonly ownerId: number,
-    public readonly orderDate: Date,
-  ) {}
+  constructor(public readonly payload: OrderCreatedPayload) {}
 }

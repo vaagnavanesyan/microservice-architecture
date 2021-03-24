@@ -7,6 +7,6 @@ export class OrderModel extends AggregateRoot {
   }
 
   createOrder(ownerId: number, orderDate: Date) {
-    this.apply(new OrderCreatedEvent(this.id, ownerId, orderDate));
+    this.apply(new OrderCreatedEvent({ orderId: this.id, ownerId, orderDate }));
   }
 }
