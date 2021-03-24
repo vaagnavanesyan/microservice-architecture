@@ -8,3 +8,7 @@ spec:
       path: "/api/users/*"
       filters:
         - name: "facesystems-jwt-filter"
+    - host: "*"
+      path: "/api/orders/*"
+      filters:
+        - name: "facesystems-jwt-filter"
