@@ -1,0 +1,14 @@
+---
+to: src/events/handlers/<%= name %>.handler.ts
+---
+import { NotImplementedException } from '@nestjs/common';
+import { IEventHandler } from '@nestjs/cqrs';
+import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
+import { <%= h.changeCase.pascal(name) %>Event } from '../impl/<%= name %>.event';
+
+@EventsHandler(<%= h.changeCase.pascal(name) %>Event)
+export class <%= h.changeCase.pascal(name) %>Handler implements IEventHandler<<%= h.changeCase.pascal(name) %>Event> {
+  async handle({ payload }: <%= h.changeCase.pascal(name) %>Event) {
+    throw new NotImplementedException();
+  }
+}

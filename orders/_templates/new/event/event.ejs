@@ -1,8 +1,7 @@
 ---
-to: src/commands/impl/<%= name %>.command.ts
+to: src/events/impl/<%= name %>.event.ts
 ---
 import { <%= h.changeCase.pascal(name)%>Payload } from '../../interfaces/<%= name %>.payload';
-
-export class <%= h.changeCase.pascal(name) %>Command {
+export class <%= h.changeCase.pascal(name) %>Event {
   constructor(public readonly payload: <%= h.changeCase.pascal(name)%>Payload) {}
 }
