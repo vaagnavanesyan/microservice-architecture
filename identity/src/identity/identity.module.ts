@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as jose from 'node-jose';
+import { Queues } from './constants';
 import { AuthController, HealthController, UsersController } from './controllers';
 import { UserRepository } from './repositories';
 import { AuthService, JwtStrategy } from './services';
@@ -13,6 +15,7 @@ import { metrics } from './services/metrics.provider';
 @Module({
   imports: [
     ConfigModule,
+    CqrsModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -32,7 +35,7 @@ import { metrics } from './services/metrics.provider';
     ClientsModule.registerAsync([
       {
         imports: [ConfigModule],
-        name: 'HELLO_SERVICE',
+        name: Queues.UsersQueue,
         useFactory: async (configService: ConfigService) => {
           return {
             transport: Transport.RMQ,
