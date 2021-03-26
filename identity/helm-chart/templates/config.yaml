@@ -5,6 +5,8 @@ metadata:
 data:
   PRIVATE_KEY: {{ .Values.privateKey | b64enc | quote }}
   PUBLIC_KEY: {{ .Values.publicKey | b64enc | quote }}
+  RABBITMQ_USERS_QUEUE: {{ .Values.rabbitmqUsersQueue }}
+  RABBITMQ_URI: {{ .Values.rabbitmqUri }}
 ---
 apiVersion: v1
 kind: Secret

@@ -69,3 +69,6 @@ metrics:
   enabled: true
   serviceMonitor:
     enabled: true
+
+rabbitmqUsersQueue: users_queue
+rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
