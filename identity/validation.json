@@ -7,294 +7,308 @@
   },
   "item": [
     {
-      "name": "00 Наличие JWKS",
-      "event": [
+      "name": "[identity]",
+      "item": [
         {
-          "listen": "prerequest",
-          "script": {
-            "exec": [""],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Key with id 1 is present\", function () {\r",
-              "    const jsonData = pm.response.json();\r",
-              "    const keyIsPresent = jsonData.keys.some(e => e.kid === \"1\");\r",
-              "    pm.expect(keyIsPresent).to.eql(true);\r",
-              "});\r",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://arch.homework/api/auth/.well-known/jwks.json",
-          "protocol": "http",
-          "host": ["arch", "homework"],
-          "path": ["api", "auth", ".well-known", "jwks.json"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "01 Регистрация",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.collectionVariables.set(\"login\", pm.variables.replaceIn('{{$randomUserName}}'));\r",
-              "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));\r",
-              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
-              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));\r",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": ["pm.test(\"Status code is 201\", function () {\r", "    pm.response.to.have.status(201);\r", "});"],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"login\": \"{{login}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/auth/signup",
-          "host": ["{{baseUrl}}"],
-          "path": ["auth", "signup"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "02 Вход",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": ["var responseJSON = JSON.parse(responseBody)\r", "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n  \"login\": \"{{login}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/auth/signin",
-          "host": ["{{baseUrl}}"],
-          "path": ["auth", "signin"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "03 Просмотр данных о текущем пользователе",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Payload is correct\", function () {\r",
-              "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"))\r",
-              "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
-              "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
-              "});\r",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
+          "name": "00 Наличие JWKS",
+          "event": [
             {
-              "key": "token",
-              "value": "{{accessToken}}",
-              "type": "string"
-            }
-          ]
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/users/me",
-          "host": ["{{baseUrl}}"],
-          "path": ["users", "me"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "04 Просмотр данных анонимно",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Status code is 401\", function () {\r",
-              "    pm.response.to.have.status(401);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"response.message is 'no Bearer token'\", function () {\r",
-              "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.message).to.eql(\"no Bearer token\");\r",
-              "});\r",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "noauth"
-        },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/users/me",
-          "host": ["{{baseUrl}}"],
-          "path": ["users", "me"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "04 Изменение данных текущего пользователя",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": ["var responseJSON = JSON.parse(responseBody)\r", "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"],
-            "type": "text/javascript"
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
-              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
+              "listen": "prerequest",
+              "script": {
+                "exec": [""],
+                "type": "text/javascript"
+              }
+            },
             {
-              "key": "token",
-              "value": "{{accessToken}}",
-              "type": "string"
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Key with id 1 is present\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    const keyIsPresent = jsonData.keys.some(e => e.kid === \"1\");\r",
+                  "    pm.expect(keyIsPresent).to.eql(true);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
             }
-          ]
-        },
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/.well-known/jwks.json",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", ".well-known", "jwks.json"]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "{{baseUrl}}/users/me",
-          "host": ["{{baseUrl}}"],
-          "path": ["users", "me"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "05 Просмотр обновленных данных",
-      "event": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Status code is 200\", function () {\r",
-              "    pm.response.to.have.status(200);\r",
-              "});\r",
-              "\r",
-              "pm.test(\"Payload is correct\", function () {\r",
-              "    var jsonData = pm.response.json();\r",
-              "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"))\r",
-              "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
-              "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
-              "});\r",
-              ""
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [
+          "name": "01 Регистрация",
+          "event": [
             {
-              "key": "token",
-              "value": "{{accessToken}}",
-              "type": "string"
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'));\r",
+                  "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));\r",
+                  "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+                  "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
             }
-          ]
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "signup"]
+            }
+          },
+          "response": []
         },
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/users/me",
-          "host": ["{{baseUrl}}"],
-          "path": ["users", "me"]
+        {
+          "name": "02 Вход",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var responseJSON = JSON.parse(responseBody)\r",
+                  "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signin",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "signin"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 Просмотр данных о текущем пользователе",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Payload is correct\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"email\"))\r",
+                  "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
+                  "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 Просмотр данных анонимно",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"response.message is 'no Bearer token'\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.eql(\"no Bearer token\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 Изменение данных текущего пользователя",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var responseJSON = JSON.parse(responseBody)\r",
+                  "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+                  "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstName\": \"{{firstName}}\",\r\n    \"lastName\": \"{{lastName}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "05 Просмотр обновленных данных",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Payload is correct\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.login).to.eql(pm.collectionVariables.get(\"login\"))\r",
+                  "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
+                  "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "me"]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
+      ]
     }
   ],
   "event": [
@@ -315,10 +329,6 @@
   ],
   "variable": [
     {
-      "key": "login",
-      "value": ""
-    },
-    {
       "key": "password",
       "value": ""
     },
@@ -332,6 +342,10 @@
     },
     {
       "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "email",
       "value": ""
     }
   ]

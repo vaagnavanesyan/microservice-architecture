@@ -6,11 +6,11 @@ import { useHistory } from 'react-router-dom';
 import { signIn } from 'utils/api-request';
 export function SignIn() {
   const history = useHistory();
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    signIn(login, password).then(accessToken => {
+    signIn(email, password).then(accessToken => {
       if (accessToken) {
         history.push('/profile');
       }
@@ -25,13 +25,13 @@ export function SignIn() {
       </Helmet>
       <PageWrapper>
         <form onSubmit={handleSubmit}>
-          <FormLabel htmlFor="login">Login: </FormLabel>
+          <FormLabel htmlFor="email">Email: </FormLabel>
           <p>
             <input
-              type="text"
-              id="login"
-              value={login}
-              onChange={e => setLogin(e.target.value)}
+              type="email"
+              id="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
             />
           </p>
           <FormLabel htmlFor="password">Password: </FormLabel>

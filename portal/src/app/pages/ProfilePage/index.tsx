@@ -4,13 +4,13 @@ import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { getProfile, updateProfile } from 'utils/api-request';
 const initialState = {
-  login: '',
+  email: '',
   firstName: '',
   lastName: '',
 };
 
 export function Profile() {
-  const [{ login, firstName, lastName }, setProfile] = useState(initialState);
+  const [{ email, firstName, lastName }, setProfile] = useState(initialState);
   useEffect(() => {
     getProfile().then(setProfile);
   }, []);
@@ -21,7 +21,7 @@ export function Profile() {
   return (
     <>
       <Helmet>
-        <title>{login} Profile</title>
+        <title>{email} Profile</title>
         <meta name="description" content="FaceSystems Portal" />
       </Helmet>
       <PageWrapper>
@@ -33,7 +33,7 @@ export function Profile() {
               id="firstName"
               value={firstName}
               onChange={e =>
-                setProfile({ login, lastName, firstName: e.target.value })
+                setProfile({ email, lastName, firstName: e.target.value })
               }
             />
           </p>
@@ -44,7 +44,7 @@ export function Profile() {
               id="lastName"
               value={lastName}
               onChange={e =>
-                setProfile({ login, firstName, lastName: e.target.value })
+                setProfile({ email, firstName, lastName: e.target.value })
               }
             />
           </p>

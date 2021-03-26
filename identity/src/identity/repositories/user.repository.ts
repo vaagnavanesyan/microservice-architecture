@@ -8,9 +8,9 @@ import { User } from '../entities';
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   public async signUp(dto: SignUpDto): Promise<void> {
-    const { login, password, firstName, lastName } = dto;
+    const { email, password, firstName, lastName } = dto;
     const user = new User();
-    user.login = login;
+    user.email = email;
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
     user.firstName = firstName;
@@ -19,15 +19,15 @@ export class UserRepository extends Repository<User> {
       await user.save();
     } catch (error) {
       if (error.code === PG_UNIQUE_VIOLATION) {
-        throw new ConflictException('Login is already taken');
+        throw new ConflictException('E-mail is already taken');
       } else {
         throw new InternalServerErrorException();
       }
     }
   }
 
-  async signIn({ login, password }: SignInDto): Promise<User> {
-    const user = await this.findOne({ login });
+  async signIn({ email, password }: SignInDto): Promise<User> {
+    const user = await this.findOne({ email });
     if (user && user.password === (await this.hashPassword(password, user.salt))) {
       return user;
     }

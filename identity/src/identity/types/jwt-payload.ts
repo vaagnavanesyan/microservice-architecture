@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 
 export class JwtPayload {
-  @Expose() login: string;
+  @Expose() email: string;
   @Expose() firstName: string;
   @Expose() lastName: string;
 }

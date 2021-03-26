@@ -1,14 +1,14 @@
 export interface Profile {
-  login: string;
+  email: string;
   firstName: string;
   lastName: string;
 }
 
-export async function signIn(login: string, password: string): Promise<string> {
+export async function signIn(email: string, password: string): Promise<string> {
   const { accessToken } = await post<{ accessToken: string }>(
     '/api/auth/signin',
     {
-      login,
+      email,
       password,
     },
   );
