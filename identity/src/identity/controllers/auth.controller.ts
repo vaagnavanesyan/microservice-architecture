@@ -22,7 +22,7 @@ export class AuthController {
   async signUp(@Body(ValidationPipe) dto: SignUpDto): Promise<void> {
     await this.authService.signUp(dto);
     const payload = classToPlain(plainToClass(UserCreatedPayload, dto, { excludeExtraneousValues: true }));
-    this.usersQueue.emit(nameof(UserCreatedEvent), new UserCreatedEvent(payload as UserCreatedPayload));
+    this.usersQueue.emit(nameof(UserCreatedEvent), payload);
   }
 
   @Post('/signin')
