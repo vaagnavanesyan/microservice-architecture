@@ -30,6 +30,19 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
                   key: DATABASE_URI
+
+            - name: RABBITMQ_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: RABBITMQ_URI
+
+            - name: RABBITMQ_ORDERS_QUEUE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: RABBITMQ_ORDERS_QUEUE
+
           ports:
             - name: http
               containerPort: 80

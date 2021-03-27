@@ -1,5 +1,6 @@
 replicaCount: 1
 
+configName: orders-config
 secretName: orders-secret
 image: vaagn/face-systems-orders
 livenessProbe: /api/health
@@ -18,9 +19,12 @@ postgresql:
   service:
     type: NodePort
     nodePort: 30001
-    port: "5432"
+    port: '5432'
 
 metrics:
   enabled: false
   serviceMonitor:
     enabled: false
+
+rabbitmqOrdersQueue: orders_queue
+rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
