@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "new": "hygen new",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "build-image": "docker build -t face-systems/identity .",
