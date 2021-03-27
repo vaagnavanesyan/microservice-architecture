@@ -9,6 +9,6 @@ spec:
       filters:
         - name: "facesystems-jwt-filter"
     - host: "*"
-      path: "/api/orders/*"
+      path: "/api/orders*"
       filters:
         - name: "facesystems-jwt-filter"
