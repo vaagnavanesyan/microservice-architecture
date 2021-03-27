@@ -11,6 +11,7 @@ import { Order } from './order.entity';
 export class Image extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
   @Column() fileName: string;
-  @Column() dataHex: string;
+  @Column({ name: 'data', type: 'bytea' })
+  data: Buffer;
   @ManyToOne((_) => Order, (order) => order.images) order: Order;
 }
