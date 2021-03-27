@@ -19,7 +19,7 @@ export class OrderCreatedEventHandler
     const repo = getRepository(Event);
     const record = repo.create({
       eventType: nameof(OrderCreatedEvent),
-      Json: JSON.stringify(payload),
+      json: JSON.stringify(payload),
     });
     await record.save();
     this.ordersQueue.emit(nameof(OrderCreatedEvent), payload);
