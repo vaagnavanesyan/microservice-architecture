@@ -21,5 +21,6 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
 
     orderModel.createOrder(order.owner.id, order.createdAt);
     orderModel.commit();
+    return order.id;
   }
 }

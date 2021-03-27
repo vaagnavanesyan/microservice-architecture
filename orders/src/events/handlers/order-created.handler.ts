@@ -15,7 +15,6 @@ export class OrderCreatedEventHandler
     @Inject(Queues.OrdersQueue) private readonly ordersQueue: ClientProxy,
   ) {}
   async handle({ payload }: OrderCreatedEvent) {
-    console.log('OrderCreatedEvent...');
     const repo = getRepository(Event);
     const record = repo.create({
       eventType: nameof(OrderCreatedEvent),
