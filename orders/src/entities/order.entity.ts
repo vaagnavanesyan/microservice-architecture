@@ -14,5 +14,6 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
   @OneToMany((_) => Image, (image) => image.order) images: Image[];
   @Column() createdAt: Date;
+  @Column() price: number = 0;
   @ManyToOne((_) => User, (user) => user.orders) owner: User;
 }
