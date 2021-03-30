@@ -17,11 +17,18 @@ export class AddImageHandler implements ICommandHandler<AddImageCommand> {
     image.fileName = payload.fileName;
     image.data = payload.content;
 
+    order.price += IMAGE_PRICE;
 
     await getManager().transaction(async (transactionalEntityManager) => {
       await transactionalEntityManager.save(image);
       await transactionalEntityManager.save(order);
     });
 
+    const orderModel = this.publisher.mergeObjectContext(
+      new OrderModel(order.id),
+    );
+
+    orderModel.changeOrderPrice(order.price);
+    orderModel.commit();
   }
 }
