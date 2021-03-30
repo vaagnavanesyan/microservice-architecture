@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: face-systems-ingress
   annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 8m
     nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
