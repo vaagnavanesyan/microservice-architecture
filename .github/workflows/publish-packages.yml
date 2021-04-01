@@ -10,8 +10,6 @@ jobs:
       with:
         node-version: '14.x'
         registry-url: 'https://npm.pkg.github.com'
-        # Defaults to the user or organization that owns the workflow file
-        scope: '@octocat'
     - run: yarn
       working-directory: ./events
     - run: yarn publish
