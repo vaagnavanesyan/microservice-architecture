@@ -2,12 +2,14 @@ import { Inject } from '@nestjs/common';
 import { IEventHandler } from '@nestjs/cqrs';
 import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
 import { ClientProxy } from '@nestjs/microservices';
+import {
+  OrderCreatedEvent,
+  OrderPriceChangedEvent,
+} from '@vaagnavanesyan/events';
 import { Queues } from 'src/constants';
 import { Event } from 'src/entities/event.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
-import { OrderCreatedEvent } from '../impl/order-created.event';
-import { OrderPriceChangedEvent } from '../impl/order-price-changed.event';
 
 @EventsHandler(OrderPriceChangedEvent)
 export class OrderPriceChangedHandler

@@ -1,6 +1,8 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { OrderPriceChangedEvent } from 'src/events/impl/order-price-changed.event';
-import { OrderCreatedEvent } from '../events/impl/order-created.event';
+import {
+  OrderCreatedEvent,
+  OrderPriceChangedEvent,
+} from '@vaagnavanesyan/events';
 
 export class OrderModel extends AggregateRoot {
   constructor(private readonly id: number) {
