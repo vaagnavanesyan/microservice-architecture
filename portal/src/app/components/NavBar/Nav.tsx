@@ -1,34 +1,61 @@
-import * as React from 'react';
-import {
-  BsBriefcase,
-  BsFillPersonFill,
-  BsFillPersonPlusFill,
-} from 'react-icons/bs';
+import Dropdown from 'rc-dropdown';
+import React, { useEffect, useState } from 'react';
+import { BiExit, BiUser, BiUserPlus } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { isAuthorized } from 'utils/api-request';
+import { getProfile, isAuthorized, signOut } from 'utils/api-request';
+const initialState = {
+  email: '',
+};
 
 export function Nav() {
+  const [{ email }, setProfile] = useState(initialState);
+  useEffect(() => {
+    getProfile().then(setProfile);
+  }, []);
   const isSignedIn = isAuthorized();
+
+  const handleSignOut = () => {
+    signOut();
+    window.location.reload();
+  };
+  const userMenu = (
+    <>
+      <Item to={process.env.PUBLIC_URL + '/profile'}>
+        <BiUser className="icon" />
+        Profile
+      </Item>
+      <Item to="#" onClick={handleSignOut}>
+        <BiExit className="icon" />
+        Sign Out
+      </Item>
+    </>
+  );
+  const guestMenu = (
+    <>
+      <Item to={process.env.PUBLIC_URL + '/signin'}>
+        <BiUser className="icon" />
+        Sign In
+      </Item>
+      <Item to={process.env.PUBLIC_URL + '/signup'}>
+        <BiUserPlus className="icon" />
+        Sign Up
+      </Item>
+    </>
+  );
+
   return (
     <Wrapper>
-      {isSignedIn ? (
-        <Item to={process.env.PUBLIC_URL + '/profile'}>
-          <BsBriefcase className="icon" />
-          Profile
+      <Dropdown
+        trigger={['click']}
+        animation="slide-up"
+        overlay={isSignedIn ? userMenu : guestMenu}
+      >
+        <Item to="#">
+          <BiUser className="icon" />
+          {isSignedIn ? email : 'Profile'}
         </Item>
-      ) : (
-        <>
-          <Item to={process.env.PUBLIC_URL + '/signin'}>
-            <BsFillPersonFill className="icon" />
-            Sign In
-          </Item>
-          <Item to={process.env.PUBLIC_URL + '/signin'}>
-            <BsFillPersonPlusFill className="icon" />
-            Sign Up
-          </Item>
-        </>
-      )}
+      </Dropdown>
     </Wrapper>
   );
 }

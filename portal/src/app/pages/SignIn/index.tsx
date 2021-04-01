@@ -2,17 +2,15 @@ import { FormLabel } from 'app/components/FormLabel';
 import { PageWrapper } from 'app/components/PageWrapper';
 import React, { SyntheticEvent, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useHistory } from 'react-router-dom';
 import { signIn } from 'utils/api-request';
 export function SignIn() {
-  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
     signIn(email, password).then(accessToken => {
       if (accessToken) {
-        history.push('/profile');
+        window.location.href = '/profile';
       }
     });
   };

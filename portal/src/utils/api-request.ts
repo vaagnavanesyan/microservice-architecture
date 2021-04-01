@@ -1,3 +1,4 @@
+const tokenStorageKey = 'accessToken';
 export interface Profile {
   email: string;
   firstName: string;
@@ -13,7 +14,7 @@ export async function signIn(email: string, password: string): Promise<string> {
     },
   );
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem(tokenStorageKey, accessToken);
   }
   return accessToken;
 }
@@ -40,12 +41,16 @@ export async function updateProfile(
   }).then(e => e.json());
   if (accessToken) {
     console.log('Token was updated');
-    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem(tokenStorageKey, accessToken);
   }
 }
 
 export function isAuthorized(): boolean {
   return getToken() !== '';
+}
+
+export function signOut() {
+  localStorage.removeItem(tokenStorageKey);
 }
 
 function getToken(): string {
