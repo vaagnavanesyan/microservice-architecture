@@ -1,11 +1,11 @@
 import { Repository } from 'typeorm';
-import { Order, User } from '../entities';
+import { Order } from '../entities';
 
 export class OrderRepository extends Repository<Order> {
-  async createOrder(owner: User): Promise<Order> {
+  async createOrder(ownerId: number): Promise<Order> {
     const order = new Order();
     order.createdAt = new Date();
-    order.owner = owner;
+    order.ownerId = ownerId;
     return order.save();
   }
 }

@@ -17,8 +17,10 @@ spec:
     injectRequestHeaders:
     - name: "X-Token-String"
       value: "{{ .token.Raw }}"
-    - name: "X-Login"
-      value: "{{ .token.Claims.login }}"
+    - name: "X-Email"
+      value: "{{ .token.Claims.email }}"
+    - name: "X-UserId"
+      value: "{{ .token.Claims.id }}"
     - name: "X-Last-Name"
       value: "{{ .token.Claims.lastName }}"
     - name: "X-First-Name"

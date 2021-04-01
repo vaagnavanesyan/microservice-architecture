@@ -1,6 +1,4 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { getRepository } from 'typeorm';
-import { User } from '../../entities/user.entity';
 import { OrderModel } from '../../models/order.model';
 import { OrderRepository } from '../../repositories/order.repository';
 import { CreateOrderCommand } from '../impl/create-order.command';
@@ -13,13 +11,12 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   ) {}
 
   async execute({ payload }: CreateOrderCommand) {
-    const user = await getRepository(User).findOne(payload.ownerId);
-    const order = await this.orderRepository.createOrder(user);
+    const order = await this.orderRepository.createOrder(payload.ownerId);
     const orderModel = this.publisher.mergeObjectContext(
       new OrderModel(order.id),
     );
 
-    orderModel.createOrder(order.owner.id, order.createdAt);
+    orderModel.createOrder(order.ownerId, order.createdAt);
     orderModel.commit();
     return order.id;
   }
