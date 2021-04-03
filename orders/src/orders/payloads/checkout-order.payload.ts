@@ -1,1 +1,3 @@
-export class CheckoutOrderPayload {}
+export class CheckoutOrderPayload {
+  orderId: number;
+}

@@ -30,7 +30,7 @@
     "@nestjs/microservices": "^7.6.15",
     "@nestjs/platform-express": "^7.6.13",
     "@nestjs/typeorm": "^7.1.5",
-    "@vaagnavanesyan/common": "0.1.0",
+    "@vaagnavanesyan/common": "0.2.1",
     "amqp-connection-manager": "^3.2.2",
     "amqplib": "^0.7.1",
     "pg": "^8.5.1",

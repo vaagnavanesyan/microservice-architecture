@@ -14,6 +14,7 @@ import { Request } from 'express';
 import { AddImageCommand } from 'src/orders/commands/impl/add-image.command';
 import { CreateOrderCommand } from 'src/orders/commands/impl/create-order.command';
 import { RemoveImageCommand } from 'src/orders/commands/impl/remove-image.command';
+import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
 
 @Controller()
 export class OrdersController {
@@ -52,5 +53,10 @@ export class OrdersController {
   @Delete(':imageId/remove')
   removeImage(@Param('imageId') imageId: number) {
     return this.commandBus.execute(new RemoveImageCommand({ imageId }));
+  }
+
+  @Post(':orderId/checkout')
+  checkoutOrder(@Param('orderId') orderId: number) {
+    return this.commandBus.execute(new CheckoutOrderCommand({ orderId }));
   }
 }

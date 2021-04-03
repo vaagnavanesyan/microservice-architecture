@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import {
+  CheckoutOrderEvent,
   OrderCreatedEvent,
   OrderPriceChangedEvent,
 } from '@vaagnavanesyan/common';
@@ -15,5 +16,9 @@ export class OrderModel extends AggregateRoot {
 
   changeOrderPrice(price: number) {
     this.apply(new OrderPriceChangedEvent({ orderId: this.id, price }));
+  }
+
+  checkoutOrder(price: number) {
+    this.apply(new CheckoutOrderEvent({ orderId: this.id, price }));
   }
 }
