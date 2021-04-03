@@ -9,5 +9,5 @@ export class User extends BaseEntity {
   @Column() salt: string;
   @Column() firstName: string;
   @Column() lastName: string;
-  @Column({ default: true }) isActive: boolean;
+  @Column() isAdmin: boolean = false;
 }

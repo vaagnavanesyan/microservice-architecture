@@ -17,6 +17,8 @@ spec:
     injectRequestHeaders:
     - name: "X-Token-String"
       value: "{{ .token.Raw }}"
+    - name: "X-Admin"
+      value: "{{ .token.Claims.isAdmin }}"
     - name: "X-Email"
       value: "{{ .token.Claims.email }}"
     - name: "X-UserId"

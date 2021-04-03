@@ -5,4 +5,5 @@ export class JwtPayload {
   @Expose() email: string;
   @Expose() firstName: string;
   @Expose() lastName: string;
+  @Expose() isAdmin: boolean;
 }
