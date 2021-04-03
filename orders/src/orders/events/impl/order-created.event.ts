@@ -1,4 +1,4 @@
-import { OrderCreatedPayload } from '../payloads/order-created-payload';
+import { OrderCreatedPayload } from 'src/orders/events/payloads';
 
 export class OrderCreatedEvent {
   constructor(public readonly payload: OrderCreatedPayload) {}

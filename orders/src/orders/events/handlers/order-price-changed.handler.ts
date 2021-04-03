@@ -2,24 +2,27 @@ import { Inject } from '@nestjs/common';
 import { IEventHandler } from '@nestjs/cqrs';
 import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
 import { ClientProxy } from '@nestjs/microservices';
-import { OrderCreatedEvent } from '@vaagnavanesyan/common';
 import { Queues } from 'src/orders/constants';
 import { Event } from 'src/orders/entities/event.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
-@EventsHandler(OrderCreatedEvent)
-export class OrderCreatedEventHandler
-  implements IEventHandler<OrderCreatedEvent> {
+import { OrderPriceChangedEvent } from '../impl';
+
+@EventsHandler(OrderPriceChangedEvent)
+export class OrderPriceChangedHandler
+  implements IEventHandler<OrderPriceChangedEvent> {
   constructor(
     @Inject(Queues.OrdersQueue) private readonly ordersQueue: ClientProxy,
   ) {}
-  async handle({ payload }: OrderCreatedEvent) {
+  async handle({ payload }: OrderPriceChangedEvent) {
     const repo = getRepository(Event);
+
     const record = repo.create({
-      eventType: nameof(OrderCreatedEvent),
+      eventType: nameof(OrderPriceChangedEvent),
       json: JSON.stringify(payload),
     });
+
     await record.save();
-    this.ordersQueue.emit(nameof(OrderCreatedEvent), payload);
+    this.ordersQueue.emit(nameof(OrderPriceChangedEvent), payload);
   }
 }

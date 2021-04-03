@@ -5,8 +5,8 @@ import { ClientProxy } from '@nestjs/microservices';
 import { CheckoutOrderEvent } from '@vaagnavanesyan/common';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
-import { Queues } from '../constants';
-import { Event } from '../entities/event.entity';
+import { Queues } from '../../constants';
+import { Event } from '../../entities/event.entity';
 
 @EventsHandler(CheckoutOrderEvent)
 export class CheckoutOrderEventHandler

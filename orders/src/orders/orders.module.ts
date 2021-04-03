@@ -5,7 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandHandlers } from 'src/orders/commands/handlers';
 import { Queues } from 'src/orders/constants';
-import { EventHandlers } from 'src/orders/events';
+import { EventHandlers } from 'src/orders/events/handlers';
 import { OrderRepository } from 'src/orders/repositories/order.repository';
 import { OrdersController } from './controllers/orders.controller';
 
