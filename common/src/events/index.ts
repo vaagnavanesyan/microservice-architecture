@@ -1,3 +1,4 @@
+export { CheckoutOrderEvent } from './checkout-order.event';
 export { OrderCreatedEvent } from './order-created.event';
 export { OrderPaidEvent } from './order-paid.event';
 export { OrderPriceChangedEvent } from './order-price-changed.event';
