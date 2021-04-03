@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { OrderStatuses } from '../enums/order-statuses.enum';
 import { Image } from './image.entity';
 
 @Entity()
@@ -14,4 +15,5 @@ export class Order extends BaseEntity {
   @Column() createdAt: Date;
   @Column() price: number = 0;
   @Column({ nullable: false }) ownerId: number;
+  @Column({ default: OrderStatuses.Active }) status: OrderStatuses;
 }
