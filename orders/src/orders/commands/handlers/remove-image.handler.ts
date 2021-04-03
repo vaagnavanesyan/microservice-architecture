@@ -1,6 +1,6 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
-import { IMAGE_PRICE } from 'src/constants';
-import { Image } from 'src/entities';
+import { IMAGE_PRICE } from 'src/orders/constants';
+import { Image } from 'src/orders/entities';
 import { getManager, getRepository } from 'typeorm';
 import { RemoveImageCommand } from '../impl/remove-image.command';
 

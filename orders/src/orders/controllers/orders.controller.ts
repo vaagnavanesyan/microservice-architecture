@@ -11,12 +11,12 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
-import { AddImageCommand } from './commands/impl/add-image.command';
-import { CreateOrderCommand } from './commands/impl/create-order.command';
-import { RemoveImageCommand } from './commands/impl/remove-image.command';
+import { AddImageCommand } from 'src/orders/commands/impl/add-image.command';
+import { CreateOrderCommand } from 'src/orders/commands/impl/create-order.command';
+import { RemoveImageCommand } from 'src/orders/commands/impl/remove-image.command';
 
 @Controller()
-export class AppController {
+export class OrdersController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
