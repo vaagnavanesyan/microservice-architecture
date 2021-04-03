@@ -1,1 +1,3 @@
-export class RemoveImagePayload {}
+export class RemoveImagePayload {
+  imageId: number;
+}

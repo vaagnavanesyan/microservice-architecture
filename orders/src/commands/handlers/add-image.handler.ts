@@ -30,5 +30,6 @@ export class AddImageHandler implements ICommandHandler<AddImageCommand> {
 
     orderModel.changeOrderPrice(order.price);
     orderModel.commit();
+    return image.id;
   }
 }

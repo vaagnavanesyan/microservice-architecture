@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  Delete,
   Param,
   Post,
   Req,
@@ -12,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { AddImageCommand } from './commands/impl/add-image.command';
 import { CreateOrderCommand } from './commands/impl/create-order.command';
+import { RemoveImageCommand } from './commands/impl/remove-image.command';
 
 @Controller()
 export class AppController {
@@ -45,5 +47,10 @@ export class AppController {
         content: image.buffer,
       }),
     );
+  }
+
+  @Delete(':imageId/remove')
+  removeImage(@Param('imageId') imageId: number) {
+    return this.commandBus.execute(new RemoveImageCommand({ imageId }));
   }
 }
