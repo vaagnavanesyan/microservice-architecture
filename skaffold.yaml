@@ -25,6 +25,9 @@ build:
   artifacts:
     - image: vaagn/face-systems-identity
       context: identity
+      docker:
+        buildArgs:
+          NPM_TOKEN: '{{.NPM_TOKEN}}'
 deploy:
   helm:
     releases:

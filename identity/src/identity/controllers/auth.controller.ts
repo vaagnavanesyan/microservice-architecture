@@ -1,14 +1,12 @@
 import { Body, Controller, Get, Inject, Post, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
-import { classToPlain, plainToClass } from 'class-transformer';
+import { UserCreatedEvent } from '@vaagnavanesyan/common';
 import * as jose from 'node-jose';
 import { pem2jwk } from 'pem-jwk';
 import { nameof } from 'ts-simple-nameof';
 import { Queues } from '../constants';
 import { SignInDto, SignUpDto } from '../dto';
-import { UserCreatedEvent } from '../events/impl/user-created.event';
-import { UserCreatedPayload } from '../interfaces/user-created.payload';
 import { AuthService } from '../services';
 
 @Controller('auth')
@@ -21,8 +19,9 @@ export class AuthController {
   @Post('/signup')
   async signUp(@Body(ValidationPipe) dto: SignUpDto): Promise<void> {
     await this.authService.signUp(dto);
-    const payload = classToPlain(plainToClass(UserCreatedPayload, dto, { excludeExtraneousValues: true }));
-    this.usersQueue.emit(nameof(UserCreatedEvent), payload);
+    const { email, firstName, lastName } = dto;
+
+    this.usersQueue.emit(nameof(UserCreatedEvent), { email, firstName, lastName });
   }
 
   @Post('/signin')

@@ -5,6 +5,9 @@ build:
     sha256: {}
   artifacts:
     - image: vaagn/face-systems-identity
+      docker:
+        buildArgs:
+          NPM_TOKEN: '{{.NPM_TOKEN}}'
 deploy:
   helm:
     releases:

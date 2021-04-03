@@ -1069,6 +1069,11 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
+"@vaagnavanesyan/common@^0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/0.1.0/5b5c550fd9a642c7f993bb5bded602e1cd15cf25fb41aa07dbe4329d07f868f4#93d49e455260df341e3c234614965af14997bfff"
+  integrity sha512-AURyD8h048poDz81SNlG0zVXD85Ffz3Epqty9lU0hqbsZXt0uuXoP1lt24iRwqurDcJOaNBVFp3uUwHZ3VnhKA==
+
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.11.0.tgz#a5aa679efdc9e51707a4207139da57920555961f"
