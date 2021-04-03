@@ -1,4 +1,4 @@
-import { CreateOrderPayload } from '../../interfaces/create-order-payload';
+import { CreateOrderPayload } from '../../payloads';
 
 export class CreateOrderCommand {
   constructor(public readonly payload: CreateOrderPayload) {}

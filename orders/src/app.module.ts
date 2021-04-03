@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { CommandHandlers } from './commands/handlers';
 import { Queues } from './constants';
-import { EventHandlers } from './events/handlers';
+import { EventHandlers } from './events';
 import { OrderRepository } from './repositories/order.repository';
 
 @Module({

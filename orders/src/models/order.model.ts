@@ -2,7 +2,7 @@ import { AggregateRoot } from '@nestjs/cqrs';
 import {
   OrderCreatedEvent,
   OrderPriceChangedEvent,
-} from '@vaagnavanesyan/events';
+} from '@vaagnavanesyan/common';
 
 export class OrderModel extends AggregateRoot {
   constructor(private readonly id: number) {

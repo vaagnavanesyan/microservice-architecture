@@ -1,4 +1,4 @@
-import { CheckoutOrderPayload } from '../../interfaces/checkout-order.payload';
+import { CheckoutOrderPayload } from '../../payloads';
 
 export class CheckoutOrderCommand {
   constructor(public readonly payload: CheckoutOrderPayload) {}

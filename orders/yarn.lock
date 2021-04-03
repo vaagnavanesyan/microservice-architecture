@@ -1035,10 +1035,10 @@
     "@typescript-eslint/types" "4.20.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vaagnavanesyan/events@0.1.1":
-  version "0.1.1"
-  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/events/0.1.1/4dfe76de067421801b5f9d28acf65e125d4fea4800d213a23067a42cdbc8f8f1#a47570487b4b508c1dd01f12de5f45e06735b6ee"
-  integrity sha512-4BaJGyxHFla2DlX/w9SocWYXhjkP7Nf3TskwBp9FyVsXMR6mAGDZWumI11N05SGVLTTtHaUeth4gCF8YHFho+Q==
+"@vaagnavanesyan/common@0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/0.1.0/5b5c550fd9a642c7f993bb5bded602e1cd15cf25fb41aa07dbe4329d07f868f4#93d49e455260df341e3c234614965af14997bfff"
+  integrity sha512-AURyD8h048poDz81SNlG0zVXD85Ffz3Epqty9lU0hqbsZXt0uuXoP1lt24iRwqurDcJOaNBVFp3uUwHZ3VnhKA==
 
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"

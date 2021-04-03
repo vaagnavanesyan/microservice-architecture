@@ -1,4 +1,4 @@
-import { AddImagePayload } from '../../interfaces/add-image.payload';
+import { AddImagePayload } from '../../payloads';
 
 export class AddImageCommand {
   constructor(public readonly payload: AddImagePayload) {}

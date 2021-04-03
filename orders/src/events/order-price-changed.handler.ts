@@ -5,7 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import {
   OrderCreatedEvent,
   OrderPriceChangedEvent,
-} from '@vaagnavanesyan/events';
+} from '@vaagnavanesyan/common';
 import { Queues } from 'src/constants';
 import { Event } from 'src/entities/event.entity';
 import { nameof } from 'ts-simple-nameof';

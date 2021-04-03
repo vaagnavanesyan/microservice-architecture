@@ -1,12 +1,11 @@
 import { NotImplementedException } from '@nestjs/common';
 import { IEventHandler } from '@nestjs/cqrs';
 import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
-import { PaymentRefusedEvent } from '@vaagnavanesyan/events';
+import { OrderPaidEvent } from '@vaagnavanesyan/common';
 
-@EventsHandler(PaymentRefusedEvent)
-export class PaymentRefusedHandler
-  implements IEventHandler<PaymentRefusedEvent> {
-  async handle({ payload }: PaymentRefusedEvent) {
+@EventsHandler(OrderPaidEvent)
+export class OrderPaidHandler implements IEventHandler<OrderPaidEvent> {
+  async handle({ payload }: OrderPaidEvent) {
     throw new NotImplementedException();
   }
 }
