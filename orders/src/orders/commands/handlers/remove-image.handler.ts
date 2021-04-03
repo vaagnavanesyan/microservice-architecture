@@ -1,6 +1,7 @@
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { IMAGE_PRICE } from 'src/orders/constants';
 import { Image } from 'src/orders/entities';
+import { OrderModel } from 'src/orders/models/order.model';
 import { getManager, getRepository } from 'typeorm';
 import { RemoveImageCommand } from '../impl/remove-image.command';
 
@@ -20,5 +21,12 @@ export class RemoveImageHandler implements ICommandHandler<RemoveImageCommand> {
       await transactionalEntityManager.save(image.order);
       await transactionalEntityManager.remove(image);
     });
+
+    const orderModel = this.publisher.mergeObjectContext(
+      new OrderModel(image.order.id),
+    );
+
+    orderModel.changeOrderPrice(image.order.price);
+    orderModel.commit();
   }
 }
