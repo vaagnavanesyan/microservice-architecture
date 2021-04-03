@@ -17,7 +17,7 @@ kubectl apply -f $(Join-Path -Path $PSScriptRoot -ChildPath "./configs/create-ot
 kubectl config set-context --current --namespace=otus
 
 Write-Host 🐇 Installing RabbitMQ...
-helm install rabbitmq center/bitnami/rabbitmq --set auth.username=user --set auth.password=bX1DTrlOfH
+helm install rabbitmq bitnami/rabbitmq --set auth.username=user --set auth.password=bX1DTrlOfH
 
 Write-Host Adding minikube ip to local hosts...
 Invoke-Expression $(Join-Path -Path $PSScriptRoot -ChildPath "Update-Hosts.ps1")
