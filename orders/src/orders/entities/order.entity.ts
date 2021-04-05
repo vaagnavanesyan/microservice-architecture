@@ -13,6 +13,9 @@ export class Order extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
   @OneToMany((_) => Image, (image) => image.order) images: Image[];
   @Column() createdAt: Date;
+
+  // For TypeORM we need specify type explicitly
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   @Column() price: number = 0;
   @Column({ nullable: false }) ownerId: number;
   @Column({ default: OrderStatuses.Active }) status: OrderStatuses;
