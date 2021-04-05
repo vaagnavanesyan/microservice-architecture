@@ -1,6 +1,8 @@
+import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { IMAGE_PRICE } from 'src/orders/constants';
 import { Image, Order } from 'src/orders/entities';
+import { OrderStatuses } from 'src/orders/enums/order-statuses.enum';
 import { OrderModel } from 'src/orders/models/order.model';
 import { getManager, getRepository } from 'typeorm';
 import { AddImageCommand } from '../impl/add-image.command';
@@ -11,8 +13,16 @@ export class AddImageHandler implements ICommandHandler<AddImageCommand> {
 
   async execute({ payload }: AddImageCommand) {
     const orderRepo = getRepository(Order);
-    const image = new Image();
     const order = await orderRepo.findOneOrFail(payload.orderId);
+    if (
+      order.status === OrderStatuses.Checkout ||
+      order.status === OrderStatuses.Cancelled
+    ) {
+      throw new BadRequestException(
+        `Order with status: ${order.status} couldn't be changed`,
+      );
+    }
+    const image = new Image();
     image.order = order;
     image.fileName = payload.fileName;
     image.data = payload.content;

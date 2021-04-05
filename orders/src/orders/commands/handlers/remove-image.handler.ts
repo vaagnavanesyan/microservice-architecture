@@ -1,6 +1,8 @@
+import { BadRequestException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { IMAGE_PRICE } from 'src/orders/constants';
 import { Image } from 'src/orders/entities';
+import { OrderStatuses } from 'src/orders/enums/order-statuses.enum';
 import { OrderModel } from 'src/orders/models/order.model';
 import { getManager, getRepository } from 'typeorm';
 import { RemoveImageCommand } from '../impl/remove-image.command';
@@ -14,7 +16,14 @@ export class RemoveImageHandler implements ICommandHandler<RemoveImageCommand> {
     const image = await repo.findOneOrFail(payload.imageId, {
       relations: ['order'],
     });
-
+    if (
+      image.order.status === OrderStatuses.Checkout ||
+      image.order.status === OrderStatuses.Cancelled
+    ) {
+      throw new BadRequestException(
+        `Order with status: ${image.order.status} couldn't be changed`,
+      );
+    }
     image.order.price -= IMAGE_PRICE;
 
     await getManager().transaction(async (transactionalEntityManager) => {
