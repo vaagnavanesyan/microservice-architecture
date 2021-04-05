@@ -8,6 +8,7 @@ import { Queues } from 'src/orders/constants';
 import { EventHandlers } from 'src/orders/events/handlers';
 import { OrderRepository } from 'src/orders/repositories/order.repository';
 import { OrdersController } from './controllers/orders.controller';
+import { QueryHandlers } from './queries/handlers';
 
 @Module({
   imports: [
@@ -35,6 +36,6 @@ import { OrdersController } from './controllers/orders.controller';
     ]),
   ],
   controllers: [OrdersController],
-  providers: [...CommandHandlers, ...EventHandlers],
+  providers: [...CommandHandlers, ...EventHandlers, ...QueryHandlers],
 })
 export class OrdersModule {}

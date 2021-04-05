@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Req,
@@ -16,6 +17,7 @@ import { CancelOrderCommand } from '../commands/impl/cancel-order.command';
 import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
 import { CreateOrderCommand } from '../commands/impl/create-order.command';
 import { RemoveImageCommand } from '../commands/impl/remove-image.command';
+import { GetOrdersQuery } from '../queries/impl/get-orders.query';
 
 @Controller()
 export class OrdersController {
@@ -23,6 +25,15 @@ export class OrdersController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  @Get()
+  getOrders(@Req() request: Request) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+    return this.queryBus.execute(new GetOrdersQuery({ ownerId }));
+  }
 
   @Post()
   async createOrder(@Req() request: Request) {
