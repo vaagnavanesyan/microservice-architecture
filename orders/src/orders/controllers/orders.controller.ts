@@ -11,10 +11,11 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
-import { AddImageCommand } from 'src/orders/commands/impl/add-image.command';
-import { CreateOrderCommand } from 'src/orders/commands/impl/create-order.command';
-import { RemoveImageCommand } from 'src/orders/commands/impl/remove-image.command';
+import { AddImageCommand } from '../commands/impl/add-image.command';
+import { CancelOrderCommand } from '../commands/impl/cancel-order.command';
 import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
+import { CreateOrderCommand } from '../commands/impl/create-order.command';
+import { RemoveImageCommand } from '../commands/impl/remove-image.command';
 
 @Controller()
 export class OrdersController {
@@ -58,5 +59,10 @@ export class OrdersController {
   @Post(':orderId/checkout')
   checkoutOrder(@Param('orderId') orderId: number) {
     return this.commandBus.execute(new CheckoutOrderCommand({ orderId }));
+  }
+
+  @Post(':orderId/cancel')
+  cancelOrder(@Param('orderId') orderId: number) {
+    return this.commandBus.execute(new CancelOrderCommand({ orderId }));
   }
 }
