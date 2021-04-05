@@ -15,11 +15,6 @@ export class CheckoutOrderHandler
     const repo = getRepository(Order);
     const order = await repo.findOneOrFail(payload.orderId);
 
-    const validStatused: OrderStatuses[] = [
-      OrderStatuses.Active,
-      OrderStatuses.PaymentDeclined,
-    ];
-
     if (
       order.status !== OrderStatuses.Active &&
       order.status !== OrderStatuses.PaymentDeclined
