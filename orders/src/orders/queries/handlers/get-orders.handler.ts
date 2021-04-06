@@ -6,11 +6,15 @@ import { GetOrdersQuery } from '../impl/get-orders.query';
 @QueryHandler(GetOrdersQuery)
 export class GetOrdersHandler implements IQueryHandler<GetOrdersQuery> {
   async execute({ payload }: GetOrdersQuery) {
-    const repo = getRepository(Order);
-    const orders = await repo.find({ where: { ownerId: payload.ownerId } });
-    return {
-      count: orders.length,
-      orders,
-    };
+    const builder = getRepository(Order).createQueryBuilder('order');
+    if (!payload.isAdmin) {
+      builder.where('order.ownerId = :id', { id: payload.ownerId });
+    }
+
+    if (payload.status) {
+      builder.andWhere('order.status = :status', { status: payload.status });
+    }
+
+    return builder.getManyAndCount();
   }
 }

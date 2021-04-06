@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { IMAGE_PRICE } from 'src/orders/constants';
 import { Image } from 'src/orders/entities';
@@ -24,6 +24,11 @@ export class RemoveImageHandler implements ICommandHandler<RemoveImageCommand> {
         `Order with status: ${image.order.status} couldn't be changed`,
       );
     }
+
+    if (image.order.ownerId !== payload.ownerId) {
+      throw new ForbiddenException('Only owner can checkout this order');
+    }
+
     image.order.price -= IMAGE_PRICE;
 
     await getManager().transaction(async (transactionalEntityManager) => {

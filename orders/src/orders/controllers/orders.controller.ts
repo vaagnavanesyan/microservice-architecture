@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseInterceptors,
@@ -17,6 +18,7 @@ import { CancelOrderCommand } from '../commands/impl/cancel-order.command';
 import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
 import { CreateOrderCommand } from '../commands/impl/create-order.command';
 import { RemoveImageCommand } from '../commands/impl/remove-image.command';
+import { OrderStatuses } from '../enums/order-statuses.enum';
 import { GetOrderQuery } from '../queries/impl/get-order.query';
 import { GetOrdersQuery } from '../queries/impl/get-orders.query';
 
@@ -28,12 +30,16 @@ export class OrdersController {
   ) {}
 
   @Get()
-  getOrders(@Req() request: Request) {
+  getOrders(@Req() request: Request, @Query('status') status?: OrderStatuses) {
     const ownerId = parseInt(request.headers['x-userid'] as string, 10);
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
     }
-    return this.queryBus.execute(new GetOrdersQuery({ ownerId }));
+
+    const isAdmin = request.headers['x-admin'] === 'true';
+    return this.queryBus.execute(
+      new GetOrdersQuery({ ownerId, isAdmin, status }),
+    );
   }
 
   @Get(':orderId')
@@ -42,7 +48,11 @@ export class OrdersController {
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
     }
-    return this.queryBus.execute(new GetOrderQuery({ ownerId, orderId }));
+
+    const isAdmin = request.headers['x-admin'] === 'true';
+    return this.queryBus.execute(
+      new GetOrderQuery({ ownerId, orderId, isAdmin }),
+    );
   }
 
   @Post()
@@ -57,15 +67,22 @@ export class OrdersController {
   @Post(':orderId/addImage')
   @UseInterceptors(FileInterceptor('image'))
   addImage(
+    @Req() request: Request,
     @Param('orderId') orderId: number,
     @UploadedFile() image: Express.Multer.File,
   ) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+
     if (!image) {
       throw new BadRequestException('image is required');
     }
     return this.commandBus.execute(
       new AddImageCommand({
         orderId,
+        ownerId,
         fileName: image.originalname,
         content: image.buffer,
       }),
@@ -73,17 +90,38 @@ export class OrdersController {
   }
 
   @Delete(':imageId/remove')
-  removeImage(@Param('imageId') imageId: number) {
-    return this.commandBus.execute(new RemoveImageCommand({ imageId }));
+  removeImage(@Req() request: Request, @Param('imageId') imageId: number) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+
+    return this.commandBus.execute(
+      new RemoveImageCommand({ imageId, ownerId }),
+    );
   }
 
   @Post(':orderId/checkout')
-  checkoutOrder(@Param('orderId') orderId: number) {
-    return this.commandBus.execute(new CheckoutOrderCommand({ orderId }));
+  checkoutOrder(@Req() request: Request, @Param('orderId') orderId: number) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+    return this.commandBus.execute(
+      new CheckoutOrderCommand({ orderId, ownerId }),
+    );
   }
 
   @Post(':orderId/cancel')
-  cancelOrder(@Param('orderId') orderId: number) {
-    return this.commandBus.execute(new CancelOrderCommand({ orderId }));
+  cancelOrder(@Req() request: Request, @Param('orderId') orderId: number) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+
+    const isAdmin = request.headers['x-admin'] === 'true';
+    return this.commandBus.execute(
+      new CancelOrderCommand({ orderId, ownerId, isAdmin }),
+    );
   }
 }

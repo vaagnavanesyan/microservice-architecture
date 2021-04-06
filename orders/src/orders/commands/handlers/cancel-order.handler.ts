@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Order } from 'src/orders/entities';
 import { OrderStatuses } from 'src/orders/enums/order-statuses.enum';
@@ -19,6 +19,13 @@ export class CancelOrderHandler implements ICommandHandler<CancelOrderCommand> {
         `Order with status: ${order.status} couldn't be cancelled`,
       );
     }
+
+    if (order.ownerId !== payload.ownerId) {
+      throw new ForbiddenException(
+        'You have no rights to access this resource',
+      );
+    }
+
     order.status = OrderStatuses.Cancelled;
     order.save();
 

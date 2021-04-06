@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { Order } from 'src/orders/entities';
 import { OrderStatuses } from 'src/orders/enums/order-statuses.enum';
@@ -23,6 +23,11 @@ export class CheckoutOrderHandler
         `Order with status: ${order.status} couldn't be passed to checkout`,
       );
     }
+
+    if (order.ownerId !== payload.ownerId) {
+      throw new ForbiddenException('Only owner can checkout this order');
+    }
+
     order.status = OrderStatuses.Checkout;
     order.save();
 

@@ -9,7 +9,7 @@ export class GetOrderHandler implements IQueryHandler<GetOrderQuery> {
   async execute({ payload }: GetOrderQuery) {
     const repo = getRepository(Order);
     const order = await repo.findOneOrFail(payload.orderId);
-    if (order.ownerId !== payload.ownerId) {
+    if (order.ownerId !== payload.ownerId && !payload.isAdmin) {
       throw new ForbiddenException(
         'You have no rights to access this resource',
       );

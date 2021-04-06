@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { IMAGE_PRICE } from 'src/orders/constants';
 import { Image, Order } from 'src/orders/entities';
@@ -22,6 +22,11 @@ export class AddImageHandler implements ICommandHandler<AddImageCommand> {
         `Order with status: ${order.status} couldn't be changed`,
       );
     }
+
+    if (order.ownerId !== payload.ownerId) {
+      throw new ForbiddenException('Only owner can checkout this order');
+    }
+
     const image = new Image();
     image.order = order;
     image.fileName = payload.fileName;
