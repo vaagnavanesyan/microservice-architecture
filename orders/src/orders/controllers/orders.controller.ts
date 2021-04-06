@@ -21,6 +21,7 @@ import { RemoveImageCommand } from '../commands/impl/remove-image.command';
 import { OrderStatuses } from '../enums/order-statuses.enum';
 import { GetOrderQuery } from '../queries/impl/get-order.query';
 import { GetOrdersQuery } from '../queries/impl/get-orders.query';
+import { SortByColumns } from '../queries/payloads/get-orders.payload';
 
 @Controller()
 export class OrdersController {
@@ -30,7 +31,12 @@ export class OrdersController {
   ) {}
 
   @Get()
-  getOrders(@Req() request: Request, @Query('status') status?: OrderStatuses) {
+  getOrders(
+    @Req() request: Request,
+    @Query('status') status?: OrderStatuses,
+    @Query('sortBy') sortBy?: SortByColumns,
+    @Query('asc') asc?: string,
+  ) {
     const ownerId = parseInt(request.headers['x-userid'] as string, 10);
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
@@ -38,7 +44,13 @@ export class OrdersController {
 
     const isAdmin = request.headers['x-admin'] === 'true';
     return this.queryBus.execute(
-      new GetOrdersQuery({ ownerId, isAdmin, status }),
+      new GetOrdersQuery({
+        ownerId,
+        isAdmin,
+        status,
+        sortBy,
+        asc: asc !== 'false',
+      }),
     );
   }
 
