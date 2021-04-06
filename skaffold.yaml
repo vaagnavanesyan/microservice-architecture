@@ -1,21 +1,21 @@
 apiVersion: skaffold/v2beta9
 kind: Config
-build:
-  tagPolicy:
-    sha256: {}
-  artifacts:
-    - image: vaagn/face-systems-portal
-      context: portal
 deploy:
   helm:
     releases:
-      - name: portal
-        chartPath: portal/helm-chart
+      - name: aes
+        chartPath: api-gateway/helm-chart
         namespace: otus
-        skipBuildDependencies: true
+        skipBuildDependencies: false
         createNamespace: true
-        artifactOverrides:
-          image: vaagn/face-systems-portal
+---
+apiVersion: skaffold/v2beta9
+kind: Config
+deploy:
+  kubectl:
+    defaultNamespace: otus
+    manifests:
+      - api-gateway/ambassador/*
 ---
 apiVersion: skaffold/v2beta9
 kind: Config
@@ -36,6 +36,16 @@ deploy:
         namespace: otus
         skipBuildDependencies: true
         createNamespace: true
+        overrides:
+          postgresql:
+            metrics:
+              enabled: false
+              serviceMonitor:
+                enabled: false
+          metrics:
+            enabled: false
+            serviceMonitor:
+              enabled: false
         artifactOverrides:
           image: vaagn/face-systems-identity
 ---
@@ -58,5 +68,15 @@ deploy:
         namespace: otus
         skipBuildDependencies: true
         createNamespace: true
+        overrides:
+          postgresql:
+            metrics:
+              enabled: false
+              serviceMonitor:
+                enabled: false
+          metrics:
+            enabled: false
+            serviceMonitor:
+              enabled: false
         artifactOverrides:
           image: vaagn/face-systems-orders
