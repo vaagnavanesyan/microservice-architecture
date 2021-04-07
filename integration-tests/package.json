@@ -1,0 +1,14 @@
+{
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "yarn test-user && yarn test-user && yarn test-admin",
+    "test-admin": "newman run --env-var \"baseUrl=http://arch.homework/api\" testcase_admin.json",
+    "test-user": "newman run --env-var \"baseUrl=http://arch.homework/api\" testcase_user.json"
+  },
+  "devDependencies": {
+    "newman": "^5.2.2"
+  }
+}

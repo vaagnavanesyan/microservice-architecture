@@ -1,0 +1,539 @@
+{
+  "info": {
+    "_postman_id": "8cedd2c4-adb7-4e4d-a57d-514ea5cf3082",
+    "name": "Сценарий 2: Админ",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Регистрация админа",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'));\r",
+              "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));\r",
+              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"isAdmin\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signup",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Вход",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const responseJSON = JSON.parse(responseBody)\r",
+              "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Создание заказа",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["pm.collectionVariables.set(\"orderId\", responseBody)"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Просмотр всех заказов",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const getOrdersCountWithStatus = (orders, status) =>\r",
+              "    orders.reduce((count, order) => {\r",
+              "        if (order.status === status) {\r",
+              "            count++;\r",
+              "        }\r",
+              "        return count;\r",
+              "    }, 0);\r",
+              "\r",
+              "pm.test(\"Существует 5 заказов\", function () {\r",
+              "    const ordersCount = pm.response.json()[1];\r",
+              "    pm.expect(ordersCount).to.eql(5)\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Существует 2 заказа в статусе Отменен\", function () {\r",
+              "    const cancelledOrders = getOrdersCountWithStatus(pm.response.json()[0], \"Cancelled\");\r",
+              "    pm.expect(cancelledOrders).to.eql(2)\r",
+              "});\r",
+              "\r",
+              "\r",
+              "pm.test(\"Существует 2 заказа в статусе \\\"Ожидает оплаты\\\"\", function () {\r",
+              "    const checkedOutOrders = getOrdersCountWithStatus(pm.response.json()[0], \"Checkout\");\r",
+              "    pm.expect(checkedOutOrders).to.eql(2)\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Cancelled",
+              "disabled": true
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt",
+              "disabled": true
+            },
+            {
+              "key": "asc",
+              "value": "false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Проверка фильтрации: только ожидающие оплаты",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const getOrdersCountWithStatus = (orders, status) =>\r",
+              "    orders.reduce((count, order) => {\r",
+              "        if (order.status === status) {\r",
+              "            count++;\r",
+              "        }\r",
+              "        return count;\r",
+              "    }, 0);\r",
+              "\r",
+              "pm.test(\"В ответе только 2 заказа\", function () {\r",
+              "    const ordersCount = pm.response.json()[1];\r",
+              "    pm.expect(ordersCount).to.eql(2)\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Существует 2 заказа в статусе \\\"Ожидает оплаты\\\"\", function () {\r",
+              "    const checkedOutOrders = getOrdersCountWithStatus(pm.response.json()[0], \"Checkout\");\r",
+              "    pm.expect(checkedOutOrders).to.eql(2)\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?status=Checkout",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Checkout"
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt",
+              "disabled": true
+            },
+            {
+              "key": "asc",
+              "value": "false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Проверка фильтрации: только активные",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const getOrdersCountWithStatus = (orders, status) =>\r",
+              "    orders.reduce((count, order) => {\r",
+              "        if (order.status === status) {\r",
+              "            count++;\r",
+              "        }\r",
+              "        return count;\r",
+              "    }, 0);\r",
+              "\r",
+              "pm.test(\"В ответе только 1 заказ\", function () {\r",
+              "    const ordersCount = pm.response.json()[1];\r",
+              "    pm.expect(ordersCount).to.eql(1)\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Существует 1 заказ в статусе \\\"Активный\\\"\", function () {\r",
+              "    const activeOrders = getOrdersCountWithStatus(pm.response.json()[0], \"Active\");\r",
+              "    pm.expect(activeOrders).to.eql(1)\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?status=Active",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Active"
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt",
+              "disabled": true
+            },
+            {
+              "key": "asc",
+              "value": "false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Фильтрация по убыванию цены",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Цена заказов отсортирована по убыванию\", function () {\r",
+              "    const orders = pm.response.json()[0];\r",
+              "    for (let i = 0; i < orders.length - 1; i++) {\r",
+              "        pm.expect(orders[i].price >= orders[i + 1].price).to.eql(true)\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?sortBy=price&asc=false",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Cancelled",
+              "disabled": true
+            },
+            {
+              "key": "sortBy",
+              "value": "price"
+            },
+            {
+              "key": "asc",
+              "value": "false"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Фильтрация по возрастанию цены",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Цена заказов отсортирована по возрастанию\", function () {\r",
+              "    const orders = pm.response.json()[0];\r",
+              "    for (let i = 0; i < orders.length - 1; i++) {\r",
+              "        pm.expect(orders[i].price <= orders[i + 1].price).to.eql(true)\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?sortBy=price",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Cancelled",
+              "disabled": true
+            },
+            {
+              "key": "sortBy",
+              "value": "price"
+            },
+            {
+              "key": "asc",
+              "value": "false",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Фильтрация по убыванию даты создания",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Дата создания заказов отсортирована по убыванию\", function () {\r",
+              "    const orders = pm.response.json()[0];\r",
+              "    for (let i = 0; i < orders.length - 1; i++) {\r",
+              "        const currentOrderCreatedAt = new Date(orders[i].createdAt);\r",
+              "        const nextOrderCreatedAt = new Date(orders[i + 1].createdAt);\r",
+              "        const timeIsDesc = (currentOrderCreatedAt - nextOrderCreatedAt) > 0;\r",
+              "        pm.expect(timeIsDesc > 0).to.eql(true)\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?sortBy=createdAt&asc=false",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Cancelled",
+              "disabled": true
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt"
+            },
+            {
+              "key": "asc",
+              "value": "false"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Фильтрация по возрастанию даты создания",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Дата создания заказов отсортирована по возрастанию\", function () {\r",
+              "    const orders = pm.response.json()[0];\r",
+              "    for (let i = 0; i < orders.length - 1; i++) {\r",
+              "        const currentOrderCreatedAt = new Date(orders[i].createdAt);\r",
+              "        const nextOrderCreatedAt = new Date(orders[i + 1].createdAt);\r",
+              "        const timeIsDesc = (currentOrderCreatedAt - nextOrderCreatedAt) < 0;\r",
+              "        pm.expect(timeIsDesc > 0).to.eql(true)\r",
+              "    }\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders?sortBy=createdAt&asc=true",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"],
+          "query": [
+            {
+              "key": "status",
+              "value": "Cancelled",
+              "disabled": true
+            },
+            {
+              "key": "sortBy",
+              "value": "createdAt"
+            },
+            {
+              "key": "asc",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    }
+  ]
+}
