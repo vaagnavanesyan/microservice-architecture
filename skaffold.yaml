@@ -1,24 +1,5 @@
 apiVersion: skaffold/v2beta9
 kind: Config
-deploy:
-  helm:
-    releases:
-      - name: aes
-        chartPath: api-gateway/helm-chart
-        namespace: otus
-        skipBuildDependencies: false
-        createNamespace: true
----
-apiVersion: skaffold/v2beta9
-kind: Config
-deploy:
-  kubectl:
-    defaultNamespace: otus
-    manifests:
-      - api-gateway/ambassador/*
----
-apiVersion: skaffold/v2beta9
-kind: Config
 build:
   tagPolicy:
     sha256: {}
