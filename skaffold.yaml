@@ -34,7 +34,6 @@ deploy:
       - name: identity
         chartPath: identity/helm-chart
         namespace: otus
-        skipBuildDependencies: true
         createNamespace: true
         artifactOverrides:
           image: vaagn/face-systems-identity
@@ -56,7 +55,6 @@ deploy:
       - name: orders
         chartPath: orders/helm-chart
         namespace: otus
-        skipBuildDependencies: true
         createNamespace: true
         artifactOverrides:
           image: vaagn/face-systems-orders
