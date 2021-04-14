@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "newman": "^5.2.2"
+  },
+  "resolutions": {
+    "newman/postman-collection/marked": "2.0.0"
   }
 }
