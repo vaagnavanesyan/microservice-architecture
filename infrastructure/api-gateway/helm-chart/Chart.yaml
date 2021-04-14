@@ -2,9 +2,9 @@ apiVersion: v2
 name: aes
 description: A Helm chart for Kubernetes
 type: application
-version: 6.5.20
-appVersion: 6.5.20
+version: 6.6.2
+appVersion: 6.6.2
 dependencies:
   - name: ambassador
-    version: 6.5.20
+    version: 6.6.2
     repository: https://getambassador.io
