@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "billing-worker-chart.fullname" . }}
+  labels:
+    {{- include "billing-worker-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "billing-worker-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "billing-worker-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: DATABASE_URI
+
+            - name: RABBITMQ_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: RABBITMQ_URI
+
+            - name: RABBITMQ_USERS_QUEUE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: RABBITMQ_USERS_QUEUE
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

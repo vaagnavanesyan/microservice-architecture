@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "billing-worker-chart.fullname" . }}
+  labels:
+    {{- include "billing-worker-chart.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.servicePort }}
+      targetPort: http
+      protocol: TCP
+      name: web
+  selector:
+    {{- include "billing-worker-chart.selectorLabels" . | nindent 4 }}

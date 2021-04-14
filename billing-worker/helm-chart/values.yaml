@@ -1,0 +1,30 @@
+replicaCount: 1
+
+configName: billing-worker-config
+secretName: billing-worker-secret
+image: vaagn/face-systems-billing-worker
+livenessProbe: /api/health
+
+servicePort: 8000
+
+postgresql:
+  enabled: true
+  postgresqlUsername: nestjs-user
+  postgresqlDatabase: billing-worker-db
+  postgresqlPassword: dev-password
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  service:
+    type: NodePort
+    nodePort: 30020
+    port: '5432'
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
+rabbitmqUsersQueue: users_queue
+rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672

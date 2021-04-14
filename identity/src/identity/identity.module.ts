@@ -43,7 +43,7 @@ import { metrics } from './services/metrics.provider';
               urls: [configService.get<string>('RABBITMQ_URI')],
               queue: configService.get<string>('RABBITMQ_USERS_QUEUE'),
               queueOptions: {
-                durable: false,
+                durable: true,
               },
             },
           };
