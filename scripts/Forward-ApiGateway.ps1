@@ -1,0 +1,1 @@
+kubectl port-forward service/aes-ambassador  80:80 -n otus
