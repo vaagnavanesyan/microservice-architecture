@@ -1,12 +1,12 @@
 apiVersion: getambassador.io/v2
 kind: Mapping
 metadata:
-  name: orders-mapping
+  name: orders-api-mapping
 spec:
   prefix: "/api/orders/?(.*)"
   prefix_regex: true
   host: arch.homework
-  service: orders:8000
+  service: orders-api:8000
   regex_rewrite:
     pattern: "/api/orders/?(.*)"
     substitution: '/\1'

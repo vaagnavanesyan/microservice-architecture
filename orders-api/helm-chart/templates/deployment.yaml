@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "orders-chart.fullname" . }}
+  name: {{ include "orders-api-chart.fullname" . }}
   labels:
-    {{- include "orders-chart.labels" . | nindent 4 }}
+    {{- include "orders-api-chart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "orders-chart.selectorLabels" . | nindent 6 }}
+      {{- include "orders-api-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "orders-chart.selectorLabels" . | nindent 8 }}
+        {{- include "orders-api-chart.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

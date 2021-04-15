@@ -44,20 +44,20 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-    - image: vaagn/face-systems-orders
-      context: orders
+    - image: vaagn/face-systems-orders-api
+      context: orders-api
       docker:
         buildArgs:
           NPM_TOKEN: '{{.NPM_TOKEN}}'
 deploy:
   helm:
     releases:
-      - name: orders
-        chartPath: orders/helm-chart
+      - name: orders-api
+        chartPath: orders-api/helm-chart
         namespace: otus
         createNamespace: true
         artifactOverrides:
-          image: vaagn/face-systems-orders
+          image: vaagn/face-systems-orders-api
 ---
 apiVersion: skaffold/v2beta9
 kind: Config

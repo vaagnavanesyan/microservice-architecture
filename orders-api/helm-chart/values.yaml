@@ -1,8 +1,8 @@
 replicaCount: 1
 
-configName: orders-config
-secretName: orders-secret
-image: vaagn/face-systems-orders
+configName: orders-api-config
+secretName: orders-api-secret
+image: vaagn/face-systems-orders-api
 livenessProbe: /api/health
 
 servicePort: 8000
@@ -10,7 +10,7 @@ servicePort: 8000
 postgresql:
   enabled: true
   postgresqlUsername: nestjs-user
-  postgresqlDatabase: orders-db
+  postgresqlDatabase: orders-api-db
   postgresqlPassword: dev-password
   metrics:
     enabled: true
