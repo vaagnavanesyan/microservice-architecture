@@ -10,7 +10,7 @@ servicePort: 8000
 postgresql:
   enabled: true
   postgresqlUsername: nestjs-user
-  postgresqlDatabase: billing-worker-db
+  postgresqlDatabase: billing-db
   postgresqlPassword: dev-password
   metrics:
     enabled: true
