@@ -3,7 +3,9 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configName }}
 data:
+  RABBITMQ_ORDERS_QUEUE: {{ .Values.rabbitmqOrdersQueue }}
   RABBITMQ_USERS_QUEUE: {{ .Values.rabbitmqUsersQueue }}
+  RABBITMQ_BILLING_QUEUE: {{ .Values.rabbitmqBillingQueue }}
   RABBITMQ_URI: {{ .Values.rabbitmqUri }}
 ---
 apiVersion: v1

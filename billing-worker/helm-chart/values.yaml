@@ -26,5 +26,7 @@ metrics:
   serviceMonitor:
     enabled: false
 
+rabbitmqBillingQueue: billing_queue
+rabbitmqOrdersQueue: orders_queue
 rabbitmqUsersQueue: users_queue
 rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
