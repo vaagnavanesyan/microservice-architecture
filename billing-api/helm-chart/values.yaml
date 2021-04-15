@@ -1,0 +1,24 @@
+replicaCount: 1
+
+configName: billing-api-config
+secretName: billing-api-secret
+image: vaagn/face-systems-billing-api
+livenessProbe: /api/health
+
+servicePort: 8000
+
+postgresql:
+  enabled: true
+  postgresqlUsername: nestjs-user
+  postgresqlDatabase: billing-db
+  postgresqlPassword: dev-password
+  service:
+    port: '5432'
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
+rabbitmqBillingQueue: billing_queue
+rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672

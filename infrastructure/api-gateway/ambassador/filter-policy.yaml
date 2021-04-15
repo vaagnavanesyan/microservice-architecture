@@ -12,3 +12,7 @@ spec:
       path: "/api/orders*"
       filters:
         - name: "facesystems-jwt-filter"
+    - host: "*"
+      path: "/api/billing*"
+      filters:
+        - name: "facesystems-jwt-filter"

@@ -1,0 +1,12 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: billing-api-mapping
+spec:
+  prefix: "/api/billing/?(.*)"
+  prefix_regex: true
+  host: arch.homework
+  service: billing-api:8000
+  regex_rewrite:
+    pattern: "/api/billing/?(.*)"
+    substitution: '/\1'

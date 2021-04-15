@@ -1,0 +1,8 @@
+---
+to: src/orders/queries/impl/<%= name %>.query.ts
+---
+import { <%= h.changeCase.pascal(name)%>Payload } from '../payloads/<%= name %>.payload';
+
+export class <%= h.changeCase.pascal(name) %>Query {
+  constructor(public readonly payload: <%= h.changeCase.pascal(name)%>Payload) {}
+}

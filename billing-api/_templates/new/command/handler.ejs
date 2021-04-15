@@ -1,0 +1,15 @@
+---
+to: src/orders/commands/handlers/<%= name %>.handler.ts
+---
+import { NotImplementedException } from '@nestjs/common';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { <%= h.changeCase.pascal(name) %>Command } from '../impl/<%= name %>.command';
+
+@CommandHandler(<%= h.changeCase.pascal(name) %>Command)
+export class <%= h.changeCase.pascal(name) %>Handler implements ICommandHandler<<%= h.changeCase.pascal(name) %>Command> {
+  constructor(private readonly publisher: EventPublisher) {}
+
+  async execute({ payload }: <%= h.changeCase.pascal(name) %>Command) {
+    throw new NotImplementedException();
+  }
+}

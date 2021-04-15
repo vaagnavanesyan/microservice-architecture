@@ -1,0 +1,13 @@
+---
+to: src/orders/queries/handlers/<%= name %>.handler.ts
+---
+import { NotImplementedException } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { <%= h.changeCase.pascal(name) %>Query } from '../impl/<%= name %>.query';
+
+@QueryHandler(<%= h.changeCase.pascal(name) %>Query)
+export class <%= h.changeCase.pascal(name) %>Handler implements IQueryHandler<<%= h.changeCase.pascal(name) %>Query> {
+  async execute({ payload }: <%= h.changeCase.pascal(name) %>Query) {
+    throw new NotImplementedException();
+  }
+}
