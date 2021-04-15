@@ -6,7 +6,7 @@ import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 
 @Controller()
-export class BillingController {
+export class BillingHandler {
   @EventPattern(nameof(UserCreatedEvent))
   async handleUserCreated(data: UserCreatedPayload) {
     const repo = getRepository(User);
