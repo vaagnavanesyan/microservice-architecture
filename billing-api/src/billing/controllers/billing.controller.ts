@@ -1,8 +1,10 @@
 import {
   BadRequestException,
+  Body,
   Controller,
   Get,
   NotFoundException,
+  Post,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -23,5 +25,10 @@ export class BillingController {
       throw new NotFoundException();
     }
     return user;
+  }
+
+  @Post()
+  async addUserCredits(@Body() dto: { credits: number }) {
+    console.log(dto);
   }
 }
