@@ -1,8 +1,6 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
-import { AmountReceivedEvent } from '@vaagnavanesyan/common';
 import { Request } from 'express';
-import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user.entity';
 
@@ -31,9 +29,12 @@ export class BillingController {
     if (!email) {
       throw new BadRequestException('Invalid user');
     }
-    this.amqpConnection.publish('amq.direct', nameof(AmountReceivedEvent), {
-      email,
-      amount,
-    });
+    const repo = getRepository(User);
+    const user = await repo.findOne({ email });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    user.amount += amount;
+    await user.save();
   }
 }

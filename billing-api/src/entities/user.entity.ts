@@ -8,5 +8,5 @@ export class User extends BaseEntity {
   @Column() email: string;
   @Column() firstName: string;
   @Column() lastName: string;
-  @Column({ default: 0 }) credits: number;
+  @Column({ default: 0 }) amount: number;
 }
