@@ -1,1 +1,6 @@
-export class OrderPaidPayload {}
+export class OrderPaidPayload {
+  orderId: number;
+  price: number;
+  payerEmail: string;
+  payedAt: Date;
+}
