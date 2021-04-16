@@ -1049,10 +1049,10 @@
     "@typescript-eslint/types" "4.20.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vaagnavanesyan/common@1.1.0":
-  version "1.1.0"
-  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.1.0/fa701cb195dafa0b24ecc02a2be3b0bcf8d9c62425cae8d2e697b6131860fb6a#e45a7d8d3e94f5781b6a13704bea088e5fa88e57"
-  integrity sha512-hUxssbahOVq8IknSZCigeXL4lS2PwwOb1LryDtwO8wZvs7HFz1poe4vTQX2CGy3gsJdVBsXLM6oxg9acfquh8g==
+"@vaagnavanesyan/common@1.0.0":
+  version "1.0.0"
+  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.0.0/e6f502753ba42cb40c33f452904e58b2331ac0a78946adb9e18ab3f0e5045c37#589de79c8a781048e3e37e808b79b2d46c95bcb6"
+  integrity sha512-CtuhXCklaDftf6yofhNYCcEVe6VhBraKe12tGi89XQBz9KTj+9B4k/YgbCBvJXdHVeovF/g0FfeGaXFjIpBk1Q==
 
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
