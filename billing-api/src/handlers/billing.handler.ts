@@ -7,6 +7,7 @@ import {
   OrderPaidPayload,
   PaymentRefusedEvent,
   PaymentRefusedPayload,
+  RabbitMQDirectExchange,
   UserCreatedEvent,
   UserCreatedPayload,
 } from '@vaagnavanesyan/common';
@@ -19,12 +20,16 @@ import { getRepository } from 'typeorm';
 export class BillingHandler {
   constructor(private readonly queue: AmqpConnection) {}
 
-  @RabbitSubscribe({ exchange: 'amq.direct', routingKey: nameof(UserCreatedEvent), queue: Queues.UsersQueue })
+  @RabbitSubscribe({ exchange: RabbitMQDirectExchange, routingKey: nameof(UserCreatedEvent), queue: Queues.UsersQueue })
   public async handleUserCreated(data: UserCreatedPayload) {
     getRepository(User).save(data);
   }
 
-  @RabbitSubscribe({ exchange: 'amq.direct', routingKey: nameof(CheckoutOrderEvent), queue: Queues.OrdersQueue })
+  @RabbitSubscribe({
+    exchange: RabbitMQDirectExchange,
+    routingKey: nameof(CheckoutOrderEvent),
+    queue: Queues.OrdersQueue,
+  })
   public async handleCheckoutOrder({ email, orderId, price }: CheckoutOrderPayload) {
     const repo = getRepository(User);
     const user = await repo.findOne({ email });
@@ -36,7 +41,7 @@ export class BillingHandler {
       user.amount -= price;
       await user.save();
       const payload: OrderPaidPayload = { orderId, price, payerEmail: email, payedAt: new Date() };
-      this.queue.publish('amq.direct', nameof(OrderPaidEvent), payload);
+      this.queue.publish(RabbitMQDirectExchange, nameof(OrderPaidEvent), payload);
     } else {
       const payload: PaymentRefusedPayload = {
         amount: user.amount,
@@ -45,7 +50,7 @@ export class BillingHandler {
         payerEmail: email,
         date: new Date(),
       };
-      this.queue.publish('amq.direct', nameof(PaymentRefusedEvent), payload);
+      this.queue.publish(RabbitMQDirectExchange, nameof(PaymentRefusedEvent), payload);
     }
   }
 }

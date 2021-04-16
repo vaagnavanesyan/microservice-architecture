@@ -755,6 +755,14 @@
   resolved "https://registry.yarnpkg.com/@sqltools/formatter/-/formatter-1.2.2.tgz#9390a8127c0dcba61ebd7fdcc748655e191bdd68"
   integrity sha512-/5O7Fq6Vnv8L6ucmPjaWbVG1XkP4FO+w5glqfkIsq3Xw4oyNAdJddbnYodNDAfjVUvo/rrSCTom4kAND7T1o5Q==
 
+"@types/amqplib@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@types/amqplib/-/amqplib-0.5.17.tgz#1211f5e01b62006e8a380af258d147de0b3b22e0"
+  integrity sha512-RImqiLP1swDqWBW8UX9iBXVEOw6MYzNmxdXqfemDfdwtUvdTM/W0s2RlSuMVIGkRhaWvpkC9O/N81VzzQwfAbw==
+  dependencies:
+    "@types/bluebird" "*"
+    "@types/node" "*"
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.14"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.14.tgz#faaeefc4185ec71c389f4501ee5ec84b170cc402"
@@ -787,6 +795,11 @@
   integrity sha512-Vs0hm0vPahPMYi9tDjtP66llufgO3ST16WXaSTtDGEl9cewAl3AibmxWw6TINOqHPT9z0uABKAYjT9jNSg4npw==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/bluebird@*":
+  version "3.5.33"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.33.tgz#d79c020f283bd50bd76101d7d300313c107325fc"
+  integrity sha512-ndEo1xvnYeHxm7I/5sF6tBvnsA4Tdi3zj1keRKRs12SP+2ye2A27NDJ1B6PqkfMbGAcT+mqQVqbZRIrhfOp5PQ==
 
 "@types/body-parser@*":
   version "1.19.0"
@@ -1049,10 +1062,10 @@
     "@typescript-eslint/types" "4.20.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vaagnavanesyan/common@1.1.1":
-  version "1.1.1"
-  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.1.1/6e36f46f6263a1d0711018f68052d9450bc8aa53d51023414b4b9caf4f6296dd#421d0efd0ce523164e56e29e4e265f4fe484f910"
-  integrity sha512-YlsSM2ogl2ZvvwMlql2iZR+2dG/1V+VVdrO0uRw1+9C1UqaW5i/TSx265T/Ja7z2An1aOpqKtBM65k07QP/yAw==
+"@vaagnavanesyan/common@1.2.0":
+  version "1.2.0"
+  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.2.0/38594e759e883e0014aab31ac93e570f2532add4101b36aeb39b0ac014e40b37#4eb8a6ac7c968423be09a10ed413a5dbaaef8674"
+  integrity sha512-mH3zhRkp7IbomOwYm6JWNnP/ghOwFSqeyGEUoqWN1qB/JD5I6YavHDLfBTSEU1u2hmOQVBO7i43FtF0Li8RdZA==
 
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
