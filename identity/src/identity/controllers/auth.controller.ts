@@ -1,7 +1,7 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UserCreatedEvent } from '@vaagnavanesyan/common';
+import { RabbitMQDirectExchange, UserCreatedEvent } from '@vaagnavanesyan/common';
 import * as jose from 'node-jose';
 import { pem2jwk } from 'pem-jwk';
 import { nameof } from 'ts-simple-nameof';
@@ -19,7 +19,7 @@ export class AuthController {
   async signUp(@Body(ValidationPipe) dto: SignUpDto): Promise<void> {
     await this.authService.signUp(dto);
     const { email, firstName, lastName } = dto;
-    this.queue.publish('amq.direct', nameof(UserCreatedEvent), { email, firstName, lastName });
+    this.queue.publish(RabbitMQDirectExchange, nameof(UserCreatedEvent), { email, firstName, lastName });
   }
 
   @Post('/signin')

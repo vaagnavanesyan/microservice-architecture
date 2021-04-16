@@ -33,7 +33,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.1.4",
-    "@vaagnavanesyan/common": "^0.1.0",
+    "@vaagnavanesyan/common": "1.2.0",
     "@willsoto/nestjs-prometheus": "^2.0.0",
     "amqp-connection-manager": "^3.2.2",
     "amqplib": "^0.7.1",
