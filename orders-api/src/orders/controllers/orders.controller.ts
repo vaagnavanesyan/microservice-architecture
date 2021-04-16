@@ -8,7 +8,7 @@ import {
   Query,
   Req,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -120,8 +120,9 @@ export class OrdersController {
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
     }
+    const ownerEmail = request.headers['x-email'] as string;
     return this.commandBus.execute(
-      new CheckoutOrderCommand({ orderId, ownerId }),
+      new CheckoutOrderCommand({ orderId, ownerId, ownerEmail }),
     );
   }
 

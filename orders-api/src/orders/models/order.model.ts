@@ -19,7 +19,7 @@ export class OrderModel extends AggregateRoot {
     this.apply(new OrderPriceChangedEvent({ orderId: this.id, price }));
   }
 
-  checkoutOrder(price: number) {
-    this.apply(new CheckoutOrderEvent({ orderId: this.id, price }));
+  checkoutOrder(price: number, email: string) {
+    this.apply(new CheckoutOrderEvent({ orderId: this.id, price, email }));
   }
 }

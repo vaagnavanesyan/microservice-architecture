@@ -35,7 +35,7 @@ export class CheckoutOrderHandler
       new OrderModel(order.id),
     );
 
-    orderModel.checkoutOrder(order.price);
+    orderModel.checkoutOrder(order.price, payload.ownerEmail);
     orderModel.commit();
   }
 }
