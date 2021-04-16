@@ -1,4 +1,3 @@
-import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { getRepository } from 'typeorm';
@@ -6,8 +5,6 @@ import { User } from '../entities/user.entity';
 
 @Controller()
 export class BillingController {
-  constructor(private readonly amqpConnection: AmqpConnection) {}
-
   @Get()
   async getUserAccount(@Req() request: Request): Promise<User> {
     //TODO: deduplicate this part
