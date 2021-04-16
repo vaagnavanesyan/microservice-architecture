@@ -8,7 +8,7 @@ import {
   Query,
   Req,
   UploadedFile,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -37,6 +37,7 @@ export class OrdersController {
     @Query('sortBy') sortBy?: SortByColumns,
     @Query('asc') asc?: string,
   ) {
+    //TODO: deduplicate this part
     const ownerId = parseInt(request.headers['x-userid'] as string, 10);
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
