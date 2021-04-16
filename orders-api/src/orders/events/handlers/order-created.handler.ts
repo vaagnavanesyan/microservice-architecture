@@ -1,8 +1,6 @@
-import { Inject } from '@nestjs/common';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { IEventHandler } from '@nestjs/cqrs';
 import { EventsHandler } from '@nestjs/cqrs/dist/decorators/events-handler.decorator';
-import { ClientProxy } from '@nestjs/microservices';
-import { Queues } from 'src/orders/constants';
 import { Event } from 'src/orders/entities/event.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
@@ -10,9 +8,7 @@ import { OrderCreatedEvent } from '../impl';
 @EventsHandler(OrderCreatedEvent)
 export class OrderCreatedEventHandler
   implements IEventHandler<OrderCreatedEvent> {
-  constructor(
-    @Inject(Queues.OrdersQueue) private readonly ordersQueue: ClientProxy,
-  ) {}
+  constructor(private readonly queue: AmqpConnection) {}
   async handle({ payload }: OrderCreatedEvent) {
     const repo = getRepository(Event);
     const record = repo.create({
@@ -20,6 +16,6 @@ export class OrderCreatedEventHandler
       json: JSON.stringify(payload),
     });
     await record.save();
-    this.ordersQueue.emit(nameof(OrderCreatedEvent), payload);
+    this.queue.publish('amq.direct', nameof(OrderCreatedEvent), payload);
   }
 }
