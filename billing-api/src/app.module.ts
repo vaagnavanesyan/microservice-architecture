@@ -1,7 +1,9 @@
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BillingModule } from './billing/billing.module';
+import { BillingController } from './controllers/billing.controller';
+import { BillingHandler } from './handlers/billing.handler';
 
 @Module({
   imports: [
@@ -12,11 +14,19 @@ import { BillingModule } from './billing/billing.module';
         type: 'postgres',
         url: configService.get('DATABASE_URI'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
+        synchronize: true,
       }),
       inject: [ConfigService],
     }),
-    BillingModule,
+    RabbitMQModule.forRootAsync(RabbitMQModule, {
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('RABBITMQ_URI'),
+      }),
+      inject: [ConfigService],
+    }),
   ],
+  providers: [BillingHandler],
+  controllers: [BillingController],
 })
 export class AppModule {}

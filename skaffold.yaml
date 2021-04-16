@@ -65,27 +65,6 @@ build:
   tagPolicy:
     sha256: {}
   artifacts:
-    - image: vaagn/face-systems-billing-worker
-      context: billing-worker
-      docker:
-        buildArgs:
-          NPM_TOKEN: '{{.NPM_TOKEN}}'
-deploy:
-  helm:
-    releases:
-      - name: billing-worker
-        chartPath: billing-worker/helm-chart
-        namespace: otus
-        createNamespace: true
-        artifactOverrides:
-          image: vaagn/face-systems-billing-worker
----
-apiVersion: skaffold/v2beta9
-kind: Config
-build:
-  tagPolicy:
-    sha256: {}
-  artifacts:
     - image: vaagn/face-systems-billing-api
       context: billing-api
       docker:

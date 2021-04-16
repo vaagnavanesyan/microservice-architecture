@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.configName }}
 data:
+  RABBITMQ_ORDERS_QUEUE: {{ .Values.rabbitmqOrdersQueue }}
+  RABBITMQ_USERS_QUEUE: {{ .Values.rabbitmqUsersQueue }}
   RABBITMQ_BILLING_QUEUE: {{ .Values.rabbitmqBillingQueue }}
   RABBITMQ_URI: {{ .Values.rabbitmqUri }}
 ---
@@ -12,4 +14,4 @@ metadata:
   name: {{ .Values.secretName }}
 type: Opaque
 data:
-  DATABASE_URI: {{ printf "postgresql+psycopg2://%s:%s@billing-worker-postgresql:%s/%s" .Values.postgresql.postgresqlUsername .Values.postgresql.postgresqlPassword .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase  | b64enc | quote }}
+  DATABASE_URI: {{ printf "postgresql+psycopg2://%s:%s@%s:%s/%s" .Values.postgresql.postgresqlUsername .Values.postgresql.postgresqlPassword (include "postgresql.fullname" .) .Values.postgresql.service.port .Values.postgresql.postgresqlDatabase  | b64enc | quote }}

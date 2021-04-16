@@ -12,7 +12,13 @@ postgresql:
   postgresqlUsername: nestjs-user
   postgresqlDatabase: billing-db
   postgresqlPassword: dev-password
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
   service:
+    type: NodePort
+    nodePort: 30020
     port: '5432'
 
 metrics:
@@ -21,4 +27,6 @@ metrics:
     enabled: false
 
 rabbitmqBillingQueue: billing_queue
+rabbitmqOrdersQueue: orders_queue
+rabbitmqUsersQueue: users_queue
 rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
