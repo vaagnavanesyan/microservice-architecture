@@ -1,18 +1,17 @@
-import { Body, Controller, Get, Inject, Post, ValidationPipe } from '@nestjs/common';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ClientProxy } from '@nestjs/microservices';
 import { UserCreatedEvent } from '@vaagnavanesyan/common';
 import * as jose from 'node-jose';
 import { pem2jwk } from 'pem-jwk';
 import { nameof } from 'ts-simple-nameof';
-import { Queues } from '../constants';
 import { SignInDto, SignUpDto } from '../dto';
 import { AuthService } from '../services';
 
 @Controller('auth')
 export class AuthController {
   constructor(
-    @Inject(Queues.UsersQueue) private readonly usersQueue: ClientProxy,
+    private readonly queue: AmqpConnection,
     private configService: ConfigService,
     private authService: AuthService,
   ) {}
@@ -20,8 +19,7 @@ export class AuthController {
   async signUp(@Body(ValidationPipe) dto: SignUpDto): Promise<void> {
     await this.authService.signUp(dto);
     const { email, firstName, lastName } = dto;
-
-    this.usersQueue.emit(nameof(UserCreatedEvent), { email, firstName, lastName });
+    this.queue.publish('amq.direct', nameof(UserCreatedEvent), { email, firstName, lastName });
   }
 
   @Post('/signin')
