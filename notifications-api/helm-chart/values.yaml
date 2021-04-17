@@ -1,0 +1,32 @@
+replicaCount: 1
+
+configName: notifications-api-config
+secretName: notifications-api-secret
+image: vaagn/face-systems-notifications-api
+livenessProbe: /api/health
+
+servicePort: 8000
+
+postgresql:
+  enabled: true
+  postgresqlUsername: nestjs-user
+  postgresqlDatabase: notifications-db
+  postgresqlPassword: dev-password
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  service:
+    type: NodePort
+    nodePort: 30020
+    port: '5432'
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
+rabbitmqBillingQueue: billing_queue
+rabbitmqOrdersQueue: orders_queue
+rabbitmqUsersQueue: users_queue
+rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
