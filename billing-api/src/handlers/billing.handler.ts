@@ -3,8 +3,8 @@ import { Controller, NotFoundException } from '@nestjs/common';
 import {
   CheckoutOrderEvent,
   CheckoutOrderPayload,
-  OrderPaidEvent,
-  OrderPaidPayload,
+  PaymentProceedEvent,
+  PaymentProceedPayload,
   PaymentRefusedEvent,
   PaymentRefusedPayload,
   RabbitMQDirectExchange,
@@ -37,18 +37,29 @@ export class BillingHandler {
       //todo: I'm not sure that its ok, better to log it and maybe send smth back
       throw new NotFoundException();
     }
+    const { firstName, lastName } = user;
+
     if (user.amount >= price) {
       user.amount -= price;
       await user.save();
-      const payload: OrderPaidPayload = { orderId, price, payerEmail: email, payedAt: new Date() };
-      this.queue.publish(RabbitMQDirectExchange, nameof(OrderPaidEvent), payload);
+      const payload: PaymentProceedPayload = {
+        orderId,
+        price,
+        payerEmail: email,
+        firstName,
+        lastName,
+        payedAt: new Date(),
+      };
+      this.queue.publish(RabbitMQDirectExchange, nameof(PaymentProceedEvent), payload);
     } else {
       const payload: PaymentRefusedPayload = {
         amount: user.amount,
         orderId,
         price,
         payerEmail: email,
-        date: new Date(),
+        firstName,
+        lastName,
+        refusedAt: new Date(),
       };
       this.queue.publish(RabbitMQDirectExchange, nameof(PaymentRefusedEvent), payload);
     }
