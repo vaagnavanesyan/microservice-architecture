@@ -12,13 +12,16 @@ postgresql:
   postgresqlUsername: nestjs-user
   postgresqlDatabase: notifications-db
   postgresqlPassword: dev-password
+  resources:
+    requests:
+      cpu: 125m
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
   service:
     type: NodePort
-    nodePort: 30020
+    nodePort: 30030
     port: '5432'
 
 metrics:

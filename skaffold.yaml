@@ -79,3 +79,24 @@ deploy:
         createNamespace: true
         artifactOverrides:
           image: vaagn/face-systems-billing-api
+---
+apiVersion: skaffold/v2beta9
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+    - image: vaagn/face-systems-notifications-api
+      context: notifications-api
+      docker:
+        buildArgs:
+          NPM_TOKEN: '{{.NPM_TOKEN}}'
+deploy:
+  helm:
+    releases:
+      - name: notifications-api
+        chartPath: notifications-api/helm-chart
+        namespace: otus
+        createNamespace: true
+        artifactOverrides:
+          image: vaagn/face-systems-notifications-api

@@ -12,6 +12,9 @@ postgresql:
   postgresqlUsername: nestjs-user
   postgresqlDatabase: billing-db
   postgresqlPassword: dev-password
+  resources:
+    requests:
+      cpu: 125m
   metrics:
     enabled: true
     serviceMonitor:
