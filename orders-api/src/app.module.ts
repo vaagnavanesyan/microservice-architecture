@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommandHandlers } from './orders/commands/handlers';
 import { OrdersController } from './orders/controllers/orders.controller';
 import { EventHandlers } from './orders/events/handlers';
+import { OrdersHandler } from './orders/handlers/orders.handler';
 import { QueryHandlers } from './orders/queries/handlers';
 import { OrderRepository } from './orders/repositories/order.repository';
 
@@ -32,11 +33,6 @@ import { OrderRepository } from './orders/repositories/order.repository';
     }),
   ],
   controllers: [OrdersController],
-  providers: [
-    ...CommandHandlers,
-    ...EventHandlers,
-    ...QueryHandlers,
-    OrderRepository,
-  ],
+  providers: [...CommandHandlers, ...EventHandlers, ...QueryHandlers, OrderRepository, OrdersHandler],
 })
 export class AppModule {}
