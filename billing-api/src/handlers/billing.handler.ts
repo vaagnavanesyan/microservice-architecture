@@ -7,11 +7,11 @@ import {
   PaymentProceedPayload,
   PaymentRefusedEvent,
   PaymentRefusedPayload,
+  Queues,
   RabbitMQDirectExchange,
   UserCreatedEvent,
   UserCreatedPayload,
 } from '@vaagnavanesyan/common';
-import { Queues } from 'src/constants';
 import { User } from 'src/entities/user.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';

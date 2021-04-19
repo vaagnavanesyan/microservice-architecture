@@ -5,9 +5,9 @@ import {
   PaymentProceedPayload,
   PaymentRefusedEvent,
   PaymentRefusedPayload,
+  Queues,
   RabbitMQDirectExchange,
 } from '@vaagnavanesyan/common';
-import { Queues } from 'src/constants';
 import { Notification } from 'src/entities/notification.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
@@ -19,7 +19,7 @@ export class NotificationsHandler {
   @RabbitSubscribe({
     exchange: RabbitMQDirectExchange,
     routingKey: nameof(PaymentRefusedEvent),
-    queue: `${Queues.BillingQueue}-refused`,
+    queue: `${Queues.BillingQueue}-refused-notification`,
   })
   public async handlePaymentRefused(data: PaymentRefusedPayload) {
     const { amount, firstName, lastName, orderId, payerEmail, price, refusedAt } = data;
@@ -37,7 +37,7 @@ export class NotificationsHandler {
   @RabbitSubscribe({
     exchange: RabbitMQDirectExchange,
     routingKey: nameof(PaymentProceedEvent),
-    queue: `${Queues.BillingQueue}-processed`,
+    queue: `${Queues.BillingQueue}-processed-notification`,
   })
   public async handlePaymentProceed(data: PaymentProceedPayload) {
     const { firstName, lastName, orderId, payerEmail, price, payedAt } = data;
