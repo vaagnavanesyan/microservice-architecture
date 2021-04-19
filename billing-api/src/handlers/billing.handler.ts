@@ -1,5 +1,5 @@
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Controller, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   CheckoutOrderEvent,
   CheckoutOrderPayload,
@@ -16,7 +16,7 @@ import { User } from 'src/entities/user.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 
-@Controller()
+@Injectable()
 export class BillingHandler {
   constructor(private readonly queue: AmqpConnection) {}
 

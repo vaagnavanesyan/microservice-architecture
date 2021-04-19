@@ -16,3 +16,7 @@ spec:
       path: "/api/billing*"
       filters:
         - name: "facesystems-jwt-filter"
+    - host: "*"
+      path: "/api/notifications*"
+      filters:
+        - name: "facesystems-jwt-filter"

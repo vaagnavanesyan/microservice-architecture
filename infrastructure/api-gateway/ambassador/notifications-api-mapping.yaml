@@ -1,0 +1,12 @@
+apiVersion: getambassador.io/v2
+kind: Mapping
+metadata:
+  name: notifications-api-mapping
+spec:
+  prefix: "/api/notifications/?(.*)"
+  prefix_regex: true
+  host: arch.homework
+  service: notifications-api:8000
+  regex_rewrite:
+    pattern: "/api/notifications/?(.*)"
+    substitution: '/\1'

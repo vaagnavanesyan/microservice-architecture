@@ -1,5 +1,5 @@
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Controller } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   PaymentProceedEvent,
   PaymentProceedPayload,
@@ -12,23 +12,24 @@ import { Notification } from 'src/entities/notification.entity';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 
-@Controller()
+@Injectable()
 export class NotificationsHandler {
   constructor(private readonly queue: AmqpConnection) {}
 
   @RabbitSubscribe({
     exchange: RabbitMQDirectExchange,
     routingKey: nameof(PaymentRefusedEvent),
-    queue: Queues.BillingQueue,
+    queue: `${Queues.BillingQueue}-refused`,
   })
-  public async handlePaymentRefused({ amount, firstName, lastName, orderId, payerEmail, price, refusedAt }: PaymentRefusedPayload) {
+  public async handlePaymentRefused(data: PaymentRefusedPayload) {
+    const { amount, firstName, lastName, orderId, payerEmail, price, refusedAt } = data;
     const message = `${firstName} ${lastName},
-При оплате заказа #${orderId} произошла ошибка:
-Недостаточно средств на счету для оплаты заказа.
-Стоимость заказа: ${price}, текущий баланс: ${amount}.
-Для оплаты заказа, пополните счет на сумму ${price - amount} и повторите попытку.
-${refusedAt}
-`;
+    При оплате заказа #${orderId} произошла ошибка:
+    Недостаточно средств на счету для оплаты заказа.
+    Стоимость заказа: ${price}, текущий баланс: ${amount}.
+    Для оплаты заказа, пополните счет на сумму ${price - amount} и повторите попытку.
+    ${refusedAt}
+    `;
 
     await getRepository(Notification).save({ email: payerEmail, message });
   }
@@ -36,13 +37,14 @@ ${refusedAt}
   @RabbitSubscribe({
     exchange: RabbitMQDirectExchange,
     routingKey: nameof(PaymentProceedEvent),
-    queue: Queues.BillingQueue,
+    queue: `${Queues.BillingQueue}-processed`,
   })
-  public async handlePaymentProceed({ firstName, lastName, orderId, payerEmail, price, payedAt }: PaymentProceedPayload) {
+  public async handlePaymentProceed(data: PaymentProceedPayload) {
+    const { firstName, lastName, orderId, payerEmail, price, payedAt } = data;
     const message = `${firstName} ${lastName},
-Заказ #${orderId} на сумму ${price} успешно оплачен и передан в обработку.
-${payedAt}
-`;
+    Заказ #${orderId} на сумму ${price} успешно оплачен и передан в обработку.
+    ${payedAt}
+    `;
 
     await getRepository(Notification).save({ email: payerEmail, message });
   }

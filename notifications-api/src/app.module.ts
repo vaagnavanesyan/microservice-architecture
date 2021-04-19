@@ -2,6 +2,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationsController } from './controllers/notifications.controller';
 import { NotificationsHandler } from './handlers/notifications.handler';
 
 @Module({
@@ -26,6 +27,6 @@ import { NotificationsHandler } from './handlers/notifications.handler';
     }),
   ],
   providers: [NotificationsHandler],
-  controllers: [],
+  controllers: [NotificationsController],
 })
 export class AppModule {}
