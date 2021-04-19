@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "yarn test-user && yarn test-user && yarn test-admin",
+    "test": "yarn test-order",
+    "test-order": "newman run --env-var \"baseUrl=http://arch.homework/api\" testcase_order.json",
     "test-admin": "newman run --env-var \"baseUrl=http://arch.homework/api\" testcase_admin.json",
     "test-user": "newman run --env-var \"baseUrl=http://arch.homework/api\" testcase_user.json"
   },

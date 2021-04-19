@@ -1,0 +1,641 @@
+{
+  "info": {
+    "_postman_id": "1ff3512b-179f-46bf-ad13-de77e418733e",
+    "name": "Stream Processing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Создание пользователя",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set(\"email\", pm.variables.replaceIn('{{$randomEmail}}'));\r",
+              "pm.collectionVariables.set(\"password\", pm.variables.replaceIn('{{$randomPassword}}'));\r",
+              "pm.collectionVariables.set(\"firstName\", pm.variables.replaceIn('{{$randomFirstName}}'));\r",
+              "pm.collectionVariables.set(\"lastName\", pm.variables.replaceIn('{{$randomLastName}}'));\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"isAdmin\": false\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signup",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signup"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Вход пользователем (получение токена)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var responseJSON = JSON.parse(responseBody)\r",
+              "pm.collectionVariables.set(\"accessToken\", responseJSON[\"accessToken\"])"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signin",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "signin"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "В биллинге завелся пользователь с 0 балансом",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.email).to.eql(pm.collectionVariables.get(\"email\"))\r",
+              "    pm.expect(jsonData.lastName).to.eql(pm.collectionVariables.get(\"lastName\"))\r",
+              "    pm.expect(jsonData.firstName).to.eql(pm.collectionVariables.get(\"firstName\"))\r",
+              "    pm.expect(jsonData.amount).to.eql(0);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Пополнить аккаунт пользователя",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-email",
+            "value": "Theo91@gmail.com",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"amount\": 5\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Баланс пользователя равен 5",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.amount).to.eql(5);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Создание заказа",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": ["pm.collectionVariables.set(\"orderId\", responseBody)"],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Добавление позиции в заказ",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "    pm.collectionVariables.set(\"imageId\", responseBody);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "assets/cat.png"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}/addImage",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}", "addImage"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Добавление позиции в заказ (2)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "    pm.collectionVariables.set(\"imageId\", responseBody);\r",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "assets/cat.png"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}/addImage",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}", "addImage"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Стоимость заказа - 10 единиц",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.price).to.eql(10);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Передача заказа на оплату",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}/checkout",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}", "checkout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Создался e-mail о недостатке средств на счету",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    const mails = pm.response.json();\r",
+              "    pm.expect(mails.length).to.eql(1);\r",
+              "    const mail = mails[0];\r",
+              "    pm.expect(mail.email).to.eql(pm.collectionVariables.get(\"email\"));\r",
+              "\r",
+              "    const orderId = pm.collectionVariables.get(\"orderId\");\r",
+              "    const errorText = `При оплате заказа #${orderId} произошла ошибка`;\r",
+              "    const pricesText = \"Стоимость заказа: 10, текущий баланс: 5\";\r",
+              "\r",
+              "    pm.expect(mail.message.indexOf(errorText)).to.greaterThan(-1);\r",
+              "    pm.expect(mail.message.indexOf(pricesText)).to.greaterThan(-1);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/notifications",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Статус заказа сменился на отклоненный",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql(\"PaymentDeclined\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Пополнить аккаунт пользователя",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-email",
+            "value": "Theo91@gmail.com",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"amount\": 5\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "На счету достаточно средств для оплаты",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.amount).to.eql(10);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Повторная попытка оплатить заказ",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}/checkout",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}", "checkout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Создался e-mail об успешной оплате",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    const mails = pm.response.json();\r",
+              "    pm.expect(mails.length).to.eql(2);\r",
+              "    const mail = mails[1];\r",
+              "    pm.expect(mail.email).to.eql(pm.collectionVariables.get(\"email\"));\r",
+              "\r",
+              "    const orderId = pm.collectionVariables.get(\"orderId\");\r",
+              "    const successText = `Заказ #${orderId} на сумму 10 успешно оплачен и передан в обработку.`;\r",
+              "\r",
+              "    pm.expect(mail.message.indexOf(successText)).to.greaterThan(-1);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/notifications",
+          "host": ["{{baseUrl}}"],
+          "path": ["notifications"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "После оплаты, баланс уменьшился и равен 0",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.amount).to.eql(0);\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/billing",
+          "host": ["{{baseUrl}}"],
+          "path": ["billing"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Статус заказа сменился на оплаченный",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Payload is correct\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql(\"PaymentSucceeded\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/orders/{{orderId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["orders", "{{orderId}}"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "email",
+      "value": ""
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "firstName",
+      "value": ""
+    },
+    {
+      "key": "lastName",
+      "value": ""
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "imageId",
+      "value": ""
+    }
+  ]
+}
