@@ -1,3 +1,4 @@
 ﻿**/*/helm-chart/charts
 **/*/.env
 **/*/*.db
+*.bak_000f
