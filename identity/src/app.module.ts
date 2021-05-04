@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { IdentityModule } from './identity/identity.module';
+import { MetricsPrefix } from './identity/services';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { IdentityModule } from './identity/identity.module';
       defaultMetrics: {
         enabled: true,
         config: {
-          prefix: 'api_gateway_requests_',
+          prefix: `${MetricsPrefix}_`,
         },
       },
     }),

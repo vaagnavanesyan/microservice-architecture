@@ -8,7 +8,7 @@ import * as jose from 'node-jose';
 import { AuthController, HealthController, UsersController } from './controllers';
 import { UserRepository } from './repositories';
 import { AuthService, JwtStrategy } from './services';
-import { metrics } from './services/metrics.provider';
+import { MetricsProviders } from './services/metrics.provider';
 
 @Module({
   imports: [
@@ -38,7 +38,7 @@ import { metrics } from './services/metrics.provider';
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],
-  providers: [...metrics, AuthService, JwtStrategy],
+  providers: [...MetricsProviders, AuthService, JwtStrategy],
   controllers: [HealthController, UsersController, AuthController],
   exports: [JwtStrategy, PassportModule],
 })
