@@ -13,6 +13,7 @@ deploy:
     releases:
       - name: orders-api
         chartPath: helm-chart
+        skipBuildDependencies: true
         namespace: otus
         createNamespace: true
         artifactOverrides:

@@ -10,15 +10,15 @@ export class GetOrderHandler implements IQueryHandler<GetOrderQuery> {
     const repo = getRepository(Order);
     const order = await repo.findOneOrFail(payload.orderId);
     if (order.ownerId !== payload.ownerId && !payload.isAdmin) {
-      throw new ForbiddenException(
-        'You have no rights to access this resource',
-      );
+      throw new ForbiddenException('You have no rights to access this resource');
     }
+
     const imagesRepo = getRepository(Image);
     const images = await imagesRepo.find({
       where: { order },
       select: ['id', 'fileName'],
     });
+
     return {
       ...order,
       images,
