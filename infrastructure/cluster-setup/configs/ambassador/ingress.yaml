@@ -15,7 +15,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: aes-ambassador
+                name: infrastructure-ambassador
                 port:
                   number: 80
           - path: /?(.*)

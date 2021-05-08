@@ -1,0 +1,12 @@
+dependencies:
+- name: ambassador
+  repository: https://getambassador.io
+  version: 6.6.2
+- name: minio
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.7.7
+- name: rabbitmq
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.13.1
+digest: sha256:f58f59e3efa1ce27826477a1e8b5fe2bbe44b373348ea0608bd91f128f3e9b45
+generated: "2021-05-08T16:33:48.4101877+03:00"

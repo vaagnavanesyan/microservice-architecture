@@ -74,4 +74,4 @@ metrics:
     enabled: true
 
 rabbitmqUsersQueue: users_queue
-rabbitmqUri: amqp://user:bX1DTrlOfH@rabbitmq:5672
+rabbitmqUri: amqp://user:bX1DTrlOfH@infrastructure-rabbitmq:5672

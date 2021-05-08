@@ -26,3 +26,12 @@ ambassador:
 
   rateLimit:
     create: false
+minio:
+  accessKey:
+    password: 5e8b5a92f22c0d7c290d44dc33a55709676d89f3
+  secretKey:
+    password: 5e8b5a92f22c0d7c290d44dc33a55709676d89f35e8b5a92f22c0d7c290d44dc33a55709676d89f3
+rabbitmq:
+  auth:
+    username: user
+    password: bX1DTrlOfH

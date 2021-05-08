@@ -10,6 +10,3 @@ helm install prom prometheus-community/kube-prometheus-stack  --atomic -n monito
 
 echo 🆖 Installing Nginx
 helm install nginx ingress-nginx/ingress-nginx --atomic -f "$dir_path/configs/nginx-ingress.yaml"
-
-echo 🐇 Installing RabbitMQ...
-helm install rabbitmq bitnami/rabbitmq --set auth.username=user --set auth.password=bX1DTrlOfH -n otus
