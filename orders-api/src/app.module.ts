@@ -3,13 +3,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NestMinioModule } from 'nestjs-minio';
 import { CommandHandlers } from './orders/commands/handlers';
 import { OrdersController } from './orders/controllers/orders.controller';
 import { EventHandlers } from './orders/events/handlers';
 import { OrdersHandler } from './orders/handlers/orders.handler';
 import { QueryHandlers } from './orders/queries/handlers';
 import { OrderRepository } from './orders/repositories/order.repository';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -22,6 +22,11 @@ import { OrderRepository } from './orders/repositories/order.repository';
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
       }),
+      inject: [ConfigService],
+    }),
+    NestMinioModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => JSON.parse(configService.get('MINIO_CONFIG')),
       inject: [ConfigService],
     }),
     RabbitMQModule.forRootAsync(RabbitMQModule, {

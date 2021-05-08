@@ -31,6 +31,12 @@ spec:
                   name: {{ .Values.secretName }}
                   key: DATABASE_URI
 
+            - name: MINIO_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: MINIO_CONFIG
+
             - name: RABBITMQ_URI
               valueFrom:
                 configMapKeyRef:

@@ -31,3 +31,4 @@ metrics:
 
 rabbitmqOrdersQueue: orders_queue
 rabbitmqUri: amqp://user:bX1DTrlOfH@infrastructure-rabbitmq:5672
+minioClientConfig: '{"endPoint":"infrastructure-minio","port":9000,"useSSL":false,"accessKey":"minio","secretKey":"b75794cba71f409f8ed8ea2528857736"}'

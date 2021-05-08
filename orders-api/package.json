@@ -32,6 +32,7 @@
     "@vaagnavanesyan/common": "1.3.0",
     "amqp-connection-manager": "^3.2.2",
     "amqplib": "^0.7.1",
+    "nestjs-minio": "^2.1.7",
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

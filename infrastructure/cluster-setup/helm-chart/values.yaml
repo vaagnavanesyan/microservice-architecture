@@ -27,10 +27,11 @@ ambassador:
   rateLimit:
     create: false
 minio:
+  defaultBuckets: images
   accessKey:
-    password: 5e8b5a92f22c0d7c290d44dc33a55709676d89f3
+    password: minio
   secretKey:
-    password: 5e8b5a92f22c0d7c290d44dc33a55709676d89f35e8b5a92f22c0d7c290d44dc33a55709676d89f3
+    password: b75794cba71f409f8ed8ea2528857736
 rabbitmq:
   auth:
     username: user
