@@ -72,8 +72,8 @@ export class OrdersController {
       throw new BadRequestException('Invalid user');
     }
 
-    const buffer = await this.queryBus.execute(new GetImageQuery({ ownerId, imageId }));
-    res.end(buffer, 'binary');
+    const fileReadStream = await this.queryBus.execute(new GetImageQuery({ ownerId, imageId }));
+    fileReadStream.pipe(res);
   }
 
   @Post()
@@ -96,6 +96,7 @@ export class OrdersController {
     if (!image) {
       throw new BadRequestException('image is required');
     }
+
     return this.commandBus.execute(
       new AddImageCommand({
         orderId,
