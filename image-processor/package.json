@@ -25,13 +25,14 @@
     "@nestjs/common": "^7.6.13",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.13",
-    "@vaagnavanesyan/common": "1.3.0",
+    "@vaagnavanesyan/common": "1.4.1",
     "amqp-connection-manager": "^3.2.2",
     "amqplib": "^0.7.1",
     "nestjs-minio": "^2.1.7",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "ts-simple-nameof": "^1.3.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",

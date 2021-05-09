@@ -1028,10 +1028,10 @@
     "@typescript-eslint/types" "4.20.0"
     eslint-visitor-keys "^2.0.0"
 
-"@vaagnavanesyan/common@1.3.0":
-  version "1.3.0"
-  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.3.0/9ee6c75f163b40f977bff8afa06135f3826750708947141696378b06c2a10404#8dc9712fc50d638078964f42eb4cac3d48af7e48"
-  integrity sha512-e8YyiFC80KmWl/YKnqPmQQnzb9M8XVjNV0Vt01Ktwdx0Qa6npiztFYvwZczpJR/nV71b30hqiSgXVw0w4Uh65A==
+"@vaagnavanesyan/common@1.4.1":
+  version "1.4.1"
+  resolved "https://npm.pkg.github.com/download/@vaagnavanesyan/common/1.4.1/9997fc1b0d23776fe62b04218e516947b4e745d51799d9a12e0ea348cf72466a#2501f83d06a1725755c314c9bb75d657a8247ce7"
+  integrity sha512-mqAzbO7Bz4p77kPhN8MB1YqQHZ0uo8laeYufhmr8GZ6qNLh78rfZggRIgyd9YjzmF1Aq3y2nX5jZlWuAUDx9HQ==
 
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
@@ -5469,6 +5469,11 @@ ts-node@^9.1.1:
     make-error "^1.1.1"
     source-map-support "^0.5.17"
     yn "3.1.1"
+
+ts-simple-nameof@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/ts-simple-nameof/-/ts-simple-nameof-1.3.1.tgz#9575c23373f4603aab028a9bd96d772d251ba9a2"
+  integrity sha512-E0xwaLwDmKmSmo4DE4i+Rp0CuixeZ6wJcn4+2OugzSoPxWW27aNRHhfhcfAELavHHS077dt998oXIMFq+MqeBw==
 
 tsconfig-paths-webpack-plugin@3.5.1:
   version "3.5.1"
