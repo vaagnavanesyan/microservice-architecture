@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configName }}
+data:
+  RABBITMQ_ORDERS_QUEUE: {{ .Values.rabbitmqOrdersQueue }}
+  RABBITMQ_URI: {{ .Values.rabbitmqUri }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.secretName }}
+type: Opaque
+data:
+  MINIO_CONFIG: {{ .Values.minioClientConfig | b64enc | quote }}

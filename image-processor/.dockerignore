@@ -1,0 +1,4 @@
+_templates
+node_modules
+helm-chart
+.env

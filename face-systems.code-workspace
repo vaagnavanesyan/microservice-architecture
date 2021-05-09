@@ -23,6 +23,9 @@
     },
     {
       "path": "infrastructure\\integration-tests"
+    },
+    {
+      "path": "image-processor"
     }
   ],
   "settings": {
