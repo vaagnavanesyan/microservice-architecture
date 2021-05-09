@@ -1,4 +1,4 @@
 export class OrderReadyToProcessPayload {
   orderId: number;
-  imageObjectNames: string[];
+  imageObjectPaths: string[];
 }
