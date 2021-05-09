@@ -1,0 +1,1 @@
+kubectl port-forward service/infrastructure-minio 9000:9000 -n otus
