@@ -42,7 +42,7 @@ export class OrdersHandler {
 
     const images = await getRepository(Image).find({ where: { order }, select: ['objectPath'] });
     const payload: OrderReadyToProcessPayload = {
-      imageObjectNames: images.map((e) => e.objectPath),
+      imageObjectPaths: images.map((e) => e.objectPath),
       orderId: order.id,
     };
     this.queue.publish(RabbitMQDirectExchange, nameof(OrderReadyToProcessEvent), payload);
