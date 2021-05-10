@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor", "ImageProcessor.csproj", "{043E1535-52E3-4F05-B1D1-719CD6BB5315}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor", "ImageProcessor\ImageProcessor.csproj", "{6CBE1AEB-643B-4BC1-A0CC-3DA738115A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{043E1535-52E3-4F05-B1D1-719CD6BB5315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{043E1535-52E3-4F05-B1D1-719CD6BB5315}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{043E1535-52E3-4F05-B1D1-719CD6BB5315}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{043E1535-52E3-4F05-B1D1-719CD6BB5315}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CBE1AEB-643B-4BC1-A0CC-3DA738115A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CBE1AEB-643B-4BC1-A0CC-3DA738115A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CBE1AEB-643B-4BC1-A0CC-3DA738115A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CBE1AEB-643B-4BC1-A0CC-3DA738115A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3C43BAE3-6C0B-4670-B526-55D10290809B}
+		SolutionGuid = {A5DA3A1B-6C4E-44F3-ABB2-006D55070FA2}
 	EndGlobalSection
 EndGlobal
