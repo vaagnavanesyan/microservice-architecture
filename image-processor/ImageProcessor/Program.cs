@@ -24,9 +24,13 @@ namespace ImageProcessor
               services.AddHostedService<Worker>();
               services.AddSingleton(context =>
               {
-                return new MinioClient("localhost:9000",
-                "minio",
-                "b75794cba71f409f8ed8ea2528857736"
+                var minioSettings = hostContext.Configuration.GetSection("Minio");
+                var endpoint = minioSettings.GetValue<string>("Endpoint");
+                var accessKey = minioSettings.GetValue<string>("AccessKey");
+                var secretKey = minioSettings.GetValue<string>("SecretKey");
+                return new MinioClient(endpoint,
+                accessKey,
+                secretKey
                 );
               });
               services.AddSingleton(context =>
