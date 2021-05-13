@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "image-processor-chart.fullname" . }}
+  labels:
+    {{- include "image-processor-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "image-processor-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "image-processor-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: IMAGE_PROCESSOR_Minio__Endpoint
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: MINIO_ENDPOINT
+
+            - name: IMAGE_PROCESSOR_Minio__AccessKey
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: MINIO_ACCESS_KEY
+
+            - name: IMAGE_PROCESSOR_Minio__SecretKey
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: MINIO_SECRET_KEY
+
+            - name: IMAGE_PROCESSOR_RabbitMQ__HostName
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: RABBITMQ_HOSTNAME
+
+            - name: IMAGE_PROCESSOR_RabbitMQ__UserName
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: RABBITMQ_USERNAME
+
+            - name: IMAGE_PROCESSOR_RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: RABBITMQ_PASSWORD
+
+            - name: IMAGE_PROCESSOR_RabbitMQ__OrdersQueue
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: RABBITMQ_ORDERS_QUEUE
+
+            - name: IMAGE_PROCESSOR_RabbitMQ__ProcessingQueue
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: RABBITMQ_PROCESSING_QUEUE
+
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
