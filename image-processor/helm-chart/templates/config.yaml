@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.secretName }}
+type: Opaque
+data:
+  MINIO_ENDPOINT: {{ .Values.minio.endpoint | b64enc | quote }}
+  MINIO_ACCESS_KEY: {{ .Values.minio.accessKey | b64enc | quote }}
+  MINIO_SECRET_KEY: {{ .Values.minio.secretKey | b64enc | quote }}
+
+  RABBITMQ_HOSTNAME: {{ .Values.rabbitmq.hostname | b64enc | quote }}
+  RABBITMQ_USERNAME: {{ .Values.rabbitmq.username | b64enc | quote }}
+  RABBITMQ_PASSWORD: {{ .Values.rabbitmq.password | b64enc | quote }}
+  RABBITMQ_ORDERS_QUEUE: {{ .Values.rabbitmq.ordersQueue | b64enc | quote }}
+  RABBITMQ_PROCESSING_QUEUE: {{ .Values.rabbitmq.processingQueue | b64enc | quote }}

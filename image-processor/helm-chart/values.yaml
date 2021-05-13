@@ -1,0 +1,21 @@
+replicaCount: 1
+
+configName: image-processor-config
+secretName: image-processor-secret
+image: vaagn/face-systems-image-processor
+
+metrics:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+
+rabbitmq:
+  hostname: infrastructure-rabbitmq
+  username: user
+  password: bX1DTrlOfH
+  ordersQueue: orders_queue
+  processingQueue: processing-queue
+minio:
+  endpoint: infrastructure-minio:9000
+  accessKey: minio
+  secretKey: b75794cba71f409f8ed8ea2528857736
