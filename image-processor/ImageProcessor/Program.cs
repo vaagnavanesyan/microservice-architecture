@@ -3,10 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Minio;
 using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ImageProcessor
 {
@@ -19,6 +15,10 @@ namespace ImageProcessor
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+             .ConfigureAppConfiguration((hostingContext, config) =>
+             {
+               config.AddEnvironmentVariables(prefix: "IMAGE_PROCESSOR_");
+             })
             .ConfigureServices((hostContext, services) =>
             {
               services.AddHostedService<Worker>();
@@ -28,6 +28,7 @@ namespace ImageProcessor
                 var endpoint = minioSettings.GetValue<string>("Endpoint");
                 var accessKey = minioSettings.GetValue<string>("AccessKey");
                 var secretKey = minioSettings.GetValue<string>("SecretKey");
+
                 return new MinioClient(endpoint,
                 accessKey,
                 secretKey
@@ -39,7 +40,11 @@ namespace ImageProcessor
                 var hostname = rmqSettings.GetValue<string>("HostName");
                 var username = rmqSettings.GetValue<string>("UserName");
                 var password = rmqSettings.GetValue<string>("Password");
-                return new ConnectionFactory() { HostName = hostname, UserName = username, Password = password , DispatchConsumersAsync = true};
+
+                var ordersQueue = rmqSettings.GetValue<string>("OrdersQueue");
+                var procQueue = rmqSettings.GetValue<string>("ProcessingQueue");
+
+                return new ConnectionFactory() { HostName = hostname, UserName = username, Password = password, DispatchConsumersAsync = true };
               });
             });
   }

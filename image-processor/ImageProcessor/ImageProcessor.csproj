@@ -20,9 +20,6 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="048.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Cascades\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
