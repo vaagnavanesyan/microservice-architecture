@@ -41,9 +41,6 @@ namespace ImageProcessor
                 var username = rmqSettings.GetValue<string>("UserName");
                 var password = rmqSettings.GetValue<string>("Password");
 
-                var ordersQueue = rmqSettings.GetValue<string>("OrdersQueue");
-                var procQueue = rmqSettings.GetValue<string>("ProcessingQueue");
-
                 return new ConnectionFactory() { HostName = hostname, UserName = username, Password = password, DispatchConsumersAsync = true };
               });
             });

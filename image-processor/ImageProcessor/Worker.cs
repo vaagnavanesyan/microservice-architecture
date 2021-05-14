@@ -18,28 +18,41 @@ namespace ImageProcessor
   public class Worker : BackgroundService
   {
     private readonly ILogger<Worker> _logger;
+    private readonly IConfiguration _configuration;
     private readonly ConnectionFactory _factory;
     private readonly MinioClient _minioClient;
-    private IModel _channel;
+    private IModel _processingQueue;
+    private IModel _ordersQueue;
 
     public Worker(ILogger<Worker> logger, IConfiguration configuration, ConnectionFactory factory, MinioClient minioClient)
     {
       _logger = logger;
+      _configuration = configuration;
       _factory = factory;
       _minioClient = minioClient;
+
+
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-      var queueName = "processing-queue";
-      using var connection = _factory.CreateConnection();
-      _channel = connection.CreateModel();
-      _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-      _channel.QueueBind(queue: queueName, exchange: "amq.direct", routingKey: "OrderReadyToProcessEvent");
+      var rmqSettings = _configuration.GetSection("RabbitMQ");
 
-      var consumer = new AsyncEventingBasicConsumer(_channel);
+      var ordersQueue = rmqSettings.GetValue<string>("OrdersQueue");
+      var processingQueue = rmqSettings.GetValue<string>("ProcessingQueue");
+
+
+      using var connection = _factory.CreateConnection();
+      _processingQueue = connection.CreateModel();
+      _processingQueue.QueueDeclare(queue: processingQueue, durable: true, exclusive: false, autoDelete: false, arguments: null);
+      _processingQueue.QueueBind(queue: processingQueue, exchange: "amq.direct", routingKey: "OrderReadyToProcessEvent");
+
+      var consumer = new AsyncEventingBasicConsumer(_processingQueue);
+      _processingQueue.BasicConsume(queue: processingQueue, autoAck: false, consumer: consumer);
       consumer.Received += OnMessageReceived;
-      _channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
+
+      _ordersQueue = connection.CreateModel();
+
       while (!stoppingToken.IsCancellationRequested)
       {
         await Task.Delay(500);
@@ -75,7 +88,17 @@ namespace ImageProcessor
           await _minioClient.PutObjectAsync("images", imagePath.Replace("original", "processed"), sourceStream, sourceStream.Length);
         }
         _logger.LogInformation("Message processed");
-        _channel.BasicAck(e.DeliveryTag, false);
+        //TODO: to lowercase
+        var payload = JsonSerializer.Serialize(new
+        {
+          orderId = message.OrderId,
+          payerEmail = message.PayerEmail,
+          firstName = message.FirstName,
+          lastName = message.LastName
+        });
+
+        _ordersQueue.BasicPublish(exchange: "amq.direct", routingKey: "OrderProcessedEvent", basicProperties: null, body: Encoding.UTF8.GetBytes(payload));
+        _processingQueue.BasicAck(e.DeliveryTag, false);
       }
       catch (Exception ex)
       {
