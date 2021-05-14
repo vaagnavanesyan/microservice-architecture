@@ -51,4 +51,16 @@ export class OrdersHandler {
     };
     this.queue.publish(RabbitMQDirectExchange, nameof(OrderReadyToProcessEvent), payload);
   }
+
+  @RabbitSubscribe({
+    exchange: RabbitMQDirectExchange,
+    routingKey: 'OrderProcessedEvent',
+    queue: `${Queues.OrdersQueue}-order-processed`,
+  })
+  public async handleOrderProcessed({ orderId }) {
+    const order = await getRepository(Order).findOne(orderId);
+    order.status = OrderStatuses.Processed;
+    await order.save();
+    console.log(`Order ${orderId} successfully processed`);
+  }
 }
