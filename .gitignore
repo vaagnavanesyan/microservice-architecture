@@ -4,3 +4,4 @@
 *.bak_000f
 dbeaver/.dbeaver/credentials-config.json
 dbeaver/.dbeaver/.credentials-config.json.bak
+dbeaver/.dbeaver/.data-sources.json.bak
