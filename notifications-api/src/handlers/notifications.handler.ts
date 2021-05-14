@@ -1,6 +1,7 @@
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 import {
+  OrderReadyToProcessPayload,
   PaymentProceedEvent,
   PaymentProceedPayload,
   PaymentRefusedEvent,
@@ -46,6 +47,19 @@ export class NotificationsHandler {
     ${payedAt}
     `;
 
+    await getRepository(Notification).save({ email: payerEmail, message });
+  }
+
+  @RabbitSubscribe({
+    exchange: RabbitMQDirectExchange,
+    routingKey: 'OrderProcessedEvent',
+    queue: 'notifications-order-processed',
+  })
+  public async handleOrderProcessed(data: OrderReadyToProcessPayload) {
+    const { firstName, lastName, orderId, payerEmail } = data;
+    const message = `${firstName} ${lastName},
+    Заказ #${orderId} успешно обработан!
+    `;
     await getRepository(Notification).save({ email: payerEmail, message });
   }
 }
