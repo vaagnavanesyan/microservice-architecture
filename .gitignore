@@ -2,3 +2,5 @@
 **/*/.env
 **/*/*.db
 *.bak_000f
+dbeaver/.dbeaver/credentials-config.json
+dbeaver/.dbeaver/.credentials-config.json.bak
