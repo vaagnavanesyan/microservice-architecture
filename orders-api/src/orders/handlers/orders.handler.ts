@@ -36,12 +36,16 @@ export class OrdersHandler {
     queue: `${Queues.BillingQueue}-processed-orders-api`,
   })
   public async handlePaymentProceed(data: PaymentProceedPayload) {
-    const order = await getRepository(Order).findOne(data.orderId);
+    const { firstName, lastName, orderId, payerEmail } = data;
+    const order = await getRepository(Order).findOne(orderId);
     order.status = OrderStatuses.PaymentSucceeded;
     await order.save();
 
     const images = await getRepository(Image).find({ where: { order }, select: ['objectPath'] });
     const payload: OrderReadyToProcessPayload = {
+      payerEmail,
+      firstName,
+      lastName,
       imageObjectPaths: images.map((e) => e.objectPath),
       orderId: order.id,
     };
