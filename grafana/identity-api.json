@@ -750,7 +750,7 @@
         "handler": 1,
         "message": "There are a lot of errors in app :(",
         "name": "Errors count alert",
-        "noDataState": "no_data",
+        "noDataState": "ok",
         "notifications": [
           {
             "uid": "3qTiflCGk"
@@ -989,5 +989,5 @@
   "timezone": "",
   "title": "Identity API",
   "uid": "5INd-31Mz",
-  "version": 12
+  "version": 14
 }
