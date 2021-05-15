@@ -1,1 +1,0 @@
-kubectl port-forward services/infrastructure-rabbitmq 15672:15672 5672:5672 -n otus
