@@ -1,5 +1,5 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RabbitMQDirectExchange, UserCreatedEvent } from '@vaagnavanesyan/common';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
@@ -8,9 +8,11 @@ import { pem2jwk } from 'pem-jwk';
 import { Counter } from 'prom-client';
 import { nameof } from 'ts-simple-nameof';
 import { SignInDto, SignUpDto } from '../dto';
+import { MetricsInterceptor } from '../interceptors';
 import { AppMetrics, AuthService } from '../services';
 
 @Controller('auth')
+@UseInterceptors(MetricsInterceptor)
 export class AuthController {
   constructor(
     @InjectMetric(AppMetrics.signInCount.name) public signInCounter: Counter<string>,
