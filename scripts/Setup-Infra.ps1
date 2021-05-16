@@ -1,3 +1,5 @@
+kubectl create ns otus
+
 Write-Host 🔥 Installing Prometheus
 kubectl create ns monitoring
 helm install prom prometheus-community/kube-prometheus-stack  --atomic -n monitoring -f $(Join-Path -Path $PSScriptRoot -ChildPath "./configs/prometheus.yaml")

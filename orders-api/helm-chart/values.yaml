@@ -25,9 +25,9 @@ postgresql:
     port: '5432'
 
 metrics:
-  enabled: false
+  enabled: true
   serviceMonitor:
-    enabled: false
+    enabled: true
 
 rabbitmqOrdersQueue: orders_queue
 rabbitmqUri: amqp://user:bX1DTrlOfH@infrastructure-rabbitmq:5672

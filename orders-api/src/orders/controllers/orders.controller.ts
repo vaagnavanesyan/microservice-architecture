@@ -13,21 +13,30 @@ import {
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Request, Response } from 'express';
+import { Counter } from 'prom-client';
 import { AddImageCommand } from '../commands/impl/add-image.command';
 import { CancelOrderCommand } from '../commands/impl/cancel-order.command';
 import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
 import { CreateOrderCommand } from '../commands/impl/create-order.command';
 import { RemoveImageCommand } from '../commands/impl/remove-image.command';
 import { OrderStatuses } from '../enums/order-statuses.enum';
+import { MetricsInterceptor } from '../interceptors/metrics.interceptor';
 import { GetImageQuery } from '../queries/impl/get-image.query';
 import { GetOrderQuery } from '../queries/impl/get-order.query';
 import { GetOrdersQuery } from '../queries/impl/get-orders.query';
 import { SortByColumns } from '../queries/payloads/get-orders.payload';
+import { AppMetrics } from '../services/metrics.provider';
 
 @Controller()
+@UseInterceptors(MetricsInterceptor)
 export class OrdersController {
-  constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+  constructor(
+    @InjectMetric(AppMetrics.ordersCount.name) public ordersCount: Counter<string>,
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
   @Get()
   getOrders(
@@ -82,6 +91,7 @@ export class OrdersController {
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
     }
+    this.ordersCount.inc();
     return this.commandBus.execute(new CreateOrderCommand({ ownerId }));
   }
 
