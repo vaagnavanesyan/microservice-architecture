@@ -21,6 +21,10 @@ spec:
         - name: "facesystems-jwt-filter"
 
     - host: "*"
+      path: "/api/billing/api/metrics"
+      filters: null
+
+    - host: "*"
       path: "/api/billing*"
       filters:
         - name: "facesystems-jwt-filter"

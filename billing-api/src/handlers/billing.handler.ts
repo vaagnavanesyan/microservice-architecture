@@ -12,13 +12,20 @@ import {
   UserCreatedEvent,
   UserCreatedPayload,
 } from '@vaagnavanesyan/common';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Counter } from 'prom-client';
 import { User } from 'src/entities/user.entity';
+import { AppMetrics } from 'src/services';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 
 @Injectable()
 export class BillingHandler {
-  constructor(private readonly queue: AmqpConnection) {}
+  constructor(
+    @InjectMetric(AppMetrics.succeedPaymentsCount.name) public succeedPaymentsCount: Counter<string>,
+
+    private readonly queue: AmqpConnection,
+  ) {}
 
   @RabbitSubscribe({ exchange: RabbitMQDirectExchange, routingKey: nameof(UserCreatedEvent), queue: Queues.UsersQueue })
   public async handleUserCreated(data: UserCreatedPayload) {
@@ -51,6 +58,7 @@ export class BillingHandler {
         payedAt: new Date(),
       };
       this.queue.publish(RabbitMQDirectExchange, nameof(PaymentProceedEvent), payload);
+      this.succeedPaymentsCount.inc();
     } else {
       const payload: PaymentRefusedPayload = {
         amount: user.amount,
