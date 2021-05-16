@@ -5,9 +5,13 @@ metadata:
 spec:
   rules:
     - host: "*"
+      path: "/api/users/metrics"
+      filters: null
+    - host: "*"
       path: "/api/users/*"
       filters:
         - name: "facesystems-jwt-filter"
+
     - host: "*"
       path: "/api/orders/api/metrics"
       filters: null
