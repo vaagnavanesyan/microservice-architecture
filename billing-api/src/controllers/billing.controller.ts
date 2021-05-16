@@ -1,9 +1,20 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Req,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Request } from 'express';
+import { MetricsInterceptor } from 'src/interceptors';
 import { getRepository } from 'typeorm';
 import { User } from '../entities/user.entity';
 
 @Controller()
+@UseInterceptors(MetricsInterceptor)
 export class BillingController {
   @Get()
   async getUserAccount(@Req() request: Request): Promise<User> {
