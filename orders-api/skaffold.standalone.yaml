@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta9
+kind: Config
+deploy:
+  helm:
+    releases:
+      - name: orders-api
+        chartPath: helm-chart
+        skipBuildDependencies: true
+        namespace: otus
+        createNamespace: true
+        setValues:
+          image: vaagn/face-systems-orders-api:0.8.0
+          postgresql.metrics.enabled: false
+          postgresql.metrics.serviceMonitor.enabled: false
+          metrics.enabled: false
+          metrics.serviceMonitor.enabled: false
