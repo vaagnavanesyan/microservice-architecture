@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Controller,
   Delete,
   Get,
@@ -16,11 +17,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Request, Response } from 'express';
 import { Counter } from 'prom-client';
+import { getRepository } from 'typeorm';
 import { AddImageCommand } from '../commands/impl/add-image.command';
 import { CancelOrderCommand } from '../commands/impl/cancel-order.command';
 import { CheckoutOrderCommand } from '../commands/impl/checkout-order.command';
 import { CreateOrderCommand } from '../commands/impl/create-order.command';
 import { RemoveImageCommand } from '../commands/impl/remove-image.command';
+import { Order } from '../entities';
 import { OrderStatuses } from '../enums/order-statuses.enum';
 import { MetricsInterceptor } from '../interceptors/metrics.interceptor';
 import { GetImageQuery } from '../queries/impl/get-image.query';
@@ -39,8 +42,9 @@ export class OrdersController {
   ) {}
 
   @Get()
-  getOrders(
+  async getOrders(
     @Req() request: Request,
+    @Res() respone: Response,
     @Query('status') status?: OrderStatuses,
     @Query('sortBy') sortBy?: SortByColumns,
     @Query('asc') asc?: string,
@@ -52,7 +56,7 @@ export class OrdersController {
     }
 
     const isAdmin = request.headers['x-admin'] === 'true';
-    return this.queryBus.execute(
+    const orders = await this.queryBus.execute(
       new GetOrdersQuery({
         ownerId,
         isAdmin,
@@ -61,6 +65,9 @@ export class OrdersController {
         asc: asc !== 'false',
       }),
     );
+    const ordersCount = await getRepository(Order).count({ where: { ownerId } });
+    respone.header('ETag', ordersCount.toString());
+    respone.send(orders);
   }
 
   @Get(':orderId')
@@ -90,6 +97,12 @@ export class OrdersController {
     const ownerId = parseInt(request.headers['x-userid'] as string, 10);
     if (!ownerId) {
       throw new BadRequestException('Invalid user');
+    }
+
+    const etag = parseInt(request.headers['if-match']);
+    const ordersCount = await getRepository(Order).count({ where: { ownerId } });
+    if (etag !== ordersCount) {
+      throw new ConflictException();
     }
     this.ordersCount.inc();
     return this.commandBus.execute(new CreateOrderCommand({ ownerId }));
