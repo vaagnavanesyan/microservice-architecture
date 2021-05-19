@@ -20,12 +20,9 @@ export class GetOrdersHandler implements IQueryHandler<GetOrdersQuery> {
     }
 
     if (payload.sortBy) {
-      builder.orderBy(
-        `${alias}.${payload.sortBy}`,
-        payload.asc === false ? 'DESC' : 'ASC',
-      );
+      builder.orderBy(`${alias}.${payload.sortBy}`, payload.asc === false ? 'DESC' : 'ASC');
     }
 
-    return builder.getManyAndCount();
+    return builder.getMany();
   }
 }
