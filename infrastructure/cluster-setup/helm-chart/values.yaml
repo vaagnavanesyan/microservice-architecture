@@ -56,4 +56,9 @@ ingress-nginx:
       enabled: true
       serviceMonitor:
         enabled: true
-
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+      serviceMonitorSelector: {}
+      enableAdminAPI: true
