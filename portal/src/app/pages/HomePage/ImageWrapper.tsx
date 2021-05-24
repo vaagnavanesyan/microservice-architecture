@@ -1,13 +1,10 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
 
-export function Masthead() {
+export function ImageWrapper({ src }) {
   return (
     <Wrapper>
-      <Image
-        src={process.env.PUBLIC_URL + '/facialrecognition.jpg'}
-        alt="Logo"
-      />
+      <Image src={`${process.env.PUBLIC_URL}/${src}`} alt="Logo" />
     </Wrapper>
   );
 }
@@ -17,7 +14,6 @@ const Image = styled.img`
 `;
 
 const Wrapper = styled.main`
-  height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
