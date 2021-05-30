@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY ./package.json .
 COPY ./yarn.lock .
-RUN yarn
+RUN yarn && yarn cache clean
 COPY . .
 RUN yarn build
 
