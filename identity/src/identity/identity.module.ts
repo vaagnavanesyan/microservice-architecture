@@ -4,7 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as jose from 'node-jose';
 import { AuthController, HealthController, UsersController } from './controllers';
 import { UserRepository } from './repositories';
 import { AuthService, JwtStrategy } from './services';
@@ -18,8 +17,8 @@ import { MetricsProviders } from './services/metrics.provider';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => {
         const options: JwtModuleOptions = {
-          privateKey: jose.util.base64url.decode(configService.get('PRIVATE_KEY')).toString('utf-8'),
-          publicKey: jose.util.base64url.decode(configService.get('PUBLIC_KEY')).toString('utf-8'),
+          privateKey: atob(configService.get('PRIVATE_KEY')),
+          publicKey: atob(configService.get('PUBLIC_KEY')),
           signOptions: {
             expiresIn: 3600,
             algorithm: 'RS256',

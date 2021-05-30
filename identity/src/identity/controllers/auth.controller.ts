@@ -3,7 +3,6 @@ import { Body, Controller, Get, Post, UseInterceptors, ValidationPipe } from '@n
 import { ConfigService } from '@nestjs/config';
 import { RabbitMQDirectExchange, UserCreatedEvent } from '@vaagnavanesyan/common';
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
-import * as jose from 'node-jose';
 import { pem2jwk } from 'pem-jwk';
 import { Counter } from 'prom-client';
 import { nameof } from 'ts-simple-nameof';
@@ -40,7 +39,7 @@ export class AuthController {
 
   @Get('/.well-known/jwks.json')
   async jwks() {
-    const pem = jose.util.base64url.decode(this.configService.get('PUBLIC_KEY')).toString('utf-8');
+    const pem = atob(this.configService.get('PUBLIC_KEY'));
     const jwk = pem2jwk(pem);
     return { keys: [{ ...jwk, kid: '1' }] };
   }
