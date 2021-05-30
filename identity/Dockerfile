@@ -1,4 +1,4 @@
-FROM node:14.15.5-alpine3.10 as builder
+FROM node:16-alpine3.11 as builder
 WORKDIR /app
 
 ARG NPM_TOKEN
@@ -11,7 +11,7 @@ COPY . .
 RUN yarn build
 
 
-FROM node:14.15.5-alpine3.10
+FROM node:16-alpine3.11
 EXPOSE 8000
 WORKDIR /app
 
