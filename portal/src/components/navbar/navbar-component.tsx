@@ -1,24 +1,20 @@
+import { FileImageOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 import React from 'react';
 import './navbar-component.css';
+
 export const NavBar = () => (
-  <header>
-    <h1 className="logo">FaceSystems</h1>
-    <input type="checkbox" id="nav-toggle" className="nav-toggle" />
-    <nav>
-      <ul>
-        <li>
-          <a href="/orders">Orders</a>
-        </li>
-        <li>
-          <a href="/profile">Profile</a>
-        </li>
-        <li>
-          <a href="/logout">Log out</a>
-        </li>
-      </ul>
-    </nav>
-    <label htmlFor="nav-toggle" className="nav-toggle-label">
-      <span></span>
-    </label>
-  </header>
+  <Menu theme="dark" mode="horizontal">
+    <Menu.Item key="orders" icon={<FileImageOutlined />}>
+      <a href="/orders">Orders</a>
+    </Menu.Item>
+    <Menu.SubMenu key="account" icon={<UserOutlined />} title="Account">
+      <Menu.Item key="profile" icon={<UserOutlined />}>
+        <a href="/profile">Profile</a>
+      </Menu.Item>
+      <Menu.Item key="logout" icon={<LogoutOutlined />}>
+        <a href="/logout">Log out</a>
+      </Menu.Item>
+    </Menu.SubMenu>
+  </Menu>
 );
