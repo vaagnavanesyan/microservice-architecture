@@ -1,27 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,600');
-
-:root {
-  --background: rgba(0, 214, 170, 0.85);
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #222;
-  font-family: 'Work Sans', sans-serif;
-  font-weight: 400;
+.header {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
 }
 
 .content {
-  background-image: url(//unsplash.it/1000/1000);
-  background-color: #333;
-  background-blend-mode: multiply;
-  background-size: cover;
-  display: grid;
-  place-items: center;
+  margin-top: 6em;
 }
