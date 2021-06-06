@@ -8,6 +8,7 @@ import { NavBar } from './components/navbar/navbar-component';
 import { OrdersEmptyList } from './components/orders/empty/orders-empty.component';
 import { Orders } from './components/orders/orders-component';
 import { SuccessMessage } from './components/success/success-component';
+import { isAuthorized } from './utils/api-requests';
 
 const App = () => {
   return (
@@ -37,7 +38,7 @@ const App = () => {
 };
 
 function PrivateRoute({ children, ...rest }) {
-  let auth = true; //isAuthorized();
+  let auth = isAuthorized();
   return (
     <Route
       {...rest}
