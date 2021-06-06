@@ -8,8 +8,9 @@ export const NavBar = () => {
   const [fullName, setFullName] = useState('');
   const [amount, setAmount] = useState(0.0);
   useEffect(() => {
-    console.log('Get profile...');
-    getProfile().then((profile) => setFullName(`${profile.firstName} ${profile.lastName}`));
+    getProfile().then((profile) =>
+      profile ? setFullName(`${profile.firstName} ${profile.lastName}`) : setFullName('Unauthorized User')
+    );
     getAmount().then(setAmount);
   }, []);
   return (

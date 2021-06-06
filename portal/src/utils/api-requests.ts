@@ -21,7 +21,7 @@ export async function getProfile(): Promise<Profile> {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
-  }).then((e) => e.json());
+  }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
 export async function updateProfile(firstName: string, lastName: string): Promise<void> {
@@ -48,8 +48,8 @@ export function signOut() {
 }
 
 export async function getAmount() {
-  const { amount } = await get('/api/billing');
-  return amount;
+  const response = await get<any>('/api/billing');
+  return response?.amount;
 }
 
 function getToken(): string {
@@ -62,7 +62,7 @@ async function get<T>(url): Promise<T> {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
-  }).then((e) => e.json());
+  }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
 async function post<T>(url, body): Promise<T> {
@@ -73,5 +73,5 @@ async function post<T>(url, body): Promise<T> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-  }).then((e) => e.json());
+  }).then((e) => (e.status >= 400 ? null : e.json()));
 }
