@@ -17,6 +17,11 @@ $minio = Start-Job -ScriptBlock { kubectl port-forward service/infrastructure-mi
 Write-Host 🐰 Forwarding RabbitMQ...
 $rabbitmq = Start-Job -ScriptBlock { kubectl port-forward services/infrastructure-rabbitmq 15672 5672 -n otus }
 
+Write-Host Forwarding databases...
+$billing_db = Start-Job -ScriptBlock { kubectl port-forward service/billing-api-postgresql 30020:5432 -n otus }
+$identity_db = Start-Job -ScriptBlock { kubectl port-forward service/identity-postgresql 32534:5432 -n otus }
+$notifications_db = Start-Job -ScriptBlock { kubectl port-forward service/notifications-api-postgresql 30030:5432 -n otus }
+$orders_db = Start-Job -ScriptBlock { kubectl port-forward service/orders-api-postgresql 30001:5432 -n otus }
 try {
     while ($true) {
         $dashboard | Receive-Job
@@ -25,6 +30,11 @@ try {
         $grafana | Receive-Job
         $minio | Receive-Job
         $rabbitmq | Receive-Job
+        $billing_db | Receive-Job
+        $identity_db | Receive-Job
+        $notifications_db | Receive-Job
+        $orders_db | Receive-Job
+
     }
 }
 finally {
@@ -45,4 +55,10 @@ finally {
 
     Write-Host 🐰 Detaching from rabbitMQ...
     $rabbitmq | Stop-Job
+
+    Write-Host Detaching from databases...
+    $billing_db | Stop-Job
+    $identity_db | Stop-Job
+    $notifications_db | Stop-Job
+    $orders_db | Stop-Job
 }
