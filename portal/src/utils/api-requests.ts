@@ -4,7 +4,10 @@ export interface Profile {
   firstName: string;
   lastName: string;
 }
-
+export interface SignUpPayload extends Profile {
+  password: string;
+  isAdmin: boolean;
+}
 export async function signIn(email: string, password: string): Promise<string> {
   const { accessToken } = await post<{ accessToken: string }>('/api/auth/signin', {
     email,
@@ -14,6 +17,11 @@ export async function signIn(email: string, password: string): Promise<string> {
     localStorage.setItem(tokenStorageKey, accessToken);
   }
   return accessToken;
+}
+
+export async function signUp(payload: SignUpPayload) {
+  await post('/api/auth/signup', payload, false);
+  return signIn(payload.email, payload.password);
 }
 
 export async function getProfile(): Promise<Profile> {
@@ -65,13 +73,14 @@ async function get<T>(url): Promise<T> {
   }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
-async function post<T>(url, body): Promise<T> {
+async function post<T>(url, body, parseJson = true): Promise<T> {
   console.log(`POST ${url}`);
-  return fetch(url, {
+  const response = fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
-  }).then((e) => (e.status >= 400 ? null : e.json()));
+  });
+  return parseJson ? response.then((e) => (e.status >= 400 ? null : e.json())) : response;
 }
