@@ -7,7 +7,7 @@ import { Login } from './components/login/login-component';
 import { NavBar } from './components/navbar/navbar-component';
 import { OrdersEmptyList } from './components/orders/empty/orders-empty.component';
 import { Orders } from './components/orders/orders-component';
-import { SuccessMessage } from './components/success/success-component';
+import { SignUp } from './components/signup/signup-component';
 import { isAuthorized } from './utils/api-requests';
 
 const App = () => {
@@ -21,11 +21,16 @@ const App = () => {
           <Layout.Content className="content">
             <Switch>
               {/* TODO: Change to real home page*/}
-              <Route exact path="/" component={SuccessMessage} />
-              <Route path="/signin" component={Login}></Route>
+              <Route exact path="/">
+                <Redirect to="/orders" />
+              </Route>
+              <Route path="/signin">{isAuthorized() ? <Redirect to="/orders" /> : <Login />}</Route>
+              <Route path="/signup">{isAuthorized() ? <Redirect to="/orders" /> : <SignUp />}</Route>
+
               <PrivateRoute path="/orders">
                 <Orders />
               </PrivateRoute>
+
               {/* TODO: Not found page here */}
               <Route component={OrdersEmptyList} />
             </Switch>
