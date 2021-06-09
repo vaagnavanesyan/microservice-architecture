@@ -13,6 +13,7 @@ import {
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
 import { Image, Order } from '../entities';
+import { Position } from '../entities/position.entity';
 import { OrderStatuses } from '../enums/order-statuses.enum';
 
 @Injectable()
@@ -41,7 +42,15 @@ export class OrdersHandler {
     order.status = OrderStatuses.PaymentSucceeded;
     await order.save();
 
-    const images = await getRepository(Image).find({ where: { order }, select: ['objectPath'] });
+    const positions = await getRepository(Position).find({ where: { order }, select: ['id'] });
+    const positionIds = positions.map((e) => e.id);
+
+    const images = await getRepository(Image)
+      .createQueryBuilder('image')
+      .where('image.positionId IN (:...positionIds)', { positionIds })
+      .select('image.objectPath')
+      .getMany();
+
     const payload: OrderReadyToProcessPayload = {
       payerEmail,
       firstName,
@@ -49,6 +58,7 @@ export class OrdersHandler {
       imageObjectPaths: images.map((e) => e.objectPath),
       orderId: order.id,
     };
+
     this.queue.publish(RabbitMQDirectExchange, nameof(OrderReadyToProcessEvent), payload);
   }
 
