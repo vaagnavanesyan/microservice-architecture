@@ -29,6 +29,7 @@ import { MetricsInterceptor } from '../interceptors/metrics.interceptor';
 import { GetImageQuery } from '../queries/impl/get-image.query';
 import { GetOrderQuery } from '../queries/impl/get-order.query';
 import { GetOrdersQuery } from '../queries/impl/get-orders.query';
+import { GetPositionQuery } from '../queries/impl/get-position.query';
 import { SortByColumns } from '../queries/payloads/get-orders.payload';
 import { AppMetrics } from '../services/metrics.provider';
 
@@ -81,7 +82,17 @@ export class OrdersController {
     return this.queryBus.execute(new GetOrderQuery({ ownerId, orderId, isAdmin }));
   }
 
-  @Get('image/:imageId')
+  @Get('positions/:positionId')
+  async getPosition(@Req() request: Request, @Param('positionId') positionId: number) {
+    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
+    if (!ownerId) {
+      throw new BadRequestException('Invalid user');
+    }
+
+    return this.queryBus.execute(new GetPositionQuery({ positionId }));
+  }
+
+  @Get('images/:imageId')
   async getImage(@Req() request: Request, @Res() res: Response, @Param('imageId') imageId: number) {
     const ownerId = parseInt(request.headers['x-userid'] as string, 10);
     if (!ownerId) {
