@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Order } from './order.entity';
+import { Position } from './position.entity';
 
 @Entity()
 export class Image extends BaseEntity {
@@ -7,5 +8,5 @@ export class Image extends BaseEntity {
   @Column() fileName: string;
 
   @Column({ nullable: true }) objectPath: string;
-  @ManyToOne((_) => Order, (order) => order.images) order: Order;
+  @Column() positionId: number;
 }

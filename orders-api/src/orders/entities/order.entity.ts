@@ -1,17 +1,12 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { OrderStatuses } from '../enums/order-statuses.enum';
 import { Image } from './image.entity';
+import { Position } from './position.entity';
 
 @Entity()
 export class Order extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
-  @OneToMany((_) => Image, (image) => image.order) images: Image[];
+  @OneToMany((_) => Position, (position) => position.order) positions: Image[];
   @Column() createdAt: Date;
 
   // For TypeORM we need specify type explicitly
