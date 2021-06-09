@@ -1,6 +1,7 @@
 import { ForbiddenException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Image, Order } from 'src/orders/entities';
+import { Position } from 'src/orders/entities/position.entity';
 import { getRepository } from 'typeorm';
 import { GetOrderQuery } from '../impl/get-order.query';
 
@@ -13,15 +14,14 @@ export class GetOrderHandler implements IQueryHandler<GetOrderQuery> {
       throw new ForbiddenException('You have no rights to access this resource');
     }
 
-    const imagesRepo = getRepository(Image);
-    const images = await imagesRepo.find({
+    const positions = await getRepository(Position).find({
       where: { order },
-      select: ['id', 'fileName'],
+      select: ['id', 'processedImageId', 'originalImageId'],
     });
 
     return {
       ...order,
-      images,
+      positions,
     };
   }
 }
