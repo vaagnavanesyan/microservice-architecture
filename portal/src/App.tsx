@@ -1,7 +1,8 @@
+import './App.css';
+
 import { Layout } from 'antd';
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import './App.css';
 import { Footer } from './components/footer/footer-component';
 import { Login } from './components/login/login-component';
 import { NavBar } from './components/navbar/navbar-component';
@@ -14,7 +15,7 @@ const App = () => {
   return (
     <>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-        <Layout>
+        <Layout className="container">
           <Layout.Header className="header">
             <NavBar />
           </Layout.Header>
