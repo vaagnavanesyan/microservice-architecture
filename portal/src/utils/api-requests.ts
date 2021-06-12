@@ -1,13 +1,20 @@
+import { Order } from '../types/order';
+import { OrderStatuses } from '../types/order-statuses';
+import { Profile } from '../types/profile';
+
 const tokenStorageKey = 'accessToken';
-export interface Profile {
-  email: string;
-  firstName: string;
-  lastName: string;
-}
+
 export interface SignUpPayload extends Profile {
   password: string;
   isAdmin: boolean;
 }
+
+export interface GetOrdersParams {
+  status?: OrderStatuses;
+  sortBy?: 'createdAt' | 'price';
+  asc?: boolean;
+}
+
 export async function signIn(email: string, password: string): Promise<string> {
   const { accessToken } = await post<{ accessToken: string }>('/api/auth/signin', {
     email,
@@ -45,6 +52,16 @@ export async function updateProfile(firstName: string, lastName: string): Promis
     console.log('Token was updated');
     localStorage.setItem(tokenStorageKey, accessToken);
   }
+}
+
+type OrderResponse = Omit<Order, 'createdAt'> & { createdAt: string };
+export async function getOrders(params?: GetOrdersParams): Promise<Order[]> {
+  let url = '/api/orders';
+  if (params) {
+    url += `?${new URLSearchParams(Object.entries(params))}`;
+  }
+
+  return (await get<OrderResponse[]>(url)).map((e) => ({ ...e, createdAt: new Date(e.createdAt) }));
 }
 
 export function isAuthorized(): boolean {
