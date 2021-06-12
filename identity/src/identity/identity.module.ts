@@ -20,7 +20,7 @@ import { MetricsProviders } from './services/metrics.provider';
           privateKey: atob(configService.get('PRIVATE_KEY')),
           publicKey: atob(configService.get('PUBLIC_KEY')),
           signOptions: {
-            expiresIn: 3600,
+            expiresIn: 36000,
             algorithm: 'RS256',
           },
         };
