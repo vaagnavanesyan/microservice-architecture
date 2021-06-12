@@ -4,29 +4,31 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getOrder } from '../../utils/api-requests';
+import { AddImageStep } from './steps/add-images.step';
 
 const { Step } = Steps;
 const steps = [
   {
     title: 'Добавление изображений',
     icon: <FileImageOutlined />,
-    content: 'добавление',
+    content: order => <AddImageStep order={order} />,
   },
   {
     title: 'Оплата',
     icon: <CreditCardOutlined />,
-    content: 'оплата тутъ',
+    content: () => 'оплата тутъ',
   },
   {
     title: 'Обработка заказа',
     icon: <SyncOutlined />,
-    content: 'обработка...',
+    content: () => 'обработка...',
   }, {
     title: 'Результат',
     icon: <CheckCircleOutlined />,
-    content: 'результат тут',
+    content: () => 'результат тут',
   },
 ];
+
 export const Order = () => {
   const [current, setCurrent] = React.useState(0);
 
@@ -44,13 +46,14 @@ export const Order = () => {
     const orderId = parseInt(id, 10);
     getOrder(orderId).then(setOrder);
   }, [id]);
+
   return <>
     <Steps current={current}>
       {steps.map(item => (
         <Step key={item.title} title={item.title} icon={item.icon} />
       ))}
     </Steps>
-    <div className="steps-content">{steps[current].content}</div>
+    <div className="steps-content">{steps[current].content(order)}</div>
   </>
 
 
