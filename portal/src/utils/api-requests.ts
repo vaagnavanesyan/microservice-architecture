@@ -64,6 +64,10 @@ export async function getOrders(params?: GetOrdersParams): Promise<Order[]> {
   return (await get<OrderResponse[]>(url)).map((e) => ({ ...e, createdAt: new Date(e.createdAt) }));
 }
 
+export async function getOrder(id: number): Promise<Order> {
+  return get<Order>(`/api/orders/${id}`);
+}
+
 export function isAuthorized(): boolean {
   return getToken() !== '';
 }
