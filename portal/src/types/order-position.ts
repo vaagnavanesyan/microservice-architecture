@@ -1,5 +1,6 @@
 export interface OrderPosition {
   id: number;
-  originalImage: string;
+  originalImageName: string;
+  originalImageUrl: string;
   processedImage?: string;
 }

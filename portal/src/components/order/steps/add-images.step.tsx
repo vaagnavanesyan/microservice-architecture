@@ -1,9 +1,10 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Image, Space, Typography, Upload } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Order } from '../../../types/order';
-import { addImage } from '../../../utils/api-requests';
+import { OrderPosition } from '../../../types/order-position';
+import { addImage, downloadImage, removeImage } from '../../../utils/api-requests';
 
 export type AddImageStepProps = {
     order: Order;
@@ -14,6 +15,10 @@ export type AddImageStepProps = {
 export const AddImageStep: React.FC<AddImageStepProps> = ({ order, onRefreshOrder }) => {
     const [fileList, setFileList] = useState([] as any);
     const [isUploading, setUploading] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState([] as OrderPosition[]);
+    useEffect(() => {
+        setUploadedFiles(order.positions);
+    }, [order])
 
     const addFiles = ({ fileList }) => {
         setFileList(fileList);
@@ -37,6 +42,19 @@ export const AddImageStep: React.FC<AddImageStepProps> = ({ order, onRefreshOrde
         newFileList.splice(index, 1);
         setFileList(newFileList);
     }
+    const handleRemovePosition = (file) => {
+        const index = uploadedFiles.findIndex(e => e.id.toString() === file.uid);
+        console.log(index);
+        const newList = uploadedFiles.slice();
+        newList.splice(index, 1);
+        setUploadedFiles(newList);
+        removeImage(file.url);
+    }
+
+    const handleDownloadFile = file => {
+        downloadImage(file.url, file.name)
+    }
+
     return <Space direction="vertical">
         <Typography.Title level={2}>Добавление изображений в заказ</Typography.Title>
         <Upload
@@ -63,14 +81,16 @@ export const AddImageStep: React.FC<AddImageStepProps> = ({ order, onRefreshOrde
             {isUploading ? 'Отправка...' : 'Загрузить'}
         </Button>
         <Typography.Title level={2}>Загруженные изображения:</Typography.Title>
-        <Image.PreviewGroup>
-            {order.positions.map(({ id, originalImage }) =>
-                <Image
-                    key={id}
-                    width={200}
-                    src={originalImage}
-                />)}
-        </Image.PreviewGroup>
-
-    </Space>
+        <Upload
+            listType="picture-card"
+            fileList={uploadedFiles.map(position => ({
+                uid: position.id.toString(),
+                name: position.originalImageName,
+                url: position.originalImageUrl
+            }))}
+            onPreview={handleDownloadFile}
+            onRemove={handleRemovePosition}
+        >
+        </Upload>
+    </Space >
 }
