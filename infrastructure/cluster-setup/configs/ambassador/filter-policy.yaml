@@ -15,6 +15,11 @@ spec:
     - host: "*"
       path: "/api/orders/api/metrics"
       filters: null
+
+    - host: "*"
+      path: "/api/orders/images/*"
+      filters: null
+
     - host: "*"
       path: "/api/orders*"
       filters:

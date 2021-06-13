@@ -16,10 +16,12 @@ export interface GetOrdersParams {
 }
 
 export async function signIn(email: string, password: string): Promise<string> {
-  const { accessToken } = await post<{ accessToken: string }>('/api/auth/signin', {
-    email,
-    password,
-  });
+  const { accessToken } =
+    (await post<{ accessToken: string }>('/api/auth/signin', {
+      email,
+      password,
+    })) || {};
+
   if (accessToken) {
     localStorage.setItem(tokenStorageKey, accessToken);
   }
@@ -36,7 +38,12 @@ export async function getProfile(): Promise<Profile> {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
-  }).then((e) => (e.status >= 400 ? null : e.json()));
+  }).then((e) => {
+    if (e.status >= 400) {
+      localStorage.removeItem(tokenStorageKey);
+    }
+    return e.status >= 400 ? null : e.json();
+  });
 }
 
 export async function updateProfile(firstName: string, lastName: string): Promise<void> {
@@ -64,8 +71,25 @@ export async function getOrders(params?: GetOrdersParams): Promise<Order[]> {
   return (await get<OrderResponse[]>(url)).map((e) => ({ ...e, createdAt: new Date(e.createdAt) }));
 }
 
+export type GetOrderPayload = Omit<Order, 'positions'> & {
+  positions: Array<{ id: number; originalImageId: string; processedImageId: string }>;
+};
+
 export async function getOrder(id: number): Promise<Order> {
-  return get<Order>(`/api/orders/${id}`);
+  const result = await get<GetOrderPayload>(`/api/orders/${id}`);
+  return {
+    ...result,
+    positions: result.positions.map((position) => ({
+      id: position.id,
+      originalImage: `/api/orders/images/${position.originalImageId}`,
+    })),
+  };
+}
+
+export async function addImage(orderId: number, image: File): Promise<number> {
+  const formdata = new FormData();
+  formdata.append('image', image);
+  return await post<number>(`/api/orders/${orderId}/addImage`, formdata, false);
 }
 
 export function isAuthorized(): boolean {
@@ -94,14 +118,24 @@ async function get<T>(url): Promise<T> {
   }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
-async function post<T>(url, body, parseJson = true): Promise<T> {
+async function post<T>(url, data, parseJson = true): Promise<T> {
   console.log(`POST ${url}`);
+
+  let body = data;
+
+  let headers = {
+    Authorization: `Bearer ${getToken()}`,
+  } as any;
+
+  if (parseJson) {
+    headers['Content-Type'] = 'application/json';
+    body = JSON.stringify(data);
+  }
+
   const response = fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    headers,
+    body,
   });
   return parseJson ? response.then((e) => (e.status >= 400 ? null : e.json())) : response;
 }

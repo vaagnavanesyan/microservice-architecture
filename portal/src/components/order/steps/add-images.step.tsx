@@ -1,104 +1,76 @@
-import { PlusOutlined } from "@ant-design/icons"
-import { Upload, Modal } from "antd"
-import { useState } from "react"
-import { Order } from "../../../types/order"
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Image, Space, Typography, Upload } from 'antd';
+import { useState } from 'react';
+
+import { Order } from '../../../types/order';
+import { addImage } from '../../../utils/api-requests';
 
 export type AddImageStepProps = {
     order: Order;
+    onRefreshOrder: () => void;
 }
 
-function getBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
-}
 
-export const AddImageStep: React.FC<AddImageStepProps> = ({ order }) => {
-    const [state, setState] = useState({
-        previewVisible: false,
-        previewImage: '',
-        previewTitle: '',
-        fileList: [
-            {
-                uid: '-1',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-2',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-3',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-4',
-                name: 'image.png',
-                status: 'done',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-xxx',
-                percent: 50,
-                name: 'image.png',
-                status: 'uploading',
-                url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-            },
-            {
-                uid: '-5',
-                name: 'image.png',
-                status: 'error',
-            },
-        ],
-    });
+export const AddImageStep: React.FC<AddImageStepProps> = ({ order, onRefreshOrder }) => {
+    const [fileList, setFileList] = useState([] as any);
+    const [isUploading, setUploading] = useState(false);
 
-    const handleCancel = () => setState({ ...state, previewVisible: false });
-
-    const handlePreview = async file => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
+    const addFiles = ({ fileList }) => {
+        setFileList(fileList);
+    }
+    const beforeUpload = (file: any) => {
+        return false;
+    }
+    const handleUpload = async () => {
+        setUploading(true);
+        for (const file of fileList) {
+            await addImage(order.id, file.originFileObj);
         }
-        setState({
-            ...state,
-            previewImage: file.url || file.preview,
-            previewVisible: true,
-            previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
-        });
-    };
-    const handleChange = ({ fileList }) => setState({ ...state, fileList });
-    const { previewVisible, previewImage, fileList, previewTitle } = state;
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
-    return <>
+        setUploading(false);
+        setFileList([]);
+        onRefreshOrder();
+
+    }
+    const onRemove = file => {
+        const index = fileList.indexOf(file);
+        const newFileList = fileList.slice();
+        newFileList.splice(index, 1);
+        setFileList(newFileList);
+    }
+    return <Space direction="vertical">
+        <Typography.Title level={2}>Добавление изображений в заказ</Typography.Title>
         <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            disabled={isUploading}
             listType="picture-card"
-            fileList={fileList as any}
-            onPreview={handlePreview}
-            onChange={handleChange}
+            multiple
+            fileList={fileList}
+            onChange={addFiles}
+            beforeUpload={beforeUpload}
+            onRemove={onRemove}
         >
-            {fileList.length >= 8 ? null : uploadButton}
+            <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Выберите файл...</div>
+            </div>
         </Upload>
-        <Modal
-            visible={previewVisible}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
+        <Button
+            type="primary"
+            onClick={handleUpload}
+            disabled={fileList.length === 0}
+            loading={isUploading}
+            style={{ marginTop: 16 }}
         >
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-        </Modal>
-    </>
+            {isUploading ? 'Отправка...' : 'Загрузить'}
+        </Button>
+        <Typography.Title level={2}>Загруженные изображения:</Typography.Title>
+        <Image.PreviewGroup>
+            {order.positions.map(({ id, originalImage }) =>
+                <Image
+                    key={id}
+                    width={200}
+                    src={originalImage}
+                />)}
+        </Image.PreviewGroup>
+
+    </Space>
 }
