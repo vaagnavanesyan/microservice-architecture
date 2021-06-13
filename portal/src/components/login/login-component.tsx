@@ -1,12 +1,12 @@
 import { Alert, Button, Form, Input, Space, Spin } from 'antd';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { signIn } from '../../utils/api-requests';
-import './login-component.css';
 const tailLayout = {
   wrapperCol: { offset: 12 },
 };
 export const Login = () => {
+  const history = useHistory();
   const [isLoading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
   const onFinish = async (values: any) => {
@@ -17,7 +17,7 @@ export const Login = () => {
     if (!token) {
       setShowError(true);
     }
-    console.log('token :>> ', token);
+    history.push('/');
   };
 
   return (

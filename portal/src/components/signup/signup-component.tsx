@@ -1,7 +1,7 @@
 import { Alert, Button, Form, Input, Space, Spin } from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { signUp } from '../../utils/api-requests';
 const tailLayout = {
   wrapperCol: { offset: 12 },
@@ -9,6 +9,7 @@ const tailLayout = {
 export const SignUp = () => {
   const [isLoading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
+  const history = useHistory();
   const onFinish = async (values: any) => {
     setLoading(true);
     const token = await signUp(values);
@@ -16,7 +17,8 @@ export const SignUp = () => {
     if (!token) {
       setShowError(true);
     }
-    console.log('token :>> ', token);
+    history.push('/');
+
   };
 
   return (
