@@ -42,7 +42,7 @@ const App = () => {
 };
 
 function PrivateRoute({ children, ...rest }) {
-  let auth = isAuthorized();
+  const auth = isAuthorized();
   return (
     <Route
       {...rest}
