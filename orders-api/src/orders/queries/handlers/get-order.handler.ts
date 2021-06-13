@@ -16,7 +16,7 @@ export class GetOrderHandler implements IQueryHandler<GetOrderQuery> {
 
     const positions = await getRepository(Position).find({
       where: { order },
-      select: ['id', 'processedImageId', 'originalImageId'],
+      select: ['id', 'processedImageId', 'originalImageId', 'originalImageName'],
     });
 
     return {

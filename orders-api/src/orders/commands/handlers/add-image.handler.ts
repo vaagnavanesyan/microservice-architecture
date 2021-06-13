@@ -42,6 +42,7 @@ export class AddImageHandler implements ICommandHandler<AddImageCommand> {
       await transactionalEntityManager.save(image);
 
       position.originalImageId = image.id;
+      position.originalImageName = image.fileName;
       await transactionalEntityManager.save(position);
 
       image.objectPath = `${order.id}/original/${image.id} - ${payload.fileName}`;

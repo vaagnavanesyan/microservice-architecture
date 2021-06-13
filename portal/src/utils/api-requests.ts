@@ -40,7 +40,7 @@ export async function getProfile(): Promise<Profile> {
     },
   }).then((e) => {
     if (e.status >= 400) {
-      localStorage.removeItem(tokenStorageKey);
+      signOut();
     }
     return e.status >= 400 ? null : e.json();
   });
@@ -72,7 +72,7 @@ export async function getOrders(params?: GetOrdersParams): Promise<Order[]> {
 }
 
 export type GetOrderPayload = Omit<Order, 'positions'> & {
-  positions: Array<{ id: number; originalImageId: string; processedImageId: string }>;
+  positions: Array<{ id: number; originalImageId: string; processedImageId: string; originalImageName: string }>;
 };
 
 export async function getOrder(id: number): Promise<Order> {
@@ -81,7 +81,8 @@ export async function getOrder(id: number): Promise<Order> {
     ...result,
     positions: result.positions.map((position) => ({
       id: position.id,
-      originalImage: `/api/orders/images/${position.originalImageId}`,
+      originalImageName: position.originalImageName,
+      originalImageUrl: `/api/orders/images/${position.originalImageId}`,
     })),
   };
 }
@@ -90,6 +91,30 @@ export async function addImage(orderId: number, image: File): Promise<number> {
   const formdata = new FormData();
   formdata.append('image', image);
   return await post<number>(`/api/orders/${orderId}/addImage`, formdata, false);
+}
+
+export async function removeImage(originalImageUrl: string): Promise<void> {
+  const id = originalImageUrl.split('/').slice(-1).pop();
+  await fetch(`/api/orders/${id}/remove`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function downloadImage(url: string, filename: string) {
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      var url = window.URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
 }
 
 export function isAuthorized(): boolean {
