@@ -93,13 +93,8 @@ export class OrdersController {
   }
 
   @Get('images/:imageId')
-  async getImage(@Req() request: Request, @Res() res: Response, @Param('imageId') imageId: number) {
-    const ownerId = parseInt(request.headers['x-userid'] as string, 10);
-    if (!ownerId) {
-      throw new BadRequestException('Invalid user');
-    }
-
-    const fileReadStream = await this.queryBus.execute(new GetImageQuery({ ownerId, imageId }));
+  async getImage(@Res() res: Response, @Param('imageId') imageId: number) {
+    const fileReadStream = await this.queryBus.execute(new GetImageQuery({ imageId }));
     fileReadStream.pipe(res);
   }
 
