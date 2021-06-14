@@ -6,6 +6,7 @@ using OpenCvSharp;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -67,13 +68,14 @@ namespace ImageProcessor
         _logger.LogInformation("Received message");
 
         var message = JsonSerializer.Deserialize<OrderReadyToProcessPayload>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        _logger.LogInformation($"Message contains {message.ImageObjectPaths.Length} image(-s)");
-
-        for (int i = 0; i < message.ImageObjectPaths.Length; i++)
+        _logger.LogInformation($"Message contains {message.Images.Length} position(-s)");
+        var processedImages = new List<dynamic>();
+        for (int i = 0; i < message.Images.Length; i++)
         {
-          string imagePath = message.ImageObjectPaths[i];
+          var image = message.Images[i];
+          string imagePath = image.ObjectPath;
           var memoryStream = new MemoryStream();
-          _logger.LogInformation($"Processing image {i + 1}/{message.ImageObjectPaths.Length}...");
+          _logger.LogInformation($"Processing image {i + 1}/{message.Images.Length}...");
           await _minioClient.GetObjectAsync("images", imagePath, stream => stream.CopyTo(memoryStream));
 
           var source = Mat.FromImageData(memoryStream.ToArray());
@@ -85,7 +87,13 @@ namespace ImageProcessor
 
 
           var sourceStream = source.ToMemoryStream();
-          await _minioClient.PutObjectAsync("images", imagePath.Replace("original", "processed"), sourceStream, sourceStream.Length);
+          var processedObjectPath = imagePath.Replace("original", "processed");
+          await _minioClient.PutObjectAsync("images", processedObjectPath, sourceStream, sourceStream.Length);
+          processedImages.Add(new
+          {
+            positionId = image.PositionId,
+            processedObjectPath = processedObjectPath
+          });
         }
         _logger.LogInformation("Message processed");
         //TODO: to lowercase
@@ -93,6 +101,7 @@ namespace ImageProcessor
         {
           orderId = message.OrderId,
           payerEmail = message.PayerEmail,
+          positions = processedImages,
           firstName = message.FirstName,
           lastName = message.LastName
         });
