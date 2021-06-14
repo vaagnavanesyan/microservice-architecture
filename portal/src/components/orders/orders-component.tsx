@@ -1,11 +1,13 @@
 import './orders-component.css';
 
-import { Table } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
+import { Alert, Button, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { getOrders } from '../../utils/api-requests';
-import { translateOrderStatus } from '../../utils/order-utils';
 import { Order } from '../../types/order';
+import { createOrder, getOrders } from '../../utils/api-requests';
+import { translateOrderStatus } from '../../utils/order-utils';
+import { useHistory } from 'react-router-dom';
 
 const columns = [
   {
@@ -39,10 +41,29 @@ const columns = [
 
 
 export const Orders = () => {
+  const history = useHistory();
   const [orders, setOrders] = useState([] as Order[]);
+  const [showError, setError] = useState(false);
+
   useEffect(() => {
-    const fetchOrders = () => getOrders().then(setOrders);
+    const fetchOrders = () => getOrders().then(orders => setOrders(orders || []));
     fetchOrders();
-  }, [])
-  return <Table columns={columns} dataSource={orders} rowKey="id" />;
+  }, []);
+
+  const handleCreateOrder = async () => {
+    const id = await createOrder(orders.length.toString());
+    if (id) {
+      history.push(`/orders/${id}`);
+    } else {
+      setError(true)
+    }
+  }
+
+  return <>
+    <Space>
+      <Button type="primary" icon={<PlusCircleOutlined />} onClick={handleCreateOrder}></Button>
+      {showError && <Alert message="При создании заказа произошла ошибка. Обновите страницу и попробуйте еще раз" type="error" />}
+    </Space>
+    <Table columns={columns} dataSource={orders} rowKey="id" />
+  </>;
 }
