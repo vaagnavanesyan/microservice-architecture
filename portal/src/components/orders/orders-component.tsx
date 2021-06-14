@@ -1,5 +1,3 @@
-import './orders-component.css';
-
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Alert, Button, Space, Table } from 'antd';
 import { useEffect, useState } from 'react';
@@ -8,6 +6,11 @@ import { Order } from '../../types/order';
 import { createOrder, getOrders } from '../../utils/api-requests';
 import { translateOrderStatus } from '../../utils/order-utils';
 import { useHistory } from 'react-router-dom';
+import { OrderStatuses } from '../../types/order-statuses';
+
+const handleOrderCancel = (data) => {
+  console.log(data);
+};
 
 const columns = [
   {
@@ -36,6 +39,19 @@ const columns = [
     dataIndex: 'status',
     render: translateOrderStatus,
     key: 'status',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (text, order) => (
+      <Space size="middle">
+        {order.status !== OrderStatuses.Cancelled && order.status !== OrderStatuses.Processed && (
+          <Button danger onClick={() => handleOrderCancel(order)}>
+            Отменить заказ
+          </Button>
+        )}
+      </Space>
+    ),
   },
 ];
 
