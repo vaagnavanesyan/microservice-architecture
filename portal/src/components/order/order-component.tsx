@@ -1,4 +1,10 @@
-import { CheckCircleOutlined, CreditCardOutlined, FileImageOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CreditCardOutlined,
+  FileImageOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
 import { Button, Space, Steps } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -8,14 +14,15 @@ import { OrderStatuses } from '../../types/order-statuses';
 import { getOrder } from '../../utils/api-requests';
 import { AddImageStep } from './steps/add-images.step';
 import { PaymentStep } from './steps/payment-step';
-import { ProcessingStep } from './steps/processing-step';
+import { OrderProcessingStep } from './steps/order-processing-step';
 import { ResultStep } from './steps/result-step';
+import { PaymentProcessingStep } from './steps/payment-processing-step';
 
 const { Step } = Steps;
 const addImageStep = 0;
-const paymentStep = 1;
-const processingStep = 2;
-const resultStep = 3;
+const paymentProcessingStep = 2;
+const orderProcessingStep = 3;
+const resultStep = 4;
 interface IStep {
   title: string;
   icon: JSX.Element;
@@ -39,12 +46,16 @@ const steps: IStep[] = [
     icon: <CreditCardOutlined />,
     content: (order, onRefreshOrder) => <PaymentStep order={order} onRefreshOrder={onRefreshOrder} />,
     prevStepButton: { title: 'Изменить заказ' },
-    nextStepButton: { title: 'Оплатить' },
+  },
+  {
+    title: 'Статус платежа',
+    icon: <ClockCircleOutlined />,
+    content: (order, onRefreshOrder) => <PaymentProcessingStep order={order} onRefreshOrder={onRefreshOrder} />,
   },
   {
     title: 'Обработка заказа',
     icon: <SyncOutlined />,
-    content: (order, onRefreshOrder) => <ProcessingStep order={order} onRefreshOrder={onRefreshOrder} />,
+    content: (order, onRefreshOrder) => <OrderProcessingStep order={order} onRefreshOrder={onRefreshOrder} />,
   },
   {
     title: 'Результат',
@@ -64,12 +75,12 @@ export const Order = () => {
         setCurrent(addImageStep);
         break;
       case OrderStatuses.Checkout:
-        setCurrent(paymentStep);
+      case OrderStatuses.PaymentDeclined:
+        setCurrent(paymentProcessingStep);
         break;
       case OrderStatuses.PaymentSucceeded:
-        setCurrent(processingStep);
+        setCurrent(orderProcessingStep);
         break;
-      case OrderStatuses.PaymentDeclined:
       case OrderStatuses.Processed:
       case OrderStatuses.Cancelled:
         setCurrent(resultStep);
