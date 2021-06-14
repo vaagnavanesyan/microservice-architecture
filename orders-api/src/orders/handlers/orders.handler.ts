@@ -2,7 +2,6 @@ import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 import {
   OrderReadyToProcessEvent,
-  OrderReadyToProcessPayload,
   PaymentProceedEvent,
   PaymentProceedPayload,
   PaymentRefusedEvent,
@@ -12,6 +11,7 @@ import {
 } from '@vaagnavanesyan/common';
 import { nameof } from 'ts-simple-nameof';
 import { getRepository } from 'typeorm';
+
 import { Image, Order } from '../entities';
 import { Position } from '../entities/position.entity';
 import { OrderStatuses } from '../enums/order-statuses.enum';
@@ -42,23 +42,19 @@ export class OrdersHandler {
     order.status = OrderStatuses.PaymentSucceeded;
     await order.save();
 
-    const positions = await getRepository(Position).find({ where: { order }, select: ['id'] });
-    const positionIds = positions.map((e) => e.id);
-
     const images = await getRepository(Image)
       .createQueryBuilder('image')
-      .where('image.positionId IN (:...positionIds)', { positionIds })
-      .select('image.objectPath')
+      .where('position.orderId = :orderId', { orderId: order.id })
+      .leftJoinAndSelect(Position, 'position', 'image.positionId = position.id')
       .getMany();
 
-    const payload: OrderReadyToProcessPayload = {
+    const payload = {
       payerEmail,
       firstName,
       lastName,
-      imageObjectPaths: images.map((e) => e.objectPath),
+      images, //TODO: fix OrderReadyToProcessPayload
       orderId: order.id,
     };
-
     this.queue.publish(RabbitMQDirectExchange, nameof(OrderReadyToProcessEvent), payload);
   }
 
@@ -67,10 +63,31 @@ export class OrdersHandler {
     routingKey: 'OrderProcessedEvent',
     queue: `${Queues.OrdersQueue}-order-processed`,
   })
-  public async handleOrderProcessed({ orderId }) {
-    const order = await getRepository(Order).findOne(orderId);
+  public async handleOrderProcessed(payload: ITemp) {
+    for (const { positionId, processedObjectPath } of payload.positions) {
+      const position = await getRepository(Position).findOne(positionId);
+
+      const image = Image.create({ objectPath: processedObjectPath, fileName: position.originalImageName, positionId });
+      await image.save();
+
+      position.processedImageId = image.id;
+      await position.save();
+    }
+
+    const order = await getRepository(Order).findOne(payload.orderId);
     order.status = OrderStatuses.Processed;
     await order.save();
-    console.log(`Order ${orderId} successfully processed`);
+    console.log(`Order ${payload.orderId} successfully processed`);
   }
+}
+//TODO:
+interface ITemp {
+  orderId: number;
+  payerEmail: string;
+  positions: {
+    positionId: number;
+    processedObjectPath: string;
+  }[];
+  firstName: string;
+  lastName: string;
 }
