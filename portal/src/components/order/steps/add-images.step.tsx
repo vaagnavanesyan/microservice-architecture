@@ -1,18 +1,13 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Space, Typography, Upload } from 'antd';
 import { useEffect, useState } from 'react';
-
-import { Order } from '../../../types/order';
 import { OrderPosition } from '../../../types/order-position';
 import { addImage, downloadImage, removeImage } from '../../../utils/api-requests';
-
-export type AddImageStepProps = {
-    order: Order;
-    onRefreshOrder: () => void;
-}
+import { StepProps } from './step-props';
 
 
-export const AddImageStep: React.FC<AddImageStepProps> = ({ order, onRefreshOrder }) => {
+
+export const AddImageStep: React.FC<StepProps> = ({ order, onRefreshOrder }) => {
     const [fileList, setFileList] = useState([] as any);
     const [isUploading, setUploading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([] as OrderPosition[]);
