@@ -4,7 +4,15 @@ import { BellOutlined, DollarOutlined, FileImageOutlined, LogoutOutlined, UserOu
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import { addAmount, getAmount, getNotifications, getProfile, markNotificationsAsRead } from '../../utils/api-requests';
+import {
+  addAmount,
+  getAmount,
+  getNotifications,
+  getProfile,
+  isAuthorized,
+  markNotificationsAsRead,
+  signOut,
+} from '../../utils/api-requests';
 
 export const NavBar = () => {
   const [fullName, setFullName] = useState('');
@@ -12,9 +20,11 @@ export const NavBar = () => {
   const [notifications, setNotifications] = useState([] as any);
 
   useEffect(() => {
-    getNotifications().then((notifications) =>
-      setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
-    );
+    if (isAuthorized()) {
+      getNotifications().then((notifications) =>
+        setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
+      );
+    }
   }, []);
   useEffect(() => {
     getProfile().then((profile) =>
@@ -34,6 +44,9 @@ export const NavBar = () => {
       setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
     );
   };
+  const handleLogout = () => {
+    signOut();
+  };
   return (
     <Menu theme="dark" mode="horizontal">
       <Menu.Item key="orders" icon={<FileImageOutlined />}>
@@ -46,8 +59,8 @@ export const NavBar = () => {
         <Menu.Item key="amount" icon={<DollarOutlined />} onClick={handleAddAmount}>
           {amount}
         </Menu.Item>
-        <Menu.Item key="logout" icon={<LogoutOutlined />}>
-          <a href="/logout">Log out</a>
+        <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+          Выход
         </Menu.Item>
       </Menu.SubMenu>
       <Menu.SubMenu key="notifications" icon={<BellOutlined />} title={notifications.length || ''}>
