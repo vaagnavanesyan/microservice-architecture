@@ -29,7 +29,7 @@ export async function signIn(email: string, password: string): Promise<string> {
 }
 
 export async function signUp(payload: SignUpPayload) {
-  await post('/api/auth/signup', payload, false);
+  await post('/api/auth/signup', payload, true, false);
   return signIn(payload.email, payload.password);
 }
 
