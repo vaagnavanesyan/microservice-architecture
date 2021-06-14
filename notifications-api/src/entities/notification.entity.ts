@@ -5,4 +5,5 @@ export class Notification extends BaseEntity {
   @PrimaryGeneratedColumn() id: number;
   @Column() email: string;
   @Column({ type: 'text' }) message: string;
+  @Column({ default: false }) isReaded: boolean;
 }
