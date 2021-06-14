@@ -83,6 +83,7 @@ export async function getOrder(id: number): Promise<Order> {
       id: position.id,
       originalImageName: position.originalImageName,
       originalImageUrl: `/api/orders/images/${position.originalImageId}`,
+      processedImageUrl: `/api/orders/images/${position.processedImageId}`,
     })),
   };
 }
@@ -102,7 +103,7 @@ export async function createOrder(etag: string): Promise<string | null> {
 }
 
 export async function checkoutOrder(orderId: number): Promise<void> {
-  await post<void>(`/api/orders/${orderId}/checkout`, undefined, false);
+  await post<void>(`/api/orders/${orderId}/checkout`, undefined, false, false);
 }
 
 export async function addImage(orderId: number, image: File): Promise<number> {
