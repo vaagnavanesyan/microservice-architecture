@@ -1,7 +1,7 @@
-import { BadRequestException, Controller, Get, NotFoundException, Req } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { Notification } from 'src/entities/notification.entity';
-import { getRepository } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
 
 @Controller()
 export class NotificationsController {
@@ -14,12 +14,29 @@ export class NotificationsController {
     }
 
     const repo = getRepository(Notification);
-    const notifications = await repo.find({ email });
+    const notifications = await repo.find({
+      where: {
+        email,
+        isReaded: false,
+      },
+    });
 
     if (!notifications) {
       throw new NotFoundException();
     }
 
     return notifications;
+  }
+
+  @Post()
+  async markAsReaded(@Req() request: Request, @Body() { id }) {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Notification)
+      .set({
+        isReaded: true,
+      })
+      .where('id <= :id', { id })
+      .execute();
   }
 }
