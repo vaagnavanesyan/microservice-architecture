@@ -148,6 +148,10 @@ export async function getAmount() {
   return response?.amount;
 }
 
+export async function addAmount() {
+  await post<void>('/api/billing', { amount: 5 }, true, false);
+}
+
 function getToken(): string {
   return localStorage.getItem('accessToken') || '';
 }
@@ -161,7 +165,7 @@ async function get<T>(url): Promise<T> {
   }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
-async function post<T>(url, data?, parseJson = true): Promise<T> {
+async function post<T>(url, data, sendJson = true, parseJson = true): Promise<T> {
   console.log(`POST ${url}`);
 
   let body = data;
@@ -170,7 +174,7 @@ async function post<T>(url, data?, parseJson = true): Promise<T> {
     Authorization: `Bearer ${getToken()}`,
   } as any;
 
-  if (parseJson) {
+  if (sendJson) {
     headers['Content-Type'] = 'application/json';
     body = JSON.stringify(data);
   }
