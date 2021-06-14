@@ -1,5 +1,5 @@
-import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Image, Space, Typography, Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Space, Typography, Upload } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { Order } from '../../../types/order';
