@@ -1,12 +1,21 @@
-import { DollarOutlined, FileImageOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import './navbar-component.css';
+
+import { BellOutlined, DollarOutlined, FileImageOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { addAmount, getAmount, getProfile } from '../../utils/api-requests';
-import './navbar-component.css';
+
+import { addAmount, getAmount, getNotifications, getProfile, markNotificationsAsRead } from '../../utils/api-requests';
 
 export const NavBar = () => {
   const [fullName, setFullName] = useState('');
   const [amount, setAmount] = useState(0.0);
+  const [notifications, setNotifications] = useState([] as any);
+
+  useEffect(() => {
+    getNotifications().then((notifications) =>
+      setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
+    );
+  }, []);
   useEffect(() => {
     getProfile().then((profile) =>
       profile ? setFullName(`${profile.firstName} ${profile.lastName}`) : setFullName('Unauthorized User')
@@ -18,7 +27,13 @@ export const NavBar = () => {
     await addAmount();
     setAmount(amount + 5);
   };
-
+  const handleMarkAllAsRead = async () => {
+    const lastNotification = notifications.slice(-1).pop();
+    await markNotificationsAsRead(lastNotification.id);
+    getNotifications().then((notifications) =>
+      setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
+    );
+  };
   return (
     <Menu theme="dark" mode="horizontal">
       <Menu.Item key="orders" icon={<FileImageOutlined />}>
@@ -34,6 +49,16 @@ export const NavBar = () => {
         <Menu.Item key="logout" icon={<LogoutOutlined />}>
           <a href="/logout">Log out</a>
         </Menu.Item>
+      </Menu.SubMenu>
+      <Menu.SubMenu key="notifications" icon={<BellOutlined />} title={notifications.length || ''}>
+        {notifications.map((notification) => (
+          <Menu.Item key={notification.id}>{notification.message}</Menu.Item>
+        ))}
+        {notifications.length > 0 && (
+          <Menu.Item key="mark-as-read" onClick={handleMarkAllAsRead}>
+            Отметить прочитанным
+          </Menu.Item>
+        )}
       </Menu.SubMenu>
     </Menu>
   );
