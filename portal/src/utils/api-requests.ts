@@ -101,6 +101,10 @@ export async function createOrder(etag: string): Promise<string | null> {
   return response.text();
 }
 
+export async function checkoutOrder(orderId: number): Promise<void> {
+  await post<void>(`/api/orders/${orderId}/checkout`, undefined, false);
+}
+
 export async function addImage(orderId: number, image: File): Promise<number> {
   const formdata = new FormData();
   formdata.append('image', image);
@@ -157,7 +161,7 @@ async function get<T>(url): Promise<T> {
   }).then((e) => (e.status >= 400 ? null : e.json()));
 }
 
-async function post<T>(url, data, parseJson = true): Promise<T> {
+async function post<T>(url, data?, parseJson = true): Promise<T> {
   console.log(`POST ${url}`);
 
   let body = data;
