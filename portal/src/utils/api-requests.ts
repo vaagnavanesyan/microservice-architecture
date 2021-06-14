@@ -87,6 +87,20 @@ export async function getOrder(id: number): Promise<Order> {
   };
 }
 
+export async function createOrder(etag: string): Promise<string | null> {
+  const response = await fetch(`/api/orders`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      'If-Match': etag,
+    },
+  });
+  if (response.status === 409) {
+    return null;
+  }
+  return response.text();
+}
+
 export async function addImage(orderId: number, image: File): Promise<number> {
   const formdata = new FormData();
   formdata.append('image', image);
