@@ -51,6 +51,7 @@ const steps: IStep[] = [
     title: 'Статус платежа',
     icon: <ClockCircleOutlined />,
     content: (order, onRefreshOrder) => <PaymentProcessingStep order={order} onRefreshOrder={onRefreshOrder} />,
+    prevStepButton: { title: 'Перейти к оплате' },
   },
   {
     title: 'Обработка заказа',
