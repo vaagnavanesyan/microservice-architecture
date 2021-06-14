@@ -12,12 +12,15 @@ const columns = [
     title: 'Номер заказа',
     dataIndex: 'id',
     key: 'id',
+    sorter: (a, b) => a.id - b.id,
+    defaultSortOrder: 'descend' as any,
     render: (id) => <a href={`orders/${id}`}>{id}</a>,
   },
   {
     title: 'Дата создания',
     dataIndex: 'createdAt',
     key: 'createdAt',
+    sorter: (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt),
     render: (date) => date.toLocaleDateString(),
   },
   {
