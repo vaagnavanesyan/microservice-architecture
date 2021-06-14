@@ -153,6 +153,13 @@ export async function addAmount() {
   await post<void>('/api/billing', { amount: 5 }, true, false);
 }
 
+export async function getNotifications(): Promise<any> {
+  return await get('/api/notifications');
+}
+export async function markNotificationsAsRead(id) {
+  return await post('/api/notifications', { id }, true, false);
+}
+
 function getToken(): string {
   return localStorage.getItem('accessToken') || '';
 }
