@@ -39,14 +39,13 @@ const columns = [
   },
 ];
 
-
 export const Orders = () => {
   const history = useHistory();
   const [orders, setOrders] = useState([] as Order[]);
   const [showError, setError] = useState(false);
 
   useEffect(() => {
-    const fetchOrders = () => getOrders().then(orders => setOrders(orders || []));
+    const fetchOrders = () => getOrders().then((orders) => setOrders(orders || []));
     fetchOrders();
   }, []);
 
@@ -55,15 +54,19 @@ export const Orders = () => {
     if (id) {
       history.push(`/orders/${id}`);
     } else {
-      setError(true)
+      setError(true);
     }
-  }
+  };
 
-  return <>
-    <Space>
-      <Button type="primary" icon={<PlusCircleOutlined />} onClick={handleCreateOrder}></Button>
-      {showError && <Alert message="При создании заказа произошла ошибка. Обновите страницу и попробуйте еще раз" type="error" />}
-    </Space>
-    <Table columns={columns} dataSource={orders} rowKey="id" />
-  </>;
-}
+  return (
+    <>
+      <Space>
+        <Button type="primary" icon={<PlusCircleOutlined />} onClick={handleCreateOrder}></Button>
+        {showError && (
+          <Alert message="При создании заказа произошла ошибка. Обновите страницу и попробуйте еще раз" type="error" />
+        )}
+      </Space>
+      <Table columns={columns} dataSource={orders} rowKey="id" />
+    </>
+  );
+};
