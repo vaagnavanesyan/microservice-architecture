@@ -6,17 +6,17 @@ version: 0.8.0
 appVersion: 0.8.0
 dependencies:
   - name: ambassador
-    version: 6.6.2
+    version: 6.7.13
     repository: https://getambassador.io
   - name: minio
-    version: 6.7.7
+    version: 7.1.6
     repository: https://charts.bitnami.com/bitnami
   - name: rabbitmq
-    version: 8.13.1
+    version: 8.19.1
     repository: https://charts.bitnami.com/bitnami
   - name: ingress-nginx
-    version: 3.31.0
+    version: 3.34.0
     repository: https://kubernetes.github.io/ingress-nginx
   - name: kube-prometheus-stack
-    version: 15.4.6
+    version: 17.0.3
     repository: https://prometheus-community.github.io/helm-charts

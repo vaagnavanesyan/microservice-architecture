@@ -1,5 +1,5 @@
 Import-Module 'Carbon'
-$minikubeIP = minikube ip
+
 $hostname = "arch.homework"
 Remove-HostsEntry -HostName $hostname
-Set-HostsEntry -IPAddress $minikubeIP -HostName $hostname -Description "Host for OTUS labs"
+Set-HostsEntry -IPAddress "127.0.0.1" -HostName $hostname -Description "Host for OTUS labs"

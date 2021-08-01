@@ -1,0 +1,1 @@
+kubectl delete secret infrastructure-ambassador-edge-stack -n otus
