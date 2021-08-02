@@ -1,0 +1,4 @@
+{
+    "private": true,
+    "workspaces": ["common", "identity", "billing-api", "notifications-api", "orders-api", "portal"]
+  }

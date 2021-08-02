@@ -16,7 +16,6 @@ Infrastructure:
 - Prometheus + Grafana
 - Postman/Newman
 - MinIO
-- Github packages
 
 
 Future plans:
@@ -25,4 +24,3 @@ Future plans:
 - test coverage (unit, e2e, integration)
 - decouple `identity`
 - code refactoring, upgrade
-- yarn/lerna-based monorepo

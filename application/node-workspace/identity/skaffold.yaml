@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta9
+kind: Config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+    - image: vaagn/face-systems-identity
+      context: ..
+      docker:
+        dockerfile: identity/Dockerfile
+
+deploy:
+  helm:
+    releases:
+      - name: identity
+        chartPath: helm-chart
+        namespace: otus
+        createNamespace: true
+        artifactOverrides:
+          image: vaagn/face-systems-identity
