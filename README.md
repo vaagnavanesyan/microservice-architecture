@@ -1,3 +1,5 @@
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=vaagnavanesyan_microservice-architecture&metric=ncloc)](https://sonarcloud.io/dashboard?id=vaagnavanesyan_microservice-architecture) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=vaagnavanesyan_microservice-architecture&metric=coverage)](https://sonarcloud.io/dashboard?id=vaagnavanesyan_microservice-architecture) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=vaagnavanesyan_microservice-architecture&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=vaagnavanesyan_microservice-architecture) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=vaagnavanesyan_microservice-architecture&metric=sqale_index)](https://sonarcloud.io/dashboard?id=vaagnavanesyan_microservice-architecture)
+
 Microservice-based online shop for face detection on images
 
 Main parts:
