@@ -21,9 +21,7 @@ export const NavBar = () => {
 
   useEffect(() => {
     if (isAuthorized()) {
-      getNotifications().then((notifications) =>
-        setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
-      );
+      getNotifications().then((n) => setNotifications(n.map((e) => ({ message: e.message, id: e.id }))));
     }
   }, []);
   useEffect(() => {
@@ -40,9 +38,8 @@ export const NavBar = () => {
   const handleMarkAllAsRead = async () => {
     const lastNotification = notifications.slice(-1).pop();
     await markNotificationsAsRead(lastNotification.id);
-    getNotifications().then((notifications) =>
-      setNotifications(notifications.map((e) => ({ message: e.message, id: e.id })))
-    );
+
+    getNotifications().then((n) => setNotifications(n.map((e) => ({ message: e.message, id: e.id }))));
   };
   const handleLogout = () => {
     signOut();

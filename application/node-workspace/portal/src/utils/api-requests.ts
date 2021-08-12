@@ -109,7 +109,7 @@ export async function checkoutOrder(orderId: number): Promise<void> {
 export async function addImage(orderId: number, image: File): Promise<number> {
   const formdata = new FormData();
   formdata.append('image', image);
-  return await post<number>(`/api/orders/${orderId}/addImage`, formdata, false);
+  return post<number>(`/api/orders/${orderId}/addImage`, formdata, false);
 }
 
 export async function removeImage(originalImageUrl: string): Promise<void> {
@@ -126,9 +126,8 @@ export async function downloadImage(url: string, filename: string) {
   fetch(url)
     .then((response) => response.blob())
     .then((blob) => {
-      var url = window.URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
+      const a = document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
       a.download = filename;
       document.body.appendChild(a);
       a.click();
@@ -154,10 +153,10 @@ export async function addAmount() {
 }
 
 export async function getNotifications(): Promise<any> {
-  return await get('/api/notifications');
+  return get('/api/notifications');
 }
 export async function markNotificationsAsRead(id) {
-  return await post('/api/notifications', { id }, true, false);
+  return post('/api/notifications', { id }, true, false);
 }
 
 function getToken(): string {

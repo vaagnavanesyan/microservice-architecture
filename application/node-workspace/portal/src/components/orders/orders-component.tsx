@@ -61,7 +61,7 @@ export const Orders = () => {
   const [showError, setError] = useState(false);
 
   useEffect(() => {
-    const fetchOrders = () => getOrders().then((orders) => setOrders(orders || []));
+    const fetchOrders = () => getOrders().then((e) => setOrders(e || []));
     fetchOrders();
   }, []);
 

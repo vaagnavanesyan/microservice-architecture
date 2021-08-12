@@ -13,9 +13,6 @@ export const AddImageStep: React.FC<StepProps> = ({ order, onRefreshOrder }) => 
     setUploadedFiles(order.positions);
   }, [order]);
 
-  const addFiles = ({ fileList }) => {
-    setFileList(fileList);
-  };
   const beforeUpload = (file: any) => {
     return false;
   };
@@ -56,7 +53,7 @@ export const AddImageStep: React.FC<StepProps> = ({ order, onRefreshOrder }) => 
         listType="picture-card"
         multiple
         fileList={fileList}
-        onChange={addFiles}
+        onChange={(info) => setFileList(info.fileList)}
         beforeUpload={beforeUpload}
         onRemove={onRemove}
       >
