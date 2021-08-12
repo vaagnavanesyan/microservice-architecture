@@ -1,6 +1,6 @@
 import { ForbiddenException } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Image, Order } from 'src/orders/entities';
+import { Order } from 'src/orders/entities';
 import { Position } from 'src/orders/entities/position.entity';
 import { getRepository } from 'typeorm';
 import { GetOrderQuery } from '../impl/get-order.query';
