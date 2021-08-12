@@ -15,17 +15,14 @@ import { MetricsProviders } from './services/metrics.provider';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
-        const options: JwtModuleOptions = {
-          privateKey: atob(configService.get('PRIVATE_KEY')),
-          publicKey: atob(configService.get('PUBLIC_KEY')),
-          signOptions: {
-            expiresIn: 36000,
-            algorithm: 'RS256',
-          },
-        };
-        return options;
-      },
+      useFactory: async (configService: ConfigService): Promise<JwtModuleOptions> => ({
+        privateKey: atob(configService.get('PRIVATE_KEY')),
+        publicKey: atob(configService.get('PUBLIC_KEY')),
+        signOptions: {
+          expiresIn: 36000,
+          algorithm: 'RS256',
+        },
+      }),
       inject: [ConfigService],
     }),
     RabbitMQModule.forRootAsync(RabbitMQModule, {
