@@ -8,7 +8,7 @@ RUN apt update && apt install wget -y
 RUN wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 RUN dpkg -i packages-microsoft-prod.deb
 RUN apt update && apt install -y dotnet-runtime-5.0
-RUN wget -qO- https://media.githubusercontent.com/media/vaagnavanesyan/microservice-architecture/main/image-processor/ImageProcessor/opencv-deps.tgz | tar --transform 's/^dbt2-0.37.50.3/dbt2/' -xvz -C /
+RUN wget -qO- https://media.githubusercontent.com/media/vaagnavanesyan/microservice-architecture/main/application/image-processor/ImageProcessor/opencv-deps.tgz | tar --transform 's/^dbt2-0.37.50.3/dbt2/' -xvz -C /
 WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
